@@ -21,7 +21,7 @@ public class GameplayController : MonoBehaviour
 
     void Start()
     {
-        var _warriorClass = new CharacterClass(CharClass.warrior, new CombatAction[] { new CombatAction(ActionType.slash), new CombatAction(ActionType.parry, 2), new CombatAction(ActionType.block, 2) }, 1);
+        var _warriorClass = new CharacterClass(CharClass.warrior, new CombatAction[] { new CombatAction(ActionType.slash, 2), new CombatAction(ActionType.parry, 2), new CombatAction(ActionType.block, 2) }, 1);
         var _rangerClass = new CharacterClass(CharClass.ranger, new CombatAction[] { new CombatAction(ActionType.fire, 0, false), new CombatAction(ActionType.reload), new CombatAction(ActionType.dodge, 1) }, 3);
         var _summonerClass = new CharacterClass(CharClass.summoner, new CombatAction[] { new CombatAction(ActionType.summon), new CombatAction(ActionType.attack), new CombatAction(ActionType.sacrifice) }, 2);
 
