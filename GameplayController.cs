@@ -26,7 +26,7 @@ public class GameplayController : MonoBehaviour
         var _summonerClass = new CharacterClass(CharClass.summoner, new CombatAction[] { new CombatAction(ActionType.summon), new CombatAction(ActionType.attack), new CombatAction(ActionType.sacrifice) }, 2);
 
         Sprite weaponSprite = null;
-        switch ((CharClass)1/*PlayerPrefs.GetInt("SelectedClass")*/)
+        switch ((CharClass)PlayerPrefs.GetInt("SelectedClass"))
         {
             case CharClass.warrior:
                 player = new WarriorPlayer(_warriorClass, 5);
