@@ -4,7 +4,7 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] private Text playerAction, enemyAction,
+    [SerializeField] private TextMeshProUGUI playerAction, enemyAction,
         timer;
 
     [SerializeField] private Image[] _playerHeartHPImages, _enemyHeartHPImages;
@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
     {
         timer.text = time > 1 ? 
             "" + time
-            : "Fight!";
+            : "MEOW!";
     }
 
     private void ShowGameEndMessage(string message)
@@ -80,7 +80,7 @@ public class UIController : MonoBehaviour
         _actions = combatActions;
         for (int i = 0; i < 3; i++)
         {
-            actionButtons[i].GetComponentInChildren<Text>().text = _actions[i].ToString();
+            actionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = _actions[i].ToString();
         }
     }
 
