@@ -22,7 +22,7 @@ public class GameplayController : MonoBehaviour
     void Start()
     {
         var _warriorClass = new CharacterClass(CharClass.warrior, new CombatAction[] { new CombatAction(ActionType.slash, 2), new CombatAction(ActionType.parry, 2), new CombatAction(ActionType.block, 2) }, 1);
-        var _rangerClass = new CharacterClass(CharClass.ranger, new CombatAction[] { new CombatAction(ActionType.fire, 0, false), new CombatAction(ActionType.reload), new CombatAction(ActionType.dodge, 1) }, 3);
+        var _rangerClass = new CharacterClass(CharClass.ranger, new CombatAction[] { new CombatAction(ActionType.fire, 0, false), new CombatAction(ActionType.reload), new CombatAction(ActionType.dodge, 1) }, 3, true);
         var _summonerClass = new CharacterClass(CharClass.summoner, new CombatAction[] { new CombatAction(ActionType.summon), new CombatAction(ActionType.attack), new CombatAction(ActionType.sacrifice) }, 2);
 
         Sprite weaponSprite = null;
@@ -147,6 +147,18 @@ public class GameplayController : MonoBehaviour
     public void DamageReceived(int hp, bool isPlayer)
     {
         OnDamageReceived?.Invoke(hp, isPlayer);
+    }
+
+    public event Action<bool, bool> OnAmmoIconSetup;
+    public void AmmoIconSetup(bool enabled, bool isPlayer)
+    {
+        OnAmmoIconSetup?.Invoke(enabled, isPlayer);
+    }
+
+    public event Action<bool, bool> OnAmmoUpdate;
+    public void AmmoIconUpdate(bool enabled, bool isPlayer)
+    {
+        OnAmmoUpdate?.Invoke(enabled, isPlayer);
     }
 
     public event Action<string> OnGameEnded;

@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
         timer;
 
     [SerializeField] private Image[] _playerHeartHPImages, _enemyHeartHPImages;
+    [SerializeField] private Image _playerAmmoImage, _enemyAmmoImage;
 
     [SerializeField] private Button[] actionButtons;
     private CombatAction[] _actions;
@@ -30,6 +31,8 @@ public class UIController : MonoBehaviour
         Button btn2 = actionButtons[2].GetComponent<Button>();
         btn2.onClick.AddListener(delegate { SelectedAction(2); });
 
+        GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
+        GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
         GameplayController.current.OnDamageReceived += UpdateHPsImages;
         GameplayController.current.OnGameEnded += ShowGameEndMessage;
         GameplayController.current.OnEnemySelectedAction += UpdateSelectedEnemyAction;
@@ -99,6 +102,26 @@ public class UIController : MonoBehaviour
     private void UpdateSelectedEnemyAction(string actionText)
     {
         enemyAction.text = actionText;
+    }
+
+    public void SetupAmmoImage(bool enable, bool isPlayer = false)
+    {
+        Image img = isPlayer ? 
+            _playerAmmoImage 
+            : _enemyAmmoImage;
+
+        img.enabled = enable;
+    }
+
+    public void UpdateAmmoImage(bool enable, bool isPlayer = false)
+    {
+        Image img = isPlayer ? 
+            _playerAmmoImage 
+            : _enemyAmmoImage;
+
+        img.color = enable ?
+            Color.red :
+            Color.white;
     }
 
 

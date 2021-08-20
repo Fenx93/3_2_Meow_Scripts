@@ -38,12 +38,13 @@ public class MovingBackgroundSpawner : MonoBehaviour
             if ((obj.transform.localPosition.x > maxX || obj.transform.localPosition.x < minX))
             {
                 bgObjects.RemoveAt(i);
-                DestroyObject(obj);
+                Destroy(obj);
             }
             else
             {
                 Vector3 vec = (obj.GetComponent<MovingBackgroundObject>().moveRight) ?
-                        Vector3.right : Vector3.left;
+                        Vector3.right 
+                        : Vector3.left;
 
                 obj.transform.Translate(vec * obj.GetComponent<MovingBackgroundObject>().speed);
             }

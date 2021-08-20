@@ -13,6 +13,7 @@ public class RangedEnemy : Enemy
         set
         {
             _enemyHasAmmo = value;
+            GameplayController.current.AmmoIconUpdate(_enemyHasAmmo, false);
             GetActionByType(ActionType.fire).Enabled = value;
             GetActionByType(ActionType.reload).Enabled = !value;
         }

@@ -7,6 +7,7 @@ public abstract class Character
         CharacterClass = characterClass;
         HP = hp;
         GameplayController.current.DamageReceived(HP, this is Player);
+        GameplayController.current.AmmoIconSetup(CharacterClass.HasAmmo, this is Player);
 
         // copy actions, as cooldowns must belong to a particular character's action, not common action
         Actions = new CombatAction[CharacterClass.Actions.Length];
