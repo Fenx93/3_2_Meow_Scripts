@@ -21,9 +21,21 @@ public class GameplayController : MonoBehaviour
 
     void Start()
     {
-        var _warriorClass = new CharacterClass(CharClass.warrior, new CombatAction[] { new CombatAction(ActionType.slash, 2), new CombatAction(ActionType.parry, 2), new CombatAction(ActionType.block, 2) }, 1);
-        var _rangerClass = new CharacterClass(CharClass.ranger, new CombatAction[] { new CombatAction(ActionType.fire, 0, false), new CombatAction(ActionType.reload), new CombatAction(ActionType.dodge, 1) }, 3, true);
-        var _summonerClass = new CharacterClass(CharClass.summoner, new CombatAction[] { new CombatAction(ActionType.summon), new CombatAction(ActionType.attack), new CombatAction(ActionType.sacrifice) }, 2);
+        var _warriorClass = new CharacterClass(CharClass.warrior, new CombatAction[] {
+            new CombatAction(ActionType.slash, ActionClassification.aggressive, 2), 
+            new CombatAction(ActionType.parry, ActionClassification.utility, 2), 
+            new CombatAction(ActionType.block, ActionClassification.defensive, 2) },
+            1);
+        var _rangerClass = new CharacterClass(CharClass.ranger, new CombatAction[] { 
+            new CombatAction(ActionType.fire, ActionClassification.aggressive, 0, false), 
+            new CombatAction(ActionType.reload, ActionClassification.utility), 
+            new CombatAction(ActionType.dodge, ActionClassification.defensive, 1) }, 
+            3, true);
+        var _summonerClass = new CharacterClass(CharClass.summoner, new CombatAction[] { 
+            new CombatAction(ActionType.summon, ActionClassification.utility), 
+            new CombatAction(ActionType.attack, ActionClassification.aggressive), 
+            new CombatAction(ActionType.sacrifice, ActionClassification.defensive) }
+        , 2);
 
         Sprite weaponSprite = null;
         switch ((CharClass)PlayerPrefs.GetInt("SelectedClass"))
@@ -103,9 +115,9 @@ public class GameplayController : MonoBehaviour
     private void ResetActions()
     {
         //deselect all actions
-        player.SelectedAction = new CombatAction(ActionType.none);
+        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none);
         UIController.current.UpdateSelectedActionText("");
-        _enemy.SelectedAction = new CombatAction(ActionType.none);
+        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none);
         // disable action buttons that are on cooldown
         UIController.current.EnableActionButtons(player);
     }
@@ -176,4 +188,5 @@ public class GameplayController : MonoBehaviour
 }
 
 public enum ActionType { none, fire, reload, dodge, slash, parry, block, summon, attack, sacrifice };
+public enum ActionClassification { none, aggressive, utility, defensive };
 public enum CharClass { warrior, ranger, summoner };

@@ -1,16 +1,17 @@
 public class CombatAction
 {
-    public CombatAction(ActionType type, int? cooldown = null, bool enabled = true)
+    public CombatAction(ActionType type, ActionClassification classification, int? cooldown = null, bool enabled = true)
     {
         Type = type;
         Cooldown = cooldown;
         Enabled = enabled;
+        Classification = classification;
     }
 
     public ActionType Type { get; set; }
+    public ActionClassification Classification { get; set; }
     public int? Cooldown { get; set; }
-    public int CurrentCooldown { get; 
-        set; }
+    public int CurrentCooldown { get; set; }
     public bool Enabled { get; set; }
 
 
@@ -34,6 +35,6 @@ public class CombatAction
 
     internal CombatAction Clone()
     {
-        return new CombatAction(Type, Cooldown, Enabled);
+        return new CombatAction(Type, Classification, Cooldown, Enabled);
     }
 }
