@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static UI_Tab_Button;
 
 public class GameplayController : MonoBehaviour
 {
@@ -51,10 +52,16 @@ public class GameplayController : MonoBehaviour
             default:
                 break;
         }
-        CharacterCustomizer.current.playerCharacter.SetWeapon(weaponSprite);
+        CharacterCustomizer.current.avatars[0].SetWeapon(weaponSprite);
+        CharacterCustomizer.current.avatars[0].SetColor(MainMenuController.current.mainColor, CharacterPart.mainColor);
+        CharacterCustomizer.current.avatars[0].SetColor(MainMenuController.current.secondaryColor, CharacterPart.secondaryColor);
+
+        CharacterCustomizer.current.avatars[0].SetSprite(MainMenuController.current.eyes, CharacterPart.eyes);
+        CharacterCustomizer.current.avatars[0].SetSprite(MainMenuController.current.ears, CharacterPart.eyes);
+        CharacterCustomizer.current.avatars[0].SetSprite(MainMenuController.current.mouth, CharacterPart.mouth);
 
         _enemy = new RangedEnemy(_rangerClass, 5);
-        CharacterCustomizer.current.enemyCharacter.SetWeapon(_rangerWeapon);
+        CharacterCustomizer.current.avatars[1].SetWeapon(_rangerWeapon);
 
 
         ResetActions();

@@ -102,3 +102,9 @@ public class MovingBackgroundSpawner : MonoBehaviour
 }
 
 
+[System.Serializable]
+public class MovingBackgroundObject : MonoBehaviour
+{
+    public float speed;
+    public bool moveRight;
+}

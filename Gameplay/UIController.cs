@@ -15,7 +15,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject playerUI, enemyUI;
     [SerializeField] private Button[] actionButtons;
-    //[SerializeField] private My<ActionClassification, Color> selectedActionColors;
+
     [Serializable] public class MyDictionary1 : SerializableDictionary<ActionClassification, Color> { }
 
     [SerializeField]  private MyDictionary1 selectedActionColors;
@@ -163,7 +163,7 @@ public class UIController : MonoBehaviour
     {
         if (hpCount > 10)
         {
-            throw new System.Exception("More than 10 hp are not supported!");
+            throw new Exception("More than 10 hp are not supported!");
         }
         UpdateHPs(hpCount, isPlayer ? _playerHeartHPImages : _enemyHeartHPImages);
     }

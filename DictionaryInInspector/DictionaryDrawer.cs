@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static CharacterCustomizer;
 using static UIController;
 using UnityObject = UnityEngine.Object;
 
@@ -91,7 +92,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
             var removeRect = valueRect;
             removeRect.x = valueRect.xMax + 2;
             removeRect.width = kButtonWidth;
-            if (GUI.Button(removeRect, new GUIContent("x", "Remove item"), EditorStyles.miniButtonRight))
+            if (GUI.Button(removeRect, new GUIContent("-", "Remove item"), EditorStyles.miniButtonRight))
             {
                 RemoveItem(key);
                 break;
@@ -136,8 +137,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 
     private static T DoField<T>(Rect rect, Type type, T value)
     {
-        Func<Rect, object, object> field;
-        if (_Fields.TryGetValue(type, out field))
+        if (_Fields.TryGetValue(type, out Func<Rect, object, object> field))
             return (T)field(rect, value);
 
         if (type.IsEnum)
@@ -157,15 +157,13 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 
     private void AddNewItem()
     {
-        TK key;
-        if (typeof(TK) == typeof(string))
-            key = (TK)(object)"";
-        else key = default(TK);
+        TK key = (typeof(TK) == typeof(string)) ?
+            (TK)(object)"" 
+            : default(TK);
 
-        var value = default(TV);
         try
         {
-            _Dictionary.Add(key, value);
+            _Dictionary.Add(key, default(TV));
         }
         catch (Exception e)
         {
@@ -177,5 +175,3 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 [CustomPropertyDrawer(typeof(MyDictionary1))]
 public class MyDictionaryDrawer1 : DictionaryDrawer<ActionClassification, Color> { }
 
-/*[CustomPropertyDrawer(typeof(MyDictionary2))]
-public class MyDictionaryDrawer2 : DictionaryDrawer<KeyCode, GameObject> { }*/
