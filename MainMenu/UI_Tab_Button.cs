@@ -1,20 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static Tab;
 
 public class UI_Tab_Button : MonoBehaviour
 {
-    public enum CharacterPart { mainColor, secondaryColor, eyes, nose, mouth }
-    [SerializeField] private CharacterPart editedCharacterPart;
-
-    [SerializeField] private Color[] colors;
-    [SerializeField] private Sprite[] sprites;
-
+    public Tab _tab;
+    
     private Color selectedColor;
     private Sprite selectedSprite;
 
     private void Awake()
     {
-        switch (editedCharacterPart)
+        switch (_tab.editedCharacterPart)
         {
             case CharacterPart.mainColor:
             case CharacterPart.secondaryColor:
@@ -28,14 +25,9 @@ public class UI_Tab_Button : MonoBehaviour
         }
     }
 
-    private void AddTab(string TabName)
+    private GameObject CreatePanel(int i)
     {
-
-    }
-
-    private GameObject CreatePanel(GameObject obj, int i)
-    {
-        obj = new GameObject("Panel (" + i + ")");
+        GameObject obj = new GameObject("Panel (" + i + ")");
         var horizontalLayoutGroup = obj.AddComponent(typeof(HorizontalLayoutGroup)) as HorizontalLayoutGroup;
         horizontalLayoutGroup.childControlHeight = true;
         horizontalLayoutGroup.childControlWidth = true;
@@ -65,7 +57,7 @@ public class UI_Tab_Button : MonoBehaviour
         GameObject[] newBackObj = new GameObject[4];
         for (int i = 0; i < 4; i++)
         {
-            newBackObj[i] = CreatePanel(newBackObj[i], i);
+            newBackObj[i] = CreatePanel(i);
         }
 
         for (int i = 0; i < newBackObj.Length; i++)
@@ -83,31 +75,29 @@ public class UI_Tab_Button : MonoBehaviour
 
                 var index = i * 5 + j;
 
+                bool isEmpty = false;
                 if (useSprites)
                 {
-                    if (sprites.Length > index)
+                    if (_tab.sprites.Length > index)
                     {
-                        image.sprite = sprites[index];
-                        button.onClick.AddListener(() => ItemSelected(sprites[index]));
-                    }
-                    else
-                    {
-                        button.interactable = false;
-                        image.enabled = false;
+                        image.sprite = _tab.sprites[index];
+                        isEmpty = true;
+                        button.onClick.AddListener(() => ItemSelected(_tab.sprites[index]));
                     }
                 }
                 else
                 {
-                    if (colors.Length > index)
+                    if (_tab.colors.Length > index)
                     {
-                        image.color = colors[index];
-                        button.onClick.AddListener(() => ItemSelected(colors[index]));
+                        image.color = _tab.colors[index];
+                        isEmpty = true;
+                        button.onClick.AddListener(() => ItemSelected(_tab.colors[index]));
                     }
-                    else
-                    {
-                        button.interactable = false;
-                        image.enabled = false;
-                    }
+                }
+                if (!isEmpty)
+                {
+                    button.interactable = false;
+                    image.enabled = false;
                 }
 
 
@@ -119,8 +109,8 @@ public class UI_Tab_Button : MonoBehaviour
 
     private void ItemSelected(Color color)
     {
-        CharacterCustomizer.current.avatars[0].SetColor(color, editedCharacterPart);
-        switch (editedCharacterPart)
+        CharacterCustomizer.current.avatars[0].SetColor(color, _tab.editedCharacterPart);
+        switch (_tab.editedCharacterPart)
         {
             case CharacterPart.mainColor:
                 MainMenuController.current.mainColor = color;
@@ -135,9 +125,9 @@ public class UI_Tab_Button : MonoBehaviour
     
     private void ItemSelected(Sprite sprite)
     {
-        CharacterCustomizer.current.avatars[0].SetSprite(sprite, editedCharacterPart);
+        CharacterCustomizer.current.avatars[0].SetSprite(sprite, _tab.editedCharacterPart);
 
-        switch (editedCharacterPart)
+        switch (_tab.editedCharacterPart)
         {
             case CharacterPart.eyes:
                 MainMenuController.current.eyes = sprite;

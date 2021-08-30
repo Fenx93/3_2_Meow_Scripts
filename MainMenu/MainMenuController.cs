@@ -1,28 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-
     private int? selectedClassID = null;
     [SerializeField] private string sceneName;
+    [SerializeField] private TextMeshProUGUI selectedClassName;
+    [SerializeField] private string[] classNames;
+    [SerializeField] private Sprite[] classWeaponSprites;
 
     public static MainMenuController current;
 
     [HideInInspector] public Color mainColor, secondaryColor;
     [HideInInspector] public Sprite eyes, ears, nose, mouth;
 
+    [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, eyesId = 0, earsId = 0, noseId = 0, mouthId = 0;
+
     void Awake()
     {
         current = this;
     }
 
+    void Start()
+    {
+        SelectClass(0);
+    }
+
     public void SelectClass(int classID)
     {
         selectedClassID = classID;
+        selectedClassName.text = classNames[classID];
+        CharacterCustomizer.current.avatars[0].SetWeapon(classWeaponSprites[classID]);
+    }
+
+    public void CycleThroughClasses(int direction)
+    {
+        if (direction == 1)
+        {
+            selectedClassID = (selectedClassID == classNames.Length-1) ?
+                0
+                : selectedClassID + 1;
+
+        }
+        else if (direction == -1)
+        {
+            selectedClassID = (selectedClassID == 0) ?
+                classNames.Length-1
+                : selectedClassID - 1;
+        }
+        SelectClass(selectedClassID.Value);
     }
 
     public void StartGame()

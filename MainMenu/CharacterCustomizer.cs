@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using static Tab;
 
 public class CharacterCustomizer : MonoBehaviour
 {
@@ -28,13 +29,13 @@ public class CharacterCustomizer : MonoBehaviour
 
 }
 
-public abstract class ColorAdapter
+public abstract class SpriteImageAdapter
 {
     public abstract Color color { get; set; }
     public abstract Sprite sprite { get; set; }
 }
 
-public class ImageAdapter : ColorAdapter
+public class ImageAdapter : SpriteImageAdapter
 {
     Image adaptee;
     public ImageAdapter(Image adaptee) { this.adaptee = adaptee; }
@@ -42,7 +43,7 @@ public class ImageAdapter : ColorAdapter
     public override Sprite sprite { get { return adaptee.sprite; } set { adaptee.sprite = value; } }
 }
 
-public class SpriteRendererAdapter : ColorAdapter
+public class SpriteRendererAdapter : SpriteImageAdapter
 {
     SpriteRenderer adaptee;
     public SpriteRendererAdapter(SpriteRenderer adaptee) { this.adaptee = adaptee; }
@@ -69,13 +70,18 @@ public class CharacterAvatar
 
     public void SetWeapon(Sprite weaponSprite)
     {
-        var weapon = _weapon.GetComponent<SpriteRenderer>();
+        var weapon = GetSpriteImageAdapter(_weapon);
         weapon.sprite = weaponSprite;
-        weapon.flipX = !_flipX;
+
+        if (weapon.GetType() == typeof(SpriteRendererAdapter))
+        {
+            SpriteRenderer sprite = _weapon.GetComponent<SpriteRenderer>();
+            sprite.flipX = !_flipX;
+        }
     }
 
 
-    public void SetSprite(Sprite sprite, UI_Tab_Button.CharacterPart selectedPart)
+    public void SetSprite(Sprite sprite, CharacterPart selectedPart)
     {
         if (sprite == null)
             return;
@@ -83,20 +89,20 @@ public class CharacterAvatar
 
         switch (selectedPart)
         {
-            case UI_Tab_Button.CharacterPart.eyes:
+            case CharacterPart.eyes:
                 part = _head.transform.Find("Eyes");
                 break;
-            case UI_Tab_Button.CharacterPart.nose:
-            case UI_Tab_Button.CharacterPart.mouth:
+            case CharacterPart.nose:
+            case CharacterPart.mouth:
                 part = _head.transform.Find("Nose&Mouth");
                 break;
             default:
                 throw new Exception("No Character parts provided!");
         }
-        GetColorAdapter(part).sprite = sprite;
+        GetSpriteImageAdapter(part).sprite = sprite;
     }
 
-    public void SetColor(Color color, UI_Tab_Button.CharacterPart selectedPart)
+    public void SetColor(Color color, CharacterPart selectedPart)
     {
         if (color.Equals(Color.clear))
             return;
@@ -104,20 +110,20 @@ public class CharacterAvatar
 
         switch (selectedPart)
         {
-            case UI_Tab_Button.CharacterPart.mainColor:
+            case CharacterPart.mainColor:
                 part = "Primary_Color";
                 break;
-            case UI_Tab_Button.CharacterPart.secondaryColor:
+            case CharacterPart.secondaryColor:
                 part = "Secondary_Color";
                 break;
             default:
                 throw new Exception("No Character parts provided!");
         }
-        GetColorAdapter(_head.transform.Find(part)).color = color;
-        GetColorAdapter(_body.transform.Find(part)).color = color;
+        GetSpriteImageAdapter(_head.transform.Find(part)).color = color;
+        GetSpriteImageAdapter(_body.transform.Find(part)).color = color;
     }
 
-    private ColorAdapter GetColorAdapter(Transform transform)
+    private SpriteImageAdapter GetSpriteImageAdapter(Transform transform)
     {
         if (_useImage)
         {

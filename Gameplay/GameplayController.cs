@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using static UI_Tab_Button;
+using static Tab;
 
 public class GameplayController : MonoBehaviour
 {
