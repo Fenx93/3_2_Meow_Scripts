@@ -14,7 +14,8 @@ public class UI_Tabs : MonoBehaviour
     private readonly List<Transform> tabPanels = new List<Transform>();
     private readonly List<CharacterPart> tabParts = new List<CharacterPart>();
 
-    private GameObject previousTab;
+    private GameObject previousPanel;
+    private Button previousButton;
     private Transform tabsTransform, panelsTransform;
 
     private void Awake()
@@ -92,11 +93,12 @@ public class UI_Tabs : MonoBehaviour
         var button = tabButton.AddComponent(typeof(Button)) as Button;
         var c = button.colors;
         c.normalColor = normalButtonColor;
-        c.disabledColor = disabledButtonColor;
+        // in order to keep tabs look like "selected"
+        c.disabledColor = selectedButtonColor;
         c.selectedColor = selectedButtonColor;
         c.highlightedColor = higlightedButtonColor;
         button.colors = c;
-        button.onClick.AddListener(() => OpenTab(index));
+        button.onClick.AddListener(() => OpenTab(button, index));
         tabButton.transform.SetParent(tabsTransform);
 
         GameObject buttonText = new GameObject("Text");
@@ -121,19 +123,24 @@ public class UI_Tabs : MonoBehaviour
         if (index == 0)
         {
             button.onClick.Invoke();
-            button.Select();
+            //button.Select();
         }
     }
 
 
-    public void OpenTab(int index)
+    public void OpenTab(Button button, int index)
     {
         //get associated panel, enable it
-        if (previousTab != null)
-            previousTab.SetActive(false);
+        if (previousPanel != null)
+            previousPanel.SetActive(false);
+        if (previousButton != null)
+            previousButton.interactable = true;
 
-        previousTab = tabPanels[index].gameObject;
-        previousTab.SetActive(true);
+        previousPanel = tabPanels[index].gameObject;
+        previousPanel.SetActive(true);
+
+        button.interactable = false;
+        previousButton = button;
 
         var n = 0;
         if (MainMenuController.current != null)
@@ -159,11 +166,9 @@ public class UI_Tabs : MonoBehaviour
                     break;
             }
         }
-        
 
-        var buttons = previousTab.GetComponentsInChildren<Button>();
-        buttons[n].Select();
         //go through n of items, then select the n-th item
+        previousPanel.GetComponentsInChildren<Button>()[n].Select();
     }
 
     //
@@ -280,7 +285,6 @@ public class UI_Tabs : MonoBehaviour
     private void ItemSelected(Sprite sprite, CharacterPart part, int index)
     {
         CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
-
         switch (part)
         {
             case CharacterPart.eyes:
