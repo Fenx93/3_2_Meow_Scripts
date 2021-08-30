@@ -84,7 +84,7 @@ public class UI_Tabs : MonoBehaviour
         tabPanel.SetActive(false);
     }
 
-    public void AddTab(string tabname, int index)
+    private void AddTab(string tabname, int index)
     {
         GameObject tabButton = new GameObject(tabname+"TabButton");
         var image = tabButton.AddComponent(typeof(Image)) as Image;
@@ -119,14 +119,10 @@ public class UI_Tabs : MonoBehaviour
         text.verticalAlignment = VerticalAlignmentOptions.Middle;
         text.alignment = TextAlignmentOptions.Midline;
 
-
+        //Manually select first tab
         if (index == 0)
-        {
             button.onClick.Invoke();
-            //button.Select();
-        }
     }
-
 
     public void OpenTab(Button button, int index)
     {
@@ -175,43 +171,21 @@ public class UI_Tabs : MonoBehaviour
     // Ex UI_tab_button
     //
 
-    private GameObject CreatePanel(int i, Transform parent)
-    {
-        GameObject obj = new GameObject("Panel (" + i + ")");
-        var horizontalLayoutGroup = obj.AddComponent(typeof(HorizontalLayoutGroup)) as HorizontalLayoutGroup;
-        horizontalLayoutGroup.childControlHeight = true;
-        horizontalLayoutGroup.childControlWidth = true;
-        horizontalLayoutGroup.childScaleHeight = true;
-        horizontalLayoutGroup.childScaleWidth = true;
-        horizontalLayoutGroup.spacing = 5;
-        obj.transform.SetParent(parent);
-        return obj;
-    }
-
-    private GameObject CreateItemButton(GameObject obj, int i)
-    {
-        GameObject itemButton = new GameObject("ItemButton (" + i + ")");
-        var image = itemButton.AddComponent(typeof(Image)) as Image;
-        image.sprite = panelsItemBackgroundImage;
-        image.type = Image.Type.Sliced;
-        var button = itemButton.AddComponent(typeof(Button)) as Button;
-        var c = button.colors;
-        c.normalColor = normalButtonColor;
-        c.disabledColor = disabledButtonColor;
-        c.selectedColor = selectedButtonColor;
-        c.highlightedColor = higlightedButtonColor;
-        button.colors = c;
-        itemButton.transform.SetParent(obj.transform);
-        return itemButton;
-    }
-
     // useSprites sets either items or sprites
     private void FillItems(Tab tab, Transform parent, bool useSprites = false)
     {
         GameObject[] newBackObj = new GameObject[4];
         for (int i = 0; i < 4; i++)
         {
-            newBackObj[i] = CreatePanel(i, parent);
+            GameObject obj = new GameObject("Panel (" + i + ")");
+            var horizontalLayoutGroup = obj.AddComponent(typeof(HorizontalLayoutGroup)) as HorizontalLayoutGroup;
+            horizontalLayoutGroup.childControlHeight = true;
+            horizontalLayoutGroup.childControlWidth = true;
+            horizontalLayoutGroup.childScaleHeight = true;
+            horizontalLayoutGroup.childScaleWidth = true;
+            horizontalLayoutGroup.spacing = 5;
+            obj.transform.SetParent(parent);
+            newBackObj[i] = obj;
         }
 
         for (int i = 0; i < newBackObj.Length; i++)
@@ -227,7 +201,7 @@ public class UI_Tabs : MonoBehaviour
                 rect.anchorMin = new Vector2(0.1f, 0.1f);
                 rect.anchorMax = new Vector2(0.9f, 0.9f);
 
-                var index = i * 5 + j;
+                int index = i * 5 + j;
 
                 bool isEmpty = false;
                 if (useSprites)
@@ -262,6 +236,23 @@ public class UI_Tabs : MonoBehaviour
             }
         }
 
+    }
+
+    private GameObject CreateItemButton(GameObject obj, int i)
+    {
+        GameObject itemButton = new GameObject("ItemButton (" + i + ")");
+        var image = itemButton.AddComponent(typeof(Image)) as Image;
+        image.sprite = panelsItemBackgroundImage;
+        image.type = Image.Type.Sliced;
+        var button = itemButton.AddComponent(typeof(Button)) as Button;
+        var c = button.colors;
+        c.normalColor = normalButtonColor;
+        c.disabledColor = disabledButtonColor;
+        c.selectedColor = selectedButtonColor;
+        c.highlightedColor = higlightedButtonColor;
+        button.colors = c;
+        itemButton.transform.SetParent(obj.transform);
+        return itemButton;
     }
 
     private void ItemSelected(Color color, CharacterPart part, int index)
