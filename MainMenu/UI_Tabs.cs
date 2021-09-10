@@ -6,8 +6,13 @@ using static Tab;
 
 public class UI_Tabs : MonoBehaviour
 {
+    [Header("Button Colors")]
     [SerializeField] private Color normalButtonColor, selectedButtonColor, higlightedButtonColor, disabledButtonColor;
+    [Header("Font Properties (if autoSize is disabled, fontSizemin is used as default size")]
     [SerializeField] private TMP_FontAsset font;
+    [SerializeField] private bool enableAutoSize;
+    [SerializeField] private int fontSizeMin, fontSizeMax;
+    [SerializeField] private FontStyles fontStyle;
     [SerializeField] private Sprite tabsItemBackgroundImage, panelsItemBackgroundImage;
     [SerializeField] private Tab[] tabs;
 
@@ -113,9 +118,20 @@ public class UI_Tabs : MonoBehaviour
 
         text.font = font;
         text.text = tabname;
-        text.enableAutoSizing = true;
-        text.fontSizeMax = 24;
-        text.fontSizeMax = 36;
+        text.fontStyle = fontStyle;
+        text.enableAutoSizing = enableAutoSize;
+
+        text.lineSpacing = 30;
+
+        if (enableAutoSize)
+        {
+            text.fontSizeMax = fontSizeMax;
+            text.fontSizeMin = fontSizeMin;
+        }
+        else
+        {
+            text.fontSize = fontSizeMin;
+        }
         text.verticalAlignment = VerticalAlignmentOptions.Middle;
         text.alignment = TextAlignmentOptions.Midline;
 

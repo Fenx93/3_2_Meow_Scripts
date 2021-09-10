@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static CharacterCustomizer;
+
 using static UIController;
-using UnityObject = UnityEngine.Object;
 
 public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 {
@@ -143,8 +142,8 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
         if (type.IsEnum)
             return (T)(object)EditorGUI.EnumPopup(rect, (Enum)(object)value);
 
-        if (typeof(UnityObject).IsAssignableFrom(type))
-            return (T)(object)EditorGUI.ObjectField(rect, (UnityObject)(object)value, type, true);
+        if (typeof(UnityEngine.Object).IsAssignableFrom(type))
+            return (T)(object)EditorGUI.ObjectField(rect, (UnityEngine.Object)(object)value, type, true);
 
         Debug.Log("Type is not supported: " + type);
         return value;

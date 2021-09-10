@@ -2,6 +2,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameModes
+{
+    training, singlePlayer, towers, multiPlayer
+}
+
 public class MainMenuController : MonoBehaviour
 {
     private int? selectedClassID = null;
@@ -16,6 +21,8 @@ public class MainMenuController : MonoBehaviour
     [HideInInspector] public Sprite eyes, ears, nose, mouth;
 
     [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, eyesId = 0, earsId = 0, noseId = 0, mouthId = 0;
+
+    private GameModes _selectedGameMode;
 
     void Awake()
     {
@@ -66,5 +73,15 @@ public class MainMenuController : MonoBehaviour
             //do message
             Debug.LogError("No player class selected!");
         }
+    }
+
+    public void SelectGameMode(int gameMode)
+    {
+        _selectedGameMode = (GameModes) gameMode;
+    }
+
+    public void OpenCharacterSelectionScreen()
+    {
+
     }
 }
