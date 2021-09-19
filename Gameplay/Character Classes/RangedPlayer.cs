@@ -2,7 +2,7 @@ public class RangedPlayer : Player
 {
     private bool _playerHasAmmo;
 
-    public RangedPlayer(CharacterClass characterClass, int hp) : base(characterClass, hp) 
+    public RangedPlayer(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy) 
     {
         HasAmmo = false;
     }

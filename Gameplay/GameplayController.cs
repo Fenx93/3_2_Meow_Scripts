@@ -30,10 +30,10 @@ public class GameplayController : MonoBehaviour
         switch (selectedClass)
         {
             case CharClass.warrior:
-                player = new WarriorPlayer(charClass, 5);
+                player = new WarriorPlayer(charClass, 5, 5);
                 break;
             case CharClass.ranger:
-                player = new RangedPlayer(charClass, 5);
+                player = new RangedPlayer(charClass, 5, 5);
                 break;
             default:
                 break;
@@ -60,7 +60,7 @@ public class GameplayController : MonoBehaviour
         }
 
         CharacterClass eCharClass = _characterClasses.Where(c => c.CharClass == CharClass.ranger).First();
-        _enemy = new RangedEnemy(eCharClass, 5);
+        _enemy = new RangedEnemy(eCharClass, 5, 5);
         CharacterCustomizer.current.avatars[1].SetWeapon(eCharClass.WeaponSprite);
 
 
@@ -144,6 +144,7 @@ public class GameplayController : MonoBehaviour
     private void ResolveAction(Character actor, Character receiver)
     {
         actor.SelectedAction.StartCooldown();
+        actor.ConsumeEnergy(actor.SelectedAction.EnergyConsumed);
         switch (actor.SelectedAction.Type)
         {
             case ActionType.none:
@@ -155,7 +156,9 @@ public class GameplayController : MonoBehaviour
                     receiver.GetDamaged(receiver.CharacterClass.BaseDamage);
                 break;
             case ActionType.slash:
-                if (receiver.SelectedActionType != ActionType.dodge && receiver.SelectedActionType != ActionType.parry && receiver.SelectedActionType != ActionType.block)
+                if (receiver.SelectedActionType != ActionType.dodge &&
+                    receiver.SelectedActionType != ActionType.parry &&
+                    receiver.SelectedActionType != ActionType.block)
                     receiver.GetDamaged(actor.CharacterClass.BaseDamage);
                 break;
             //ranger actions
@@ -166,7 +169,9 @@ public class GameplayController : MonoBehaviour
                 break;
             case ActionType.fire:
                 actor.HasAmmo = false;
-                if (receiver.SelectedActionType != ActionType.dodge && receiver.SelectedActionType != ActionType.parry && receiver.SelectedActionType != ActionType.block)
+                if (receiver.SelectedActionType != ActionType.dodge &&
+                    receiver.SelectedActionType != ActionType.parry &&
+                    receiver.SelectedActionType != ActionType.block)
                     receiver.GetDamaged(actor.CharacterClass.BaseDamage);
                 break;
         }
@@ -227,6 +232,6 @@ public class GameplayController : MonoBehaviour
     #endregion
 }
 
-public enum ActionType { none, fire, reload, dodge, slash, parry, block, summon, attack, sacrifice };
+public enum ActionType { none, fire, reload, dodge, slash, parry, block, summon, attack, sacrifice, rest };
 public enum ActionClassification { none, aggressive, utility, defensive };
 public enum CharClass { warrior, ranger, summoner };

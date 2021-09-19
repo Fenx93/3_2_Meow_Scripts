@@ -2,7 +2,7 @@ public class RangedEnemy : Enemy
 {
     private bool _enemyHasAmmo;
 
-    public RangedEnemy(CharacterClass characterClass, int hp) : base(characterClass, hp)
+    public RangedEnemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     {
         HasAmmo = false;
     }

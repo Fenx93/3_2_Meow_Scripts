@@ -6,7 +6,7 @@ public abstract class Enemy : Character
     private CombatAction _selectedAction;
     protected readonly AIType _aiType;
 
-    public Enemy(CharacterClass characterClass, int hp) : base(characterClass, hp)
+    public Enemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     {
         /*_aiType = AIType.random;*/
         _aiType = (AIType) Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length);

@@ -1,6 +1,6 @@
 public abstract class Player : Character
 {
-    public Player(CharacterClass characterClass, int hp) : base(characterClass, hp) 
+    public Player(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy) 
     {
         UIController.current.SetupPlayerActions(Actions);
     }

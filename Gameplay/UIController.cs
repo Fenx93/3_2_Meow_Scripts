@@ -60,7 +60,7 @@ public class UIController : MonoBehaviour
     void Start()
     {
 
-        Button btn = actionButtons[0].GetComponent<Button>();
+        /*Button btn = actionButtons[0].GetComponent<Button>();
         btn.onClick.AddListener(delegate{ SelectedAction(0); });
 
         Button btn1 = actionButtons[1].GetComponent<Button>();
@@ -68,6 +68,15 @@ public class UIController : MonoBehaviour
 
         Button btn2 = actionButtons[2].GetComponent<Button>();
         btn2.onClick.AddListener(delegate { SelectedAction(2); });
+
+        Button btn3 = actionButtons[3].GetComponent<Button>();
+        btn3.onClick.AddListener(delegate { SelectedAction(3); });
+*/
+        for (int i = 0; i < actionButtons.Length; i++)
+        {
+            Button btn = actionButtons[i].GetComponent<Button>();
+            btn.onClick.AddListener(delegate { SelectedAction(i); });
+        }
 
         ShowEndGamePanel(false);
 
@@ -111,7 +120,7 @@ public class UIController : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < actionButtons.Length; i++)
             {
                 actionButtons[i].interactable = false;
                 actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
@@ -122,7 +131,7 @@ public class UIController : MonoBehaviour
     public void SetupPlayerActions(CombatAction[] combatActions)
     {
         _actions = combatActions;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < actionButtons.Length; i++)
         {
             actionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = _actions[i].ToString();
             ColorBlock cb = actionButtons[i].colors;
