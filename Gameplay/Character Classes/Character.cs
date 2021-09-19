@@ -31,10 +31,8 @@ public abstract class Character
 
         if (HP <= 0)
         {
-            GameplayController.current.GameEnded( this is Player ?
-                "Defeat!"
-                : "Victory!"
-                );
+            bool won = !(this is Player);
+            GameplayController.current.GameEnded(won);
         }
     }
 

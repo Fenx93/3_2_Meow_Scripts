@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static Tab;
 
 public class GameplayController : MonoBehaviour
@@ -9,6 +11,7 @@ public class GameplayController : MonoBehaviour
 
     private bool _continueGame = true;
     [SerializeField] private Sprite _warriorWeapon, _rangerWeapon;
+    [SerializeField] private CharacterClass[] _characterClasses;
 
     [HideInInspector] public Player player;
     private Enemy _enemy;
@@ -22,50 +25,59 @@ public class GameplayController : MonoBehaviour
 
     void Start()
     {
-        var _warriorClass = new CharacterClass(CharClass.warrior, new CombatAction[] {
-            new CombatAction(ActionType.slash, ActionClassification.aggressive, 2), 
-            new CombatAction(ActionType.parry, ActionClassification.utility, 2), 
-            new CombatAction(ActionType.block, ActionClassification.defensive, 2) },
-            1);
-        var _rangerClass = new CharacterClass(CharClass.ranger, new CombatAction[] { 
-            new CombatAction(ActionType.fire, ActionClassification.aggressive, 0, false), 
-            new CombatAction(ActionType.reload, ActionClassification.utility), 
-            new CombatAction(ActionType.dodge, ActionClassification.defensive, 1) }, 
-            3, true);
-        var _summonerClass = new CharacterClass(CharClass.summoner, new CombatAction[] { 
-            new CombatAction(ActionType.summon, ActionClassification.utility), 
-            new CombatAction(ActionType.attack, ActionClassification.aggressive), 
-            new CombatAction(ActionType.sacrifice, ActionClassification.defensive) }
-        , 2);
-
-        Sprite weaponSprite = null;
-        switch ((CharClass)PlayerPrefs.GetInt("SelectedClass"))
+        var selectedClass = (CharClass)PlayerPrefs.GetInt("SelectedClass");
+        CharacterClass charClass = _characterClasses.Where(c => c.CharClass == selectedClass).First();
+        switch (selectedClass)
         {
             case CharClass.warrior:
-                player = new WarriorPlayer(_warriorClass, 5);
-                weaponSprite = _warriorWeapon;
+                player = new WarriorPlayer(charClass, 5);
                 break;
             case CharClass.ranger:
-                player = new RangedPlayer(_rangerClass, 5);
-                weaponSprite = _rangerWeapon;
+                player = new RangedPlayer(charClass, 5);
                 break;
             default:
                 break;
         }
-        CharacterCustomizer.current.avatars[0].SetWeapon(weaponSprite);
-        CharacterCustomizer.current.avatars[0].SetColor(MainMenuController.current.mainColor, CharacterPart.mainColor);
-        CharacterCustomizer.current.avatars[0].SetColor(MainMenuController.current.secondaryColor, CharacterPart.secondaryColor);
+        CharacterCustomizer.current.avatars[0].SetWeapon(charClass.WeaponSprite);
 
-        CharacterCustomizer.current.avatars[0].SetSprite(MainMenuController.current.eyes, CharacterPart.eyes);
-        CharacterCustomizer.current.avatars[0].SetSprite(MainMenuController.current.ears, CharacterPart.eyes);
-        CharacterCustomizer.current.avatars[0].SetSprite(MainMenuController.current.mouth, CharacterPart.mouth);
+        if (MainMenuController.current != null)
+        {
+            var mainMenu = MainMenuController.current;
+            var charCustomizer = CharacterCustomizer.current;
 
-        _enemy = new RangedEnemy(_rangerClass, 5);
-        CharacterCustomizer.current.avatars[1].SetWeapon(_rangerWeapon);
+            if (mainMenu.mainColor != null)
+                charCustomizer.avatars[0].SetColor(mainMenu.mainColor, CharacterPart.mainColor);
+            if (mainMenu.secondaryColor != null)
+                charCustomizer.avatars[0].SetColor(mainMenu.secondaryColor, CharacterPart.secondaryColor);
+
+            if (mainMenu.eyes != null)
+                charCustomizer.avatars[0].SetSprite(mainMenu.eyes, CharacterPart.eyes);
+            if (mainMenu.ears != null)
+                charCustomizer.avatars[0].SetSprite(mainMenu.ears, CharacterPart.eyes);
+            if (mainMenu.mouth != null)
+                charCustomizer.avatars[0].SetSprite(mainMenu.mouth, CharacterPart.mouth);
+
+        }
+
+        CharacterClass eCharClass = _characterClasses.Where(c => c.CharClass == CharClass.ranger).First();
+        _enemy = new RangedEnemy(eCharClass, 5);
+        CharacterCustomizer.current.avatars[1].SetWeapon(eCharClass.WeaponSprite);
 
 
         ResetActions();
         StartCoroutine(nameof(Countdown));
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            GameEnded(true);
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            GameEnded(false);
+        }
     }
 
     private IEnumerator Countdown()
@@ -160,6 +172,11 @@ public class GameplayController : MonoBehaviour
         }
     }
 
+    public void GoBackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
+    }
+
     #region Events
 
     public event Action<int, bool> OnDamageReceived;
@@ -180,11 +197,27 @@ public class GameplayController : MonoBehaviour
         OnAmmoUpdate?.Invoke(enabled, isPlayer);
     }
 
-    public event Action<string> OnGameEnded;
-    public void GameEnded(string message)
+    public event Action<string, int, int> OnGameEnded;
+    public void GameEnded(bool won)
     {
+        string message;
+        int exp, money;
+
+        if (won)
+        {
+            message = "Victory!";
+            exp = 100;
+            money = 50;
+        }
+        else
+        {
+            message = "Defeat!";
+            exp = 50;
+            money = 25;
+        }
+
         _continueGame = false;
-        OnGameEnded?.Invoke(message);
+        OnGameEnded?.Invoke(message, money, exp);
     }
     public event Action<string> OnEnemySelectedAction;
     public void EnemySelectedAction(string message)

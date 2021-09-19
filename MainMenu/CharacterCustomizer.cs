@@ -104,7 +104,7 @@ public class CharacterAvatar
 
     public void SetColor(Color color, CharacterPart selectedPart)
     {
-        if (color.Equals(Color.clear))
+        if (color == null || color.Equals(Color.clear))
             return;
         string part = null;
 
