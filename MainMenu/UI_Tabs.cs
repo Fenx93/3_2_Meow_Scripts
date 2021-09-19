@@ -7,7 +7,9 @@ using static Tab;
 public class UI_Tabs : MonoBehaviour
 {
     [Header("Button Colors")]
-    [SerializeField] private Color normalButtonColor, selectedButtonColor, higlightedButtonColor, disabledButtonColor;
+    [SerializeField] private Color normalButtonColor;
+    [SerializeField] private Color selectedButtonColor, higlightedButtonColor, disabledButtonColor;
+
     [Header("Font Properties (if autoSize is disabled, fontSizemin is used as default size")]
     [SerializeField] private TMP_FontAsset font;
     [SerializeField] private bool enableAutoSize;
@@ -31,7 +33,7 @@ public class UI_Tabs : MonoBehaviour
             Debug.LogError("No Tabs gameobject found!");
         }
 
-        panelsTransform = this.transform.Find("Panels");
+        panelsTransform = this.transform.Find("Item Panels");
         if (panelsTransform == null)
         {
             Debug.LogError("No Panels gameobject found!");
@@ -91,14 +93,17 @@ public class UI_Tabs : MonoBehaviour
 
     private void AddTab(string tabname, int index)
     {
+        //add tab gameobject with selected background image
         GameObject tabButton = new GameObject(tabname+"TabButton");
         var image = tabButton.AddComponent(typeof(Image)) as Image;
         image.sprite = tabsItemBackgroundImage;
         image.type = Image.Type.Sliced;
+
+        //add button to a tab
         var button = tabButton.AddComponent(typeof(Button)) as Button;
         var c = button.colors;
         c.normalColor = normalButtonColor;
-        // in order to keep tabs look like "selected"
+        // in order to keep tabs look like "selected" whn clicking on something else
         c.disabledColor = selectedButtonColor;
         c.selectedColor = selectedButtonColor;
         c.highlightedColor = higlightedButtonColor;
@@ -106,6 +111,7 @@ public class UI_Tabs : MonoBehaviour
         button.onClick.AddListener(() => OpenTab(button, index));
         tabButton.transform.SetParent(tabsTransform);
 
+        //set tab text
         GameObject buttonText = new GameObject("Text");
         var text = buttonText.AddComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
         var rect = buttonText.GetComponent<RectTransform>();
@@ -157,6 +163,8 @@ public class UI_Tabs : MonoBehaviour
         var n = 0;
         if (MainMenuController.current != null)
         {
+
+            // TO-DO: replace these hardcoded values
             switch (tabParts[index])
             {
                 case CharacterPart.mainColor:
