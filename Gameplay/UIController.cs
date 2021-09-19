@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject playerUI, enemyUI;
     private TextMeshProUGUI _playerAction, _playerEnergy, _enemyAction, _enemyEnergy;
+    private Slider _playerEnergySlider, _enemyEnergySlider;
 
     private Image[] _playerHeartHPImages, _enemyHeartHPImages;
     private Image _playerAmmoImage, _enemyAmmoImage;
@@ -42,7 +43,9 @@ public class UIController : MonoBehaviour
         var tempAmmoImage = gameObject.transform.Find("Ammo Icon").GetComponent<Image>();
         var tempActionText = gameObject.transform.Find("Action").GetComponent<TextMeshProUGUI>();
         var tempImages = gameObject.transform.Find("HP Holder").GetComponentsInChildren<Image>();
-        var tempEnergyText = gameObject.transform.Find("Energy").GetComponent<TextMeshProUGUI>();
+        var energyPanel = gameObject.transform.Find("EnergyPanel");
+        var tempEnergyText = energyPanel.transform.Find("EnergyText").GetComponent<TextMeshProUGUI>();
+        var tempEnergySlider = energyPanel.transform.Find("EnergySlider").GetComponent<Slider>();
 
         if (isPlayer)
         {
@@ -50,6 +53,7 @@ public class UIController : MonoBehaviour
             _playerAction = tempActionText;
             _playerHeartHPImages = tempImages;
             _playerEnergy = tempEnergyText;
+            _playerEnergySlider = tempEnergySlider;
         }
         else
         {
@@ -57,6 +61,7 @@ public class UIController : MonoBehaviour
             _enemyAction = tempActionText;
             _enemyHeartHPImages = tempImages;
             _enemyEnergy = tempEnergyText;
+            _enemyEnergySlider = tempEnergySlider;
         }
     }
 
@@ -97,6 +102,24 @@ public class UIController : MonoBehaviour
         endGamePanel.SetActive(show);
     }
 
+    // display consumed energy for each action button
+    public void DisplayConsumedEnergy(Player player = null)
+    {
+        if (player != null)
+        {
+            for (int i = 0; i < player.Actions.Length; i++)
+            {
+                var action = player.Actions[i];
+                if (action.EnergyConsumed != 0)
+                {
+                    var energyTextUI = actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>();
+                    energyTextUI.enabled = true;
+                    energyTextUI.text = action.EnergyConsumed.ToString();
+                }
+            }
+        }
+    }
+
     public void EnableActionButtons(Player player = null)
     {
         if (player != null)
@@ -105,13 +128,15 @@ public class UIController : MonoBehaviour
             {
                 var action = player.Actions[i];
                 var canPerform = action.CanPerform();
-                // display cooldown timer on a button
-                if (!canPerform && action.CurrentCooldown > 0)
+                // display cooldown timer on a button - no longer required
+                /*if (!canPerform && action.CurrentCooldown > 0)
                 {
                     var textUI = actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
                     textUI.enabled = true;
                     textUI.text = action.CurrentCooldown.ToString();
-                }
+                }*/
+
+                actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().enabled = canPerform && action.EnergyConsumed != 0;
                 actionButtons[i].interactable = canPerform;
             }
         }
@@ -121,6 +146,7 @@ public class UIController : MonoBehaviour
             {
                 actionButtons[i].interactable = false;
                 actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
+                actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
             }
         }
     }
@@ -154,15 +180,18 @@ public class UIController : MonoBehaviour
         _enemyAction.text = actionText;
     }
     
-    public void UpdateEnergyText(int energyText, bool isPlayer)
+    public void UpdateEnergyText(int energy, int maxEnergy, bool isPlayer)
     {
         if (isPlayer)
         {
-            _playerEnergy.text = energyText.ToString();
+            _playerEnergy.text = energy + "/" + maxEnergy;
+            _playerEnergySlider.value = (float)energy / (float)maxEnergy;
+
         }
         else
         {
-            _enemyEnergy.text = energyText.ToString();
+            _enemyEnergy.text = energy + "/" + maxEnergy;
+            _enemyEnergySlider.value = (float)energy / (float)maxEnergy;
         }
     }
 

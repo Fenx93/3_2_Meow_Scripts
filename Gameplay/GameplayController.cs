@@ -59,6 +59,8 @@ public class GameplayController : MonoBehaviour
 
         }
 
+        UIController.current.DisplayConsumedEnergy(player);
+
         CharacterClass eCharClass = _characterClasses.Where(c => c.CharClass == CharClass.ranger).First();
         _enemy = new RangedEnemy(eCharClass, 5, 5);
         CharacterCustomizer.current.avatars[1].SetWeapon(eCharClass.WeaponSprite);

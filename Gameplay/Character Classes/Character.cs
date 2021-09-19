@@ -28,10 +28,10 @@ public abstract class Character
             _energy = value;
             foreach (var action in Actions)
             {
-                action.Enabled = action.EnergyConsumed < _energy;
+                action.Enabled = action.EnergyConsumed <= _energy;
             }
             // Visually update energy
-            UIController.current.UpdateEnergyText(Energy, this is Player);
+            UIController.current.UpdateEnergyText(Energy, MaxEnergy, this is Player);
         }
     }
     public virtual int MaxEnergy { get; set; }
