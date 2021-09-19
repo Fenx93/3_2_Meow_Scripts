@@ -22,7 +22,7 @@ public class MainMenuController : MonoBehaviour
 
     [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, eyesId = 0, earsId = 0, noseId = 0, mouthId = 0;
 
-    private GameModes _selectedGameMode;
+    [HideInInspector] public GameModes selectedGameMode;
 
     void Awake()
     {
@@ -31,6 +31,8 @@ public class MainMenuController : MonoBehaviour
 
     void Start()
     {
+        PlayerStatsTracker.SetData(1, 0, 75, 0);
+        PlayerStatsTracker.UpdateUI();
         SelectClass(0);
     }
 
@@ -47,14 +49,14 @@ public class MainMenuController : MonoBehaviour
         {
             selectedClassID = (selectedClassID == classNames.Length-1) ?
                 0
-                : selectedClassID + 1;
+                : selectedClassID+1;
 
         }
         else if (direction == -1)
         {
             selectedClassID = (selectedClassID == 0) ?
                 classNames.Length-1
-                : selectedClassID - 1;
+                : selectedClassID-1;
         }
         SelectClass(selectedClassID.Value);
     }
@@ -73,11 +75,6 @@ public class MainMenuController : MonoBehaviour
             //do message
             Debug.LogError("No player class selected!");
         }
-    }
-
-    public void SelectGameMode(int gameMode)
-    {
-        _selectedGameMode = (GameModes) gameMode;
     }
 
     public void OpenCharacterSelectionScreen()
