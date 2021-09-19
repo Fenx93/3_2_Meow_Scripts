@@ -15,6 +15,8 @@ public class GameplayController : MonoBehaviour
     [HideInInspector] public Player player;
     private Enemy _enemy;
 
+    private bool _isPaused = false;
+
     public static GameplayController current;
 
     void Awake()
@@ -69,7 +71,7 @@ public class GameplayController : MonoBehaviour
         StartCoroutine(nameof(Countdown));
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -81,14 +83,23 @@ public class GameplayController : MonoBehaviour
         }
     }
 
+    public void Pause()
+    {
+        _isPaused = !_isPaused;
+        UIController.current.ShowPauseMenu(_isPaused);
+    }
+
     private IEnumerator Countdown()
     {
         float duration = countdownDuration;
 
         while (duration > 1f)
         {
-            duration -= (Time.deltaTime * countdownMultiplier);
-            UIController.current.UpdateTimer((int)duration);
+            if (!_isPaused)
+            {
+                duration -= (Time.deltaTime * countdownMultiplier);
+                UIController.current.UpdateTimer((int)duration);
+            }
             yield return null;
         }
         CountdownEnded();
@@ -99,7 +110,10 @@ public class GameplayController : MonoBehaviour
         float normalizedTime = 0;
         while (normalizedTime <= duration)
         {
-            normalizedTime += Time.deltaTime;
+            if (!_isPaused)
+            {
+                normalizedTime += Time.deltaTime;
+            }
             yield return null;
         }
         ResetActions();

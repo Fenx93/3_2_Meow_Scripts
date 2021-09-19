@@ -9,7 +9,7 @@ public class UIController : MonoBehaviour
     [Header("In Game UI")]
     [SerializeField] private TextMeshProUGUI timer;
 
-    [SerializeField] private GameObject playerUI, enemyUI;
+    [SerializeField] private GameObject playerUI, enemyUI, pauseScreen;
     private TextMeshProUGUI _playerAction, _playerEnergy, _enemyAction, _enemyEnergy;
     private Slider _playerEnergySlider, _enemyEnergySlider;
 
@@ -90,6 +90,11 @@ public class UIController : MonoBehaviour
     }
 
     #region In Game Functions
+    public void ShowPauseMenu(bool show)
+    {
+        pauseScreen.SetActive(show);
+    }
+
     public void UpdateTimer(int time)
     {
         timer.text = time > 1 ? 
