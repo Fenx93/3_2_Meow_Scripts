@@ -21,21 +21,24 @@ public class RangedEnemy : Enemy
 
     public override void SelectAction()
     {
+        CombatAction selectedAction;
         switch (_aiType)
         {
             case AIType.random:
                 SelectedAction = SelectRandomAvailableAction();
                 break;
             case AIType.aggressive:
-                SelectedAction = HasAmmo ?
+                selectedAction = HasAmmo ?
                                             GetActionByType(ActionType.fire)
                                             : GetActionByType(ActionType.reload);
+                SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             case AIType.defensive:
                 var dodge = GetActionByType(ActionType.dodge);
-                SelectedAction = dodge.CanPerform() ?
+                selectedAction = dodge.CanPerform() ?
                                             dodge 
                                             : SelectRandomAvailableAction();
+                SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             default:
                 break;

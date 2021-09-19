@@ -26,10 +26,13 @@ public abstract class Character
         set
         {
             _energy = value;
+            //pass available energy to each action
             foreach (var action in Actions)
             {
-                action.Enabled = action.EnergyConsumed <= _energy;
+                action.AvailableEnergy = _energy;
             }
+            //disable rest action if full energy
+            GetActionByType(ActionType.rest).Enabled = !(_energy == MaxEnergy);
             // Visually update energy
             UIController.current.UpdateEnergyText(Energy, MaxEnergy, this is Player);
         }

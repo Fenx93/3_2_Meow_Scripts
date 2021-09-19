@@ -7,10 +7,9 @@ using static Tab;
 
 public class GameplayController : MonoBehaviour
 {
-    [SerializeField] float countdownMultiplier = 1.5f;
+    [SerializeField] float countdownMultiplier = 1.5f, countdownDuration = 4f;
 
     private bool _continueGame = true;
-    [SerializeField] private Sprite _warriorWeapon, _rangerWeapon;
     [SerializeField] private CharacterClass[] _characterClasses;
 
     [HideInInspector] public Player player;
@@ -84,7 +83,7 @@ public class GameplayController : MonoBehaviour
 
     private IEnumerator Countdown()
     {
-        float duration = 4f;
+        float duration = countdownDuration;
 
         while (duration > 1f)
         {
