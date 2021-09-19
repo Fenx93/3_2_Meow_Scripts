@@ -134,9 +134,9 @@ public class GameplayController : MonoBehaviour
     private void ResetActions()
     {
         //deselect all actions
-        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none);
+        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0);
         UIController.current.UpdateSelectedActionText("");
-        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none);
+        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0);
         // disable action buttons that are on cooldown
         UIController.current.EnableActionButtons(player);
     }
@@ -148,6 +148,10 @@ public class GameplayController : MonoBehaviour
         switch (actor.SelectedAction.Type)
         {
             case ActionType.none:
+                break;
+            case ActionType.rest:
+                actor.RestoreEnergy();
+                break;
             //warrior actions
             case ActionType.block:
                 break;

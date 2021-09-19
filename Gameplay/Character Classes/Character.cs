@@ -30,6 +30,8 @@ public abstract class Character
             {
                 action.Enabled = action.EnergyConsumed < _energy;
             }
+            // Visually update energy
+            UIController.current.UpdateEnergyText(Energy, this is Player);
         }
     }
     public virtual int MaxEnergy { get; set; }
@@ -54,15 +56,11 @@ public abstract class Character
     public void ConsumeEnergy(int energyConsumed)
     {
         Energy -= energyConsumed;
-        // Visually update energy
-        //GameplayController.current.DamageReceived(HP, this is Player);
     }
 
     public void RestoreEnergy()
     {
         Energy = MaxEnergy;
-        // Visually update energy
-        //GameplayController.current.DamageReceived(HP, this is Player);
     }
 
 

@@ -10,7 +10,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timer;
 
     [SerializeField] private GameObject playerUI, enemyUI;
-    private TextMeshProUGUI playerAction, enemyAction;
+    private TextMeshProUGUI _playerAction, _playerEnergy, _enemyAction, _enemyEnergy;
 
     private Image[] _playerHeartHPImages, _enemyHeartHPImages;
     private Image _playerAmmoImage, _enemyAmmoImage;
@@ -42,26 +42,29 @@ public class UIController : MonoBehaviour
         var tempAmmoImage = gameObject.transform.Find("Ammo Icon").GetComponent<Image>();
         var tempActionText = gameObject.transform.Find("Action").GetComponent<TextMeshProUGUI>();
         var tempImages = gameObject.transform.Find("HP Holder").GetComponentsInChildren<Image>();
+        var tempEnergyText = gameObject.transform.Find("Energy").GetComponent<TextMeshProUGUI>();
 
         if (isPlayer)
         {
             _playerAmmoImage = tempAmmoImage;
-            playerAction = tempActionText;
+            _playerAction = tempActionText;
             _playerHeartHPImages = tempImages;
+            _playerEnergy = tempEnergyText;
         }
         else
         {
             _enemyAmmoImage = tempAmmoImage;
-            enemyAction = tempActionText;
+            _enemyAction = tempActionText;
             _enemyHeartHPImages = tempImages;
+            _enemyEnergy = tempEnergyText;
         }
     }
 
     void Start()
     {
 
-        /*Button btn = actionButtons[0].GetComponent<Button>();
-        btn.onClick.AddListener(delegate{ SelectedAction(0); });
+        Button btn = actionButtons[0].GetComponent<Button>();
+        btn.onClick.AddListener(delegate { SelectedAction(0); });
 
         Button btn1 = actionButtons[1].GetComponent<Button>();
         btn1.onClick.AddListener(delegate { SelectedAction(1); });
@@ -71,12 +74,6 @@ public class UIController : MonoBehaviour
 
         Button btn3 = actionButtons[3].GetComponent<Button>();
         btn3.onClick.AddListener(delegate { SelectedAction(3); });
-*/
-        for (int i = 0; i < actionButtons.Length; i++)
-        {
-            Button btn = actionButtons[i].GetComponent<Button>();
-            btn.onClick.AddListener(delegate { SelectedAction(i); });
-        }
 
         ShowEndGamePanel(false);
 
@@ -149,12 +146,24 @@ public class UIController : MonoBehaviour
 
     public void UpdateSelectedActionText(string actionText)
     {
-        playerAction.text = actionText;
+        _playerAction.text = actionText;
     }
 
     private void UpdateSelectedEnemyAction(string actionText)
     {
-        enemyAction.text = actionText;
+        _enemyAction.text = actionText;
+    }
+    
+    public void UpdateEnergyText(int energyText, bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            _playerEnergy.text = energyText.ToString();
+        }
+        else
+        {
+            _enemyEnergy.text = energyText.ToString();
+        }
     }
 
     public void SetupAmmoImage(bool enable, bool isPlayer = false)
