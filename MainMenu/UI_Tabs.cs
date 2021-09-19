@@ -285,11 +285,11 @@ public class UI_Tabs : MonoBehaviour
         switch (part)
         {
             case CharacterPart.mainColor:
-                MainMenuController.current.mainColor = color;
+                CharacterStore.mainColor = color;
                 MainMenuController.current.mainColorId = index;
                 break;
             case CharacterPart.secondaryColor:
-                MainMenuController.current.secondaryColor = color;
+                CharacterStore.secondaryColor = color;
                 MainMenuController.current.secondaryColorId = index;
                 break;
             default:
@@ -303,15 +303,15 @@ public class UI_Tabs : MonoBehaviour
         switch (part)
         {
             case CharacterPart.eyes:
-                MainMenuController.current.eyes = sprite;
+                CharacterStore.eyes = sprite;
                 MainMenuController.current.eyesId = index;
                 break;
             case CharacterPart.nose:
-                MainMenuController.current.nose = sprite;
+                CharacterStore.nose = sprite;
                 MainMenuController.current.noseId = index;
                 break;
             case CharacterPart.mouth:
-                MainMenuController.current.mouth = sprite;
+                CharacterStore.mouth = sprite;
                 MainMenuController.current.mouthId = index;
                 break;
             default:

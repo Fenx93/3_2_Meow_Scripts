@@ -17,8 +17,8 @@ public class MainMenuController : MonoBehaviour
 
     public static MainMenuController current;
 
-    [HideInInspector] public Color mainColor, secondaryColor;
-    [HideInInspector] public Sprite eyes, ears, nose, mouth;
+    /*[HideInInspector] public Color mainColor, secondaryColor;
+    [HideInInspector] public Sprite eyes, ears, nose, mouth;*/
 
     [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, eyesId = 0, earsId = 0, noseId = 0, mouthId = 0;
 

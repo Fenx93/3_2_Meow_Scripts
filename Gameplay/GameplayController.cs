@@ -41,24 +41,20 @@ public class GameplayController : MonoBehaviour
         }
         CharacterCustomizer.current.avatars[0].SetWeapon(charClass.WeaponSprite);
 
-        if (MainMenuController.current != null)
-        {
-            var mainMenu = MainMenuController.current;
-            var charCustomizer = CharacterCustomizer.current;
+        var charCustomizer = CharacterCustomizer.current;
 
-            if (mainMenu.mainColor != null)
-                charCustomizer.avatars[0].SetColor(mainMenu.mainColor, CharacterPart.mainColor);
-            if (mainMenu.secondaryColor != null)
-                charCustomizer.avatars[0].SetColor(mainMenu.secondaryColor, CharacterPart.secondaryColor);
+        if (CharacterStore.mainColor != null)
+            charCustomizer.avatars[0].SetColor(CharacterStore.mainColor, CharacterPart.mainColor);
+        if (CharacterStore.secondaryColor != null)
+            charCustomizer.avatars[0].SetColor(CharacterStore.secondaryColor, CharacterPart.secondaryColor);
 
-            if (mainMenu.eyes != null)
-                charCustomizer.avatars[0].SetSprite(mainMenu.eyes, CharacterPart.eyes);
-            if (mainMenu.ears != null)
-                charCustomizer.avatars[0].SetSprite(mainMenu.ears, CharacterPart.eyes);
-            if (mainMenu.mouth != null)
-                charCustomizer.avatars[0].SetSprite(mainMenu.mouth, CharacterPart.mouth);
+        if (CharacterStore.eyes != null)
+            charCustomizer.avatars[0].SetSprite(CharacterStore.eyes, CharacterPart.eyes);
+        if (CharacterStore.ears != null)
+            charCustomizer.avatars[0].SetSprite(CharacterStore.ears, CharacterPart.mouth);
+        if (CharacterStore.mouth != null)
+            charCustomizer.avatars[0].SetSprite(CharacterStore.mouth, CharacterPart.mouth);
 
-        }
 
         UIController.current.DisplayConsumedEnergy(player);
 

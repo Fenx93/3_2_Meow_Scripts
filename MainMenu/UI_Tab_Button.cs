@@ -113,10 +113,10 @@ public class UI_Tab_Button : MonoBehaviour
         switch (_tab.editedCharacterPart)
         {
             case CharacterPart.mainColor:
-                MainMenuController.current.mainColor = color;
+                CharacterStore.mainColor = color;
                 break;
             case CharacterPart.secondaryColor:
-                MainMenuController.current.secondaryColor = color;
+                CharacterStore.secondaryColor = color;
                 break;
             default:
                 break;
@@ -130,13 +130,13 @@ public class UI_Tab_Button : MonoBehaviour
         switch (_tab.editedCharacterPart)
         {
             case CharacterPart.eyes:
-                MainMenuController.current.eyes = sprite;
+                CharacterStore.eyes = sprite;
                 break;
             case CharacterPart.nose:
-                MainMenuController.current.nose = sprite;
+                CharacterStore.nose = sprite;
                 break;
             case CharacterPart.mouth:
-                MainMenuController.current.mouth = sprite;
+                CharacterStore.mouth = sprite;
                 break;
             default:
                 break;
