@@ -126,7 +126,13 @@ public class GameplayController : MonoBehaviour
 
         while (_continueGame)
         {
-            ResolveActions();
+            //TO-DO: attach initiative based on class
+            var playerResult = ResolveAction(player, _enemy);
+            var enemyResult = ResolveAction(_enemy, player);
+            //animate selected actions
+            ActionAnimator.current.UpdateSelectedAction(player.SelectedAction, playerResult);
+            ActionAnimator.current.UpdateSelectedAction(_enemy.SelectedAction, enemyResult, false);
+
             if (!_continueGame)
                 break;
 
@@ -135,61 +141,72 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    private void ResolveActions()
-    {
-        //TO-DO: attach initiative based on class
-        ResolveAction(player, _enemy);
-        ResolveAction(_enemy, player);
-    }
-
     private void ResetActions()
     {
         //deselect all actions
-        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0);
+        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null);
         UIController.current.UpdateSelectedActionText("");
-        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0);
+        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null);
         // disable action buttons that are on cooldown
         UIController.current.EnableActionButtons(player);
+        ActionAnimator.current.DisableActionVisualisations();
     }
 
-    private void ResolveAction(Character actor, Character receiver)
+    private CombatResolution ResolveAction(Character actor, Character receiver)
     {
         actor.SelectedAction.StartCooldown();
         actor.ConsumeEnergy(actor.SelectedAction.EnergyConsumed);
         switch (actor.SelectedAction.Type)
         {
             case ActionType.none:
-                break;
+                return CombatResolution.passive;
+
             case ActionType.rest:
                 actor.RestoreEnergy();
-                break;
+                return CombatResolution.passive;
+
             //warrior actions
             case ActionType.block:
-                break;
+                return CombatResolution.neglected;
+
             case ActionType.parry:
                 if (receiver.SelectedActionType == ActionType.fire || receiver.SelectedActionType == ActionType.slash)
+                {
                     receiver.GetDamaged(receiver.CharacterClass.BaseDamage);
-                break;
+                    return CombatResolution.attack;
+                }
+                return CombatResolution.passive;
+
             case ActionType.slash:
                 if (receiver.SelectedActionType != ActionType.dodge &&
                     receiver.SelectedActionType != ActionType.parry &&
                     receiver.SelectedActionType != ActionType.block)
+                {
                     receiver.GetDamaged(actor.CharacterClass.BaseDamage);
-                break;
+                    return CombatResolution.attack;
+                }
+                return CombatResolution.neglected;
+
             //ranger actions
             case ActionType.dodge:
-                break;
+                return CombatResolution.neglected;
+
             case ActionType.reload:
                 actor.HasAmmo = true;
-                break;
+                return CombatResolution.passive;
+
             case ActionType.fire:
                 actor.HasAmmo = false;
                 if (receiver.SelectedActionType != ActionType.dodge &&
                     receiver.SelectedActionType != ActionType.parry &&
                     receiver.SelectedActionType != ActionType.block)
+                {
                     receiver.GetDamaged(actor.CharacterClass.BaseDamage);
-                break;
+                    return CombatResolution.attack;
+                }
+                return CombatResolution.neglected;
         }
+        return CombatResolution.passive;
     }
 
     public void GoBackToMainMenu()
@@ -239,10 +256,10 @@ public class GameplayController : MonoBehaviour
         _continueGame = false;
         OnGameEnded?.Invoke(message, money, exp);
     }
-    public event Action<string> OnEnemySelectedAction;
-    public void EnemySelectedAction(string message)
+    public event Action<string, bool> OnEnemySelectedAction;
+    public void EnemySelectedAction(string actionText)
     {
-        OnEnemySelectedAction?.Invoke(message);
+        OnEnemySelectedAction?.Invoke(actionText, false);
     }
     #endregion
 }
@@ -250,3 +267,5 @@ public class GameplayController : MonoBehaviour
 public enum ActionType { none, fire, reload, dodge, slash, parry, block, summon, attack, sacrifice, rest };
 public enum ActionClassification { none, aggressive, utility, defensive };
 public enum CharClass { warrior, ranger, summoner };
+
+public enum CombatResolution { passive, attack, neglected };

@@ -16,11 +16,11 @@ public class UIController : MonoBehaviour
     private Image[] _playerHeartHPImages, _enemyHeartHPImages;
     private Image _playerAmmoImage, _enemyAmmoImage;
 
-    [SerializeField] private Button[] actionButtons;
+    public Button[] actionButtons;
 
     [Serializable] public class MyDictionary1 : SerializableDictionary<ActionClassification, Color> { }
 
-    [SerializeField]  private MyDictionary1 selectedActionColors;
+    public MyDictionary1 selectedActionColors;
 
     private CombatAction[] _actions;
 
@@ -86,7 +86,7 @@ public class UIController : MonoBehaviour
         GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
         GameplayController.current.OnDamageReceived += UpdateHPsImages;
         GameplayController.current.OnGameEnded += ShowGameEndMessage;
-        GameplayController.current.OnEnemySelectedAction += UpdateSelectedEnemyAction;
+        GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
     }
 
     #region In Game Functions
@@ -100,11 +100,6 @@ public class UIController : MonoBehaviour
         timer.text = time > 1 ? 
             "" + time
             : "MEOW!";
-    }
-
-    private void ShowEndGamePanel(bool show)
-    {
-        endGamePanel.SetActive(show);
     }
 
     // display consumed energy for each action button
@@ -175,16 +170,18 @@ public class UIController : MonoBehaviour
         UpdateSelectedActionText(selectedAction.ToString());
     }
 
-    public void UpdateSelectedActionText(string actionText)
+    public void UpdateSelectedActionText(string actionText, bool isPlayer = true)
     {
-        _playerAction.text = actionText;
+        if (isPlayer)
+        {
+            _playerAction.text = actionText;
+        }
+        else
+        {
+            _enemyAction.text = actionText;
+        }
     }
 
-    private void UpdateSelectedEnemyAction(string actionText)
-    {
-        _enemyAction.text = actionText;
-    }
-    
     public void UpdateEnergyText(int energy, int maxEnergy, bool isPlayer)
     {
         if (isPlayer)
@@ -252,6 +249,12 @@ public class UIController : MonoBehaviour
     #endregion
 
     #region End Game Functions
+
+    private void ShowEndGamePanel(bool show)
+    {
+        endGamePanel.SetActive(show);
+    }
+
     private void ShowGameEndMessage(string message, int money, int exp)
     {
         ShowEndGamePanel(true);
