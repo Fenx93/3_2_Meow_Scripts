@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 using static Tab;
 
 public class GameplayController : MonoBehaviour
@@ -15,9 +17,16 @@ public class GameplayController : MonoBehaviour
     [HideInInspector] public Player player;
     private Enemy _enemy;
 
-    private bool _isPaused = false;
+    public bool isPaused = false;
 
     public static GameplayController current;
+
+    public delegate void DelayedDelegate(int damage);
+    public Dictionary<DelayedDelegate, int> delayedActions;
+
+    private bool alreadyExecuting = false;
+
+    private GameObject postProcessing;
 
     void Awake()
     {
@@ -26,6 +35,10 @@ public class GameplayController : MonoBehaviour
 
     void Start()
     {
+        postProcessing = GameObject.FindGameObjectWithTag("PostProcessing");
+        postProcessing.SetActive(false);
+
+        delayedActions = new Dictionary<DelayedDelegate, int>();
         var selectedClass = (CharClass)PlayerPrefs.GetInt("SelectedClass");
         CharacterClass charClass = _characterClasses.Where(c => c.CharClass == selectedClass).First();
         switch (selectedClass)
@@ -77,12 +90,19 @@ public class GameplayController : MonoBehaviour
         {
             GameEnded(false);
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Player damaged");
+            player.GetDamaged(1);
+        }
     }
 
     public void Pause()
     {
-        _isPaused = !_isPaused;
-        UIController.current.ShowPauseMenu(_isPaused);
+        isPaused = !isPaused;
+        postProcessing.SetActive(isPaused);
+        UIController.current.ShowSettingsIcon(isPaused);
+        UIController.current.ShowActionsOnPause(player.Actions, isPaused);
     }
 
     private IEnumerator Countdown()
@@ -91,7 +111,7 @@ public class GameplayController : MonoBehaviour
 
         while (duration > 1f)
         {
-            if (!_isPaused)
+            if (!isPaused)
             {
                 duration -= (Time.deltaTime * countdownMultiplier);
                 UIController.current.UpdateTimer((int)duration);
@@ -106,7 +126,7 @@ public class GameplayController : MonoBehaviour
         float normalizedTime = 0;
         while (normalizedTime <= duration)
         {
-            if (!_isPaused)
+            if (!isPaused)
             {
                 normalizedTime += Time.deltaTime;
             }
@@ -144,9 +164,9 @@ public class GameplayController : MonoBehaviour
     private void ResetActions()
     {
         //deselect all actions
-        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null);
+        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null);
         UIController.current.UpdateSelectedActionText("");
-        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null);
+        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null);
         // disable action buttons that are on cooldown
         UIController.current.EnableActionButtons(player);
         ActionAnimator.current.DisableActionVisualisations();
@@ -154,7 +174,7 @@ public class GameplayController : MonoBehaviour
 
     private CombatResolution ResolveAction(Character actor, Character receiver)
     {
-        actor.SelectedAction.StartCooldown();
+        //actor.SelectedAction.StartCooldown();
         actor.ConsumeEnergy(actor.SelectedAction.EnergyConsumed);
         switch (actor.SelectedAction.Type)
         {
@@ -170,9 +190,10 @@ public class GameplayController : MonoBehaviour
                 return CombatResolution.neglected;
 
             case ActionType.parry:
-                if (receiver.SelectedActionType == ActionType.fire || receiver.SelectedActionType == ActionType.slash)
+                if (receiver.SelectedActionType == ActionType.fire ||
+                    receiver.SelectedActionType == ActionType.slash)
                 {
-                    receiver.GetDamaged(receiver.CharacterClass.BaseDamage);
+                    delayedActions.Add(receiver.GetDamaged, receiver.CharacterClass.BaseDamage);
                     return CombatResolution.attack;
                 }
                 return CombatResolution.passive;
@@ -182,7 +203,7 @@ public class GameplayController : MonoBehaviour
                     receiver.SelectedActionType != ActionType.parry &&
                     receiver.SelectedActionType != ActionType.block)
                 {
-                    receiver.GetDamaged(actor.CharacterClass.BaseDamage);
+                    delayedActions.Add(receiver.GetDamaged, actor.CharacterClass.BaseDamage);
                     return CombatResolution.attack;
                 }
                 return CombatResolution.neglected;
@@ -201,7 +222,8 @@ public class GameplayController : MonoBehaviour
                     receiver.SelectedActionType != ActionType.parry &&
                     receiver.SelectedActionType != ActionType.block)
                 {
-                    receiver.GetDamaged(actor.CharacterClass.BaseDamage);
+
+                    delayedActions.Add(receiver.GetDamaged,actor.CharacterClass.BaseDamage);
                     return CombatResolution.attack;
                 }
                 return CombatResolution.neglected;
@@ -209,18 +231,37 @@ public class GameplayController : MonoBehaviour
         return CombatResolution.passive;
     }
 
+    public void ExecuteDelayedActions()
+    {
+        if (!alreadyExecuting)
+        {
+            alreadyExecuting = true;
+            foreach (var action in delayedActions)
+            {
+                action.Key.Invoke(action.Value);
+            }
+            delayedActions.Clear();
+            alreadyExecuting = false;
+        }
+    }
+
+
     public void GoBackToMainMenu()
     {
         SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
     }
 
-    #region Events
-
-    public event Action<int, bool> OnDamageReceived;
-    public void DamageReceived(int hp, bool isPlayer)
+    public void RefreshActionButtons(bool isPlayer)
     {
-        OnDamageReceived?.Invoke(hp, isPlayer);
+        if (isPaused)
+        {
+            var actions = isPlayer ? player.Actions :
+                _enemy.Actions;
+            UIController.current.ShowActionsOnPause(actions);
+        }
     }
+
+    #region Events
 
     public event Action<bool, bool> OnAmmoIconSetup;
     public void AmmoIconSetup(bool enabled, bool isPlayer)

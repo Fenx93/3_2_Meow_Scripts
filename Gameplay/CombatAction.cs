@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CombatAction
 {
-    public CombatAction(ActionType type, ActionClassification classification, int energyConsumed, Sprite visualisation, int? cooldown = null, bool enabled = true)
+    public CombatAction(ActionType type, ActionClassification classification, int energyConsumed, Sprite visualisation, string description, int? cooldown = null, bool enabled = true)
     {
         Type = type;
         Cooldown = cooldown;
@@ -10,6 +10,7 @@ public class CombatAction
         Enabled = enabled;
         EnergyConsumed = energyConsumed;
         Classification = classification;
+        Description = description;
     }
     public CombatAction(SerializableAction action)
     {
@@ -19,6 +20,7 @@ public class CombatAction
         Enabled = action.enabled;
         EnergyConsumed = action.energyConsumed;
         Classification = action.classification;
+        Description = action.description;
     }
 
     public ActionType Type { get; set; }
@@ -28,6 +30,7 @@ public class CombatAction
     public int? Cooldown { get; set; }
     public int CurrentCooldown { get; set; }
     public int AvailableEnergy { get; set; }
+    public string Description { get; set; }
     public bool Enabled { get; set; }
 
 
@@ -51,6 +54,6 @@ public class CombatAction
 
     internal CombatAction Clone()
     {
-        return new CombatAction(Type, Classification, EnergyConsumed, Visualisation, Cooldown, Enabled);
+        return new CombatAction(Type, Classification, EnergyConsumed, Visualisation, Description, Cooldown, Enabled);
     }
 }

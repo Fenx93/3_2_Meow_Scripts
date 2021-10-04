@@ -8,8 +8,8 @@ public abstract class Enemy : Character
 
     public Enemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     {
-        _aiType = AIType.random;
-        //_aiType = (AIType) Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length);
+        //_aiType = AIType.random;
+        _aiType = (AIType) Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length);
         Debug.Log("Enemy AI is: " + _aiType.ToString());
     }
 

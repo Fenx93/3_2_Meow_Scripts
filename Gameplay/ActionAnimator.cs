@@ -1,3 +1,4 @@
+using Assets._3_2_Meow_Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,13 +18,29 @@ public class ActionAnimator : MonoBehaviour
     {
         if (action.Classification != ActionClassification.none)
         {
-            SpriteRenderer spriteRenderer;
+            float time = 0.75f;
+            var gameObject = isPlayer ?
+                _playerVisualAction :
+                _enemyVisualAction;
+
+            SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = action.Visualisation;
+            var tempColor = UIController.current.selectedActionColors[action.Classification];
+            tempColor.a = 0;
+            spriteRenderer.color = tempColor;
+
+            var targetColor = spriteRenderer.color;
+            targetColor.a = 0.9f;
+            
+            StartCoroutine(MainHelper.SmoothlyChangeColor(spriteRenderer, tempColor, targetColor, 0.5f));
+
+            Vector3 targetPosition = new Vector3(0f, 0f, 0f);
+
             if (isPlayer)
             {
                 _playerVisualAction.transform.position = new Vector3(-5f, -0.5f, 0f);
                 _playerVisualAction.SetActive(true);
-                spriteRenderer = _playerVisualAction.GetComponent<SpriteRenderer>();
-                Vector3 targetPosition = new Vector3(0f, 0f, 0f);
+
                 switch (resolution)
                 {
                     case CombatResolution.passive:
@@ -34,16 +51,15 @@ public class ActionAnimator : MonoBehaviour
                         break;
                 }
                 //move it towards the centre
-                StartCoroutine(SmoothLerp(1f, _playerVisualAction, targetPosition));
+                StartCoroutine(MainHelper.SmoothLerp(time, _playerVisualAction, targetPosition, resolution));
             }
             else
             {
                 _enemyVisualAction.transform.position = new Vector3(5f, -0.5f, 0f);
                 _enemyVisualAction.SetActive(true);
-                spriteRenderer = _enemyVisualAction.GetComponent<SpriteRenderer>();
+
                 spriteRenderer.flipX = true;
-                Vector3 targetPosition = new Vector3(0f, 0f, 0f);
-                float time = 1f;
+
                 switch (resolution)
                 {
                     case CombatResolution.passive:
@@ -54,17 +70,8 @@ public class ActionAnimator : MonoBehaviour
                         break;
                 }
                 //move it towards the centre
-                StartCoroutine(SmoothLerp(time, _enemyVisualAction, targetPosition));
+                StartCoroutine(MainHelper.SmoothLerp(time, _enemyVisualAction, targetPosition, resolution));
             }
-            spriteRenderer.sprite = action.Visualisation;
-
-            var col = UIController.current.selectedActionColors[action.Classification];
-            col.a = 200;
-            spriteRenderer.color = col;
-
-            //make it appear
-
-
         }
     }
 
@@ -72,18 +79,5 @@ public class ActionAnimator : MonoBehaviour
     {
         _playerVisualAction.SetActive(false);
         _enemyVisualAction.SetActive(false);
-    }
-
-    private IEnumerator SmoothLerp(float time, GameObject gameObject, Vector3 position)
-    {
-        Vector3 startingPos = gameObject.transform.position;
-        float elapsedTime = 0;
-
-        while (elapsedTime < time)
-        {
-            gameObject.transform.position = Vector3.Lerp(startingPos, position, (elapsedTime / time));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
     }
 }

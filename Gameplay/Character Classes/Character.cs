@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Assets._3_2_Meow_Scripts;
+using System.Linq;
+using UnityEngine;
 
 public abstract class Character
 {
@@ -8,7 +10,7 @@ public abstract class Character
         CharacterClass = characterClass;
         HP = hp;
         MaxEnergy = maxEnergy;
-        GameplayController.current.DamageReceived(HP, this is Player);
+        UIController.current.SetupHPImages(HP, this is Player);
         GameplayController.current.AmmoIconSetup(CharacterClass.HasAmmo, this is Player);
 
         // copy actions, as cooldowns must belong to a particular character's action, not common action
@@ -46,14 +48,29 @@ public abstract class Character
 
     public void GetDamaged(int damage)
     {
+        var prevHP = HP;
         HP -= damage;
-        GameplayController.current.DamageReceived(HP, this is Player);
+        //Play is damaged animation
+        if (this is Player)
+        {
+            var animator = CharacterCustomizer.current.characters[0].gameObject.GetComponent<Animator>();
+            animator.SetTrigger("isHit");
+        }
+        else
+        {
+            var animator = CharacterCustomizer.current.characters[1].gameObject.GetComponent<Animator>();
+            animator.SetTrigger("isHit");
+        }
+
+        UIController.current.UpdateDamagedHPs(prevHP, HP, this is Player);
 
         if (HP <= 0)
         {
             bool won = !(this is Player);
             GameplayController.current.GameEnded(won);
         }
+
+
     }
 
     public void ConsumeEnergy(int energyConsumed)

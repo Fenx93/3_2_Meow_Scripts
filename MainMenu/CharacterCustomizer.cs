@@ -9,7 +9,7 @@ public class CharacterCustomizer : MonoBehaviour
     [Tooltip("If using image, select true, if sprite renderer - false")]
     [SerializeField] bool useImages;
 
-    [SerializeField] private Transform[] _characters;
+    public Transform[] characters;
     [SerializeField] private bool[] _flipXs;
 
     [HideInInspector]public CharacterAvatar[] avatars;
@@ -20,10 +20,10 @@ public class CharacterCustomizer : MonoBehaviour
     {
         current = this;
 
-        avatars = new CharacterAvatar[_characters.Length];
-        for (int i = 0; i < _characters.Length; i++)
+        avatars = new CharacterAvatar[characters.Length];
+        for (int i = 0; i < characters.Length; i++)
         {
-            avatars[i] = new CharacterAvatar(_characters[i], !_flipXs[i], useImages);
+            avatars[i] = new CharacterAvatar(characters[i], !_flipXs[i], useImages);
         }
     }
 

@@ -3,13 +3,14 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Collections;
+using Assets._3_2_Meow_Scripts;
 
 public class UIController : MonoBehaviour
 {
     [Header("In Game UI")]
     [SerializeField] private TextMeshProUGUI timer;
 
-    [SerializeField] private GameObject playerUI, enemyUI, pauseScreen;
+    [SerializeField] private GameObject playerUI, enemyUI, settingsScreen, settingsIcon;
     private TextMeshProUGUI _playerAction, _playerEnergy, _enemyAction, _enemyEnergy;
     private Slider _playerEnergySlider, _enemyEnergySlider;
 
@@ -17,6 +18,7 @@ public class UIController : MonoBehaviour
     private Image _playerAmmoImage, _enemyAmmoImage;
 
     public Button[] actionButtons;
+    private bool[] buttonStatuses;
 
     [Serializable] public class MyDictionary1 : SerializableDictionary<ActionClassification, Color> { }
 
@@ -29,7 +31,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject returnToMenuButton, gainMoreButton, coinIcon;
     [SerializeField] private TextMeshProUGUI matchResultText, gainedMoneyText, gainedEXPText;
 
+    [Header("Action Description Panel")]
+    [SerializeField] private GameObject _actionDescriptionPaneel;
+    [SerializeField] private TextMeshProUGUI _actionName, _energyConsumed, _actionDescription;
+
     public static UIController current;
+
+    private bool showingSettings = false;
 
     void Awake()
     {
@@ -84,15 +92,23 @@ public class UIController : MonoBehaviour
 
         GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
         GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
-        GameplayController.current.OnDamageReceived += UpdateHPsImages;
         GameplayController.current.OnGameEnded += ShowGameEndMessage;
         GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
     }
 
     #region In Game Functions
-    public void ShowPauseMenu(bool show)
+    public void ShowSettingsIcon(bool show)
     {
-        pauseScreen.SetActive(show);
+        settingsIcon.SetActive(show);
+        if (!show)
+        {
+            ShowActionDescriptionPanel(false);
+        }
+    }
+    public void ShowSettingsMenu()
+    {
+        showingSettings = !showingSettings;
+        settingsScreen.SetActive(showingSettings);
     }
 
     public void UpdateTimer(int time)
@@ -145,9 +161,50 @@ public class UIController : MonoBehaviour
             for (int i = 0; i < actionButtons.Length; i++)
             {
                 actionButtons[i].interactable = false;
-                actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
+                //actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
                 actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
             }
+        }
+    }
+
+
+    public void ShowActionsOnPause(CombatAction[] combatActions, bool? wasPaused = null)
+    {
+        _actions = combatActions;
+        if (wasPaused != null)
+        { 
+            // if was - paused - create backup of actions statuses(interactable/not)
+            if ((bool)wasPaused)
+            {
+                buttonStatuses = new bool[actionButtons.Length];
+                for (int i = 0; i < actionButtons.Length; i++)
+                {
+                    buttonStatuses[i] = actionButtons[i].interactable;
+                    actionButtons[i].interactable = true;
+                    actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().enabled = true;
+                }
+            }
+            // else restore to previously saved statuses
+            else
+            {
+                for (int i = 0; i < actionButtons.Length; i++)
+                {
+                    actionButtons[i].interactable = buttonStatuses[i];
+                    actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().enabled = buttonStatuses[i];
+                }
+            }
+        }
+       
+
+        for (int i = 0; i < actionButtons.Length; i++)
+        {
+            actionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = _actions[i].ToString();
+            //update energy text
+            actionButtons[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = _actions[i].EnergyConsumed.ToString();
+
+            ColorBlock cb = actionButtons[i].colors;
+            cb.normalColor = selectedActionColors[_actions[i].Classification];
+            actionButtons[i].colors = cb;
         }
     }
 
@@ -156,7 +213,9 @@ public class UIController : MonoBehaviour
         _actions = combatActions;
         for (int i = 0; i < actionButtons.Length; i++)
         {
-            actionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = _actions[i].ToString();
+            actionButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _actions[i].ToString();
+            //setup energy
+            actionButtons[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = _actions[i].EnergyConsumed.ToString();
             ColorBlock cb = actionButtons[i].colors;
             cb.normalColor = selectedActionColors[_actions[i].Classification];
             actionButtons[i].colors = cb;
@@ -166,8 +225,16 @@ public class UIController : MonoBehaviour
     private void SelectedAction(int id)
     {
         CombatAction selectedAction = _actions[id];
-        GameplayController.current.player.SelectedAction = selectedAction;
-        UpdateSelectedActionText(selectedAction.ToString());
+        if (!GameplayController.current.isPaused)
+        {
+            GameplayController.current.player.SelectedAction = selectedAction;
+            UpdateSelectedActionText(selectedAction.ToString());
+        }
+        else
+        {
+            ShowActionDescription(selectedAction.Type.ToString(), selectedAction.EnergyConsumed, selectedAction.Description);
+            ShowActionDescriptionPanel(true);
+        }
     }
 
     public void UpdateSelectedActionText(string actionText, bool isPlayer = true)
@@ -218,7 +285,7 @@ public class UIController : MonoBehaviour
     }
 
 
-    private void UpdateHPsImages(int hpCount, bool isPlayer)
+    public void SetupHPImages(int hpCount, bool isPlayer)
     {
         if (hpCount > 10)
         {
@@ -246,6 +313,29 @@ public class UIController : MonoBehaviour
             hearthHPImages[i - 5].color = Color.yellow;
         }
     }
+
+    public void UpdateDamagedHPs(int oldHPCount, int newHPCount, bool isPlayer)
+    {
+        var hearthHPImages = isPlayer ? _playerHeartHPImages : _enemyHeartHPImages;
+
+        //Select removed hps
+        for (int i = oldHPCount; i > newHPCount; i--)
+        {
+            if (i > 5)
+            {
+                var image = hearthHPImages[i - 1];
+                StartCoroutine(MainHelper.SmoothlyChangeColorAndFade(new ImageAdapter(image), image.color, Color.white, Color.red, 0.1f, 0.25f));
+            }
+            else if (i - 1 >= 0)
+            {
+                var image = hearthHPImages[i - 1];
+                Color col = Color.white;
+                col.a = 0f;
+                StartCoroutine(MainHelper.SmoothlyChangeColorAndFade(new ImageAdapter(image), image.color, Color.white, col, 0.1f, 0.25f));
+            }
+        }
+    }
+
     #endregion
 
     #region End Game Functions
@@ -324,6 +414,20 @@ public class UIController : MonoBehaviour
             default:
                 break;
         }
+    }
+    #endregion
+
+    #region
+    public void ShowActionDescriptionPanel(bool show)
+    {
+        _actionDescriptionPaneel.SetActive(show);
+    }
+
+    public void ShowActionDescription(string actionName, int energyConsumed, string actionDescription)
+    {
+        _actionName.text = actionName;
+        _energyConsumed.text = "Energy consumed : " + energyConsumed;
+        _actionDescription.text = actionDescription;
     }
     #endregion
 }
