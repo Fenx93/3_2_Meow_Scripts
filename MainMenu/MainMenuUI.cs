@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -68,12 +66,14 @@ public class MainMenuUI : MonoBehaviour
     public void UpdateMoneyText(int money)
     {
         moneyText.text = money.ToString();
+        CoroutineHelper.SmoothlyChangeColorAndFade(moneyText, moneyText.color, Color.white, moneyText.color, 1f, 3f);
     }
 
     public void UpdateExpText(int currentExp, int expCap)
     {
         expText.text = currentExp+"/"+expCap;
         UpdateExpSlider(currentExp, expCap);
+        CoroutineHelper.SmoothlyChangeColorAndFade(expText, expText.color, Color.white, expText.color, 1f, 3f);
     }
 
     public void UpdateExpSlider(int currentExp, int expCap)

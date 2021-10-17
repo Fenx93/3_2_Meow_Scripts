@@ -1,10 +1,10 @@
 public static class PlayerStatsTracker
 {
-    private static int? _currentExp, _currentExpCap, _currentLvl, _currentMoney;
+    private static int _currentExp = 0, _currentExpCap = 100, _currentLvl = 1, _currentMoney = 0;
 
     #region Public Properties
     public static int CurrentExp { 
-        get => _currentExp.Value; 
+        get => _currentExp;
         private set {
             _currentExp = value;
             SetExpText();
@@ -13,7 +13,7 @@ public static class PlayerStatsTracker
 
     public static int CurrentExpCap
     {
-        get => _currentExpCap.Value;
+        get => _currentExpCap;
         private set
         {
             _currentExpCap = value;
@@ -23,48 +23,77 @@ public static class PlayerStatsTracker
 
     public static int CurrentLvl
     {
-        get => _currentLvl.Value;
+        get => _currentLvl;
         private set
         {
+            bool levelUP = _currentLvl != 0 && value > _currentLvl;
             _currentLvl = value;
-            MainMenuUI.current.UpdateLevelText(_currentLvl.Value);
+            if (MainMenuUI.current != null)
+            {
+                MainMenuUI.current.UpdateLevelText(_currentLvl);
+            }
+            if (FinishMatchUI.current != null)
+            {
+                FinishMatchUI.current.UpdateLevelText(_currentLvl);
+                if (levelUP)
+                {
+                    FinishMatchUI.current.ShowLevelUP(true);
+                }
+            }
         }
     }
 
     public static int CurrentMoney
     {
-        get => _currentMoney.Value;
+        get => _currentMoney;
         private set
         {
             _currentMoney = value;
-            MainMenuUI.current.UpdateMoneyText(_currentMoney.Value);
+            if (MainMenuUI.current != null)
+            {
+                MainMenuUI.current.UpdateMoneyText(_currentMoney);
+            }
+            if (FinishMatchUI.current != null)
+            {
+                FinishMatchUI.current.UpdateMoneyText(_currentMoney);
+            }
         }
     }
     #endregion
 
     public static void SetData(int currentLvl, int currentExp, int currentExpCap, int currentMoney)
     {
-        if (_currentExp == null && _currentExpCap == null && _currentLvl == null && _currentMoney == null)
-        {
-            CurrentExp = currentExp;
-            CurrentExpCap = currentExpCap;
-            CurrentLvl = currentLvl;
-            CurrentMoney = currentMoney;
-        }
+        CurrentExp = currentExp;
+        CurrentExpCap = currentExpCap;
+        CurrentLvl = currentLvl;
+        CurrentMoney = currentMoney;
     }
 
     public static void UpdateUI()
     {
-        MainMenuUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
-        MainMenuUI.current.UpdateMoneyText(CurrentMoney);
-        MainMenuUI.current.UpdateLevelText(CurrentLvl);
+        if (MainMenuUI.current != null)
+        {
+            MainMenuUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
+            MainMenuUI.current.UpdateMoneyText(CurrentMoney);
+            MainMenuUI.current.UpdateLevelText(CurrentLvl);
+        }
+        if (FinishMatchUI.current != null)
+        {
+            FinishMatchUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
+            FinishMatchUI.current.UpdateMoneyText(CurrentMoney);
+            FinishMatchUI.current.UpdateLevelText(CurrentLvl);
+        }
     }
 
     private static void SetExpText()
     {
-        if (_currentExp.HasValue && _currentExpCap.HasValue)
+        if (MainMenuUI.current != null)
         {
             MainMenuUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
+        }
+        if (FinishMatchUI.current != null)
+        {
+            FinishMatchUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
         }
     }
 

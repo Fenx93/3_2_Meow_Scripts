@@ -1,5 +1,4 @@
-﻿using Assets._3_2_Meow_Scripts;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public abstract class Character

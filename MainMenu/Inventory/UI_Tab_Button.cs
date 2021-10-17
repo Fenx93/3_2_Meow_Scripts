@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static Tab;
+using static InventorySettings;
 
 public class UI_Tab_Button : MonoBehaviour
 {
@@ -75,26 +75,62 @@ public class UI_Tab_Button : MonoBehaviour
 
                 var index = i * 5 + j;
 
-                bool isEmpty = false;
+                var itemButtonImage = itemButton.GetComponent<Image>();
+
+                bool isEmpty = true;
                 if (useSprites)
                 {
-                    if (_tab.sprites.Length > index)
+                    if (_tab.items.Length > index)
                     {
-                        image.sprite = _tab.sprites[index];
-                        isEmpty = true;
-                        button.onClick.AddListener(() => ItemSelected(_tab.sprites[index]));
+                        var tabItem = (SpriteTabItem) _tab.items[index];
+                        image.sprite = tabItem.sprite;
+                        itemButtonImage.color = InventorySettings.itemQualities[tabItem.quality];
+
+                        isEmpty = false;
+
+                        if (tabItem.status == ItemStatus.locked)
+                        {
+                            var color = image.color;
+                            color.a = 0.25f;
+                            image.color = color;
+
+                            var tempCol = itemButtonImage.color;
+                            tempCol.a = 0.25f;
+                            itemButtonImage.color = tempCol;
+
+                            button.interactable = false;
+                        }
+
+                        button.onClick.AddListener(() => ItemSelected(tabItem.sprite));
                     }
                 }
                 else
                 {
-                    if (_tab.colors.Length > index)
+                    if (_tab.items.Length > index)
                     {
-                        image.color = _tab.colors[index];
-                        isEmpty = true;
-                        button.onClick.AddListener(() => ItemSelected(_tab.colors[index]));
+                        var tabItem = (ColorTabItem)_tab.items[index];
+                        image.color = tabItem.color;
+                        itemButtonImage.color = InventorySettings.itemQualities[tabItem.quality];
+
+                        isEmpty = false;
+
+                        if (tabItem.status == ItemStatus.locked)
+                        {
+                            var color = tabItem.color;
+                            color.a = 0.25f;
+                            image.color = color;
+
+                            var tempCol = itemButtonImage.color;
+                            tempCol.a = 0.25f;
+                            itemButtonImage.color = tempCol;
+
+                            button.interactable = false;
+                        }
+
+                        button.onClick.AddListener(() => ItemSelected(tabItem.color));
                     }
                 }
-                if (!isEmpty)
+                if (isEmpty)
                 {
                     button.interactable = false;
                     image.enabled = false;

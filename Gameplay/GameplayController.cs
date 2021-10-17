@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-using static Tab;
+using static InventorySettings;
 
 public class GameplayController : MonoBehaviour
 {
@@ -17,7 +16,7 @@ public class GameplayController : MonoBehaviour
     [HideInInspector] public Player player;
     private Enemy _enemy;
 
-    public bool isPaused = false;
+    [HideInInspector] public bool isPaused = false;
 
     public static GameplayController current;
 
@@ -26,7 +25,8 @@ public class GameplayController : MonoBehaviour
 
     private bool alreadyExecuting = false;
 
-    private GameObject postProcessing;
+    [SerializeField] private bool enablePostProcessing;
+    [SerializeField] private GameObject postProcessing;
 
     void Awake()
     {
@@ -35,8 +35,10 @@ public class GameplayController : MonoBehaviour
 
     void Start()
     {
-        postProcessing = GameObject.FindGameObjectWithTag("PostProcessing");
-        postProcessing.SetActive(false);
+        if (enablePostProcessing)
+        {
+            postProcessing.SetActive(false);
+        }
 
         delayedActions = new Dictionary<DelayedDelegate, int>();
         var selectedClass = (CharClass)PlayerPrefs.GetInt("SelectedClass");
@@ -261,21 +263,6 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    #region Events
-
-    public event Action<bool, bool> OnAmmoIconSetup;
-    public void AmmoIconSetup(bool enabled, bool isPlayer)
-    {
-        OnAmmoIconSetup?.Invoke(enabled, isPlayer);
-    }
-
-    public event Action<bool, bool> OnAmmoUpdate;
-    public void AmmoIconUpdate(bool enabled, bool isPlayer)
-    {
-        OnAmmoUpdate?.Invoke(enabled, isPlayer);
-    }
-
-    public event Action<string, int, int> OnGameEnded;
     public void GameEnded(bool won)
     {
         string message;
@@ -295,8 +282,24 @@ public class GameplayController : MonoBehaviour
         }
 
         _continueGame = false;
-        OnGameEnded?.Invoke(message, money, exp);
+        FinishMatchUI.current.ShowGameEndMessage(message, money, exp);
     }
+
+
+    #region Events
+
+    public event Action<bool, bool> OnAmmoIconSetup;
+    public void AmmoIconSetup(bool enabled, bool isPlayer)
+    {
+        OnAmmoIconSetup?.Invoke(enabled, isPlayer);
+    }
+
+    public event Action<bool, bool> OnAmmoUpdate;
+    public void AmmoIconUpdate(bool enabled, bool isPlayer)
+    {
+        OnAmmoUpdate?.Invoke(enabled, isPlayer);
+    }
+
     public event Action<string, bool> OnEnemySelectedAction;
     public void EnemySelectedAction(string actionText)
     {

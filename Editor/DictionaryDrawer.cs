@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+using static InventorySettings;
+using static RewardsSpin;
 using static UIController;
 
 public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
@@ -173,4 +174,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 
 [CustomPropertyDrawer(typeof(MyDictionary1))]
 public class MyDictionaryDrawer1 : DictionaryDrawer<ActionClassification, Color> { }
+
+[CustomPropertyDrawer(typeof(MyDictionary2))]
+public class MyDictionaryDrawer3 : DictionaryDrawer<ItemQuality, Color> { }
 

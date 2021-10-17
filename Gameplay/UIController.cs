@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using System.Collections;
-using Assets._3_2_Meow_Scripts;
 
 public class UIController : MonoBehaviour
 {
@@ -25,11 +23,6 @@ public class UIController : MonoBehaviour
     public MyDictionary1 selectedActionColors;
 
     private CombatAction[] _actions;
-
-    [Header("End Game UI")]
-    [SerializeField] private GameObject endGamePanel;
-    [SerializeField] private GameObject returnToMenuButton, gainMoreButton, coinIcon;
-    [SerializeField] private TextMeshProUGUI matchResultText, gainedMoneyText, gainedEXPText;
 
     [Header("Action Description Panel")]
     [SerializeField] private GameObject _actionDescriptionPaneel;
@@ -88,11 +81,10 @@ public class UIController : MonoBehaviour
         Button btn3 = actionButtons[3].GetComponent<Button>();
         btn3.onClick.AddListener(delegate { SelectedAction(3); });
 
-        ShowEndGamePanel(false);
+        FinishMatchUI.current.ShowEndGamePanel(false);
 
         GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
         GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
-        GameplayController.current.OnGameEnded += ShowGameEndMessage;
         GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
     }
 
@@ -324,97 +316,18 @@ public class UIController : MonoBehaviour
             if (i > 5)
             {
                 var image = hearthHPImages[i - 1];
-                StartCoroutine(MainHelper.SmoothlyChangeColorAndFade(new ImageAdapter(image), image.color, Color.white, Color.red, 0.1f, 0.25f));
+                StartCoroutine(CoroutineHelper.SmoothlyChangeColorAndFade(new ImageAdapter(image), image.color, Color.white, Color.red, 0.1f, 0.25f));
             }
             else if (i - 1 >= 0)
             {
                 var image = hearthHPImages[i - 1];
                 Color col = Color.white;
                 col.a = 0f;
-                StartCoroutine(MainHelper.SmoothlyChangeColorAndFade(new ImageAdapter(image), image.color, Color.white, col, 0.1f, 0.25f));
+                StartCoroutine(CoroutineHelper.SmoothlyChangeColorAndFade(new ImageAdapter(image), image.color, Color.white, col, 0.1f, 0.25f));
             }
         }
     }
 
-    #endregion
-
-    #region End Game Functions
-
-    private void ShowEndGamePanel(bool show)
-    {
-        endGamePanel.SetActive(show);
-    }
-
-    private void ShowGameEndMessage(string message, int money, int exp)
-    {
-        ShowEndGamePanel(true);
-        matchResultText.text = message;
-
-        gainedMoneyText.enabled = false;
-        coinIcon.SetActive(false);
-        gainedEXPText.enabled = false;
-        gainMoreButton.SetActive(false);
-        returnToMenuButton.SetActive(false);
-
-        gainedMoneyText.text = "+" + money;
-        gainedEXPText.text = "+" + exp + "EXP";
-
-        //TO:DO - add after animation
-        PlayerStatsTracker.AddMoney(money);
-        PlayerStatsTracker.AddExperience(exp);
-
-        //make gained stats appear one after the other
-        StartCoroutine(nameof(Countdown), 0);
-
-    }
-
-    private IEnumerator Countdown(int status)
-    {
-        float duration = 2f;
-        while (duration > 1f)
-        {
-            duration -= (Time.deltaTime * 1.5f);
-            yield return null;
-        }
-        CountdownEnded(status);
-    }
-
-    private IEnumerator Countdown(int status, float duration)
-    {
-        while (duration > 1f)
-        {
-            duration -= (Time.deltaTime * 1.5f);
-            yield return null;
-        }
-        CountdownEnded(status);
-    }
-
-    private void CountdownEnded(int status)
-    {
-        switch (status)
-        {
-            case 0:
-                gainedMoneyText.enabled = true;
-                coinIcon.SetActive(true);
-                StartCoroutine(nameof(Countdown), 1);
-                break;
-            case 1:
-                gainedEXPText.enabled = true;
-                StartCoroutine(nameof(Countdown), 2);
-                break;
-            case 2:
-                // make getDouble button appear after gain animation
-                gainMoreButton.SetActive(true);
-                StartCoroutine(Countdown(3, 4f));
-                break;
-            case 3:
-                // make ReturnToMenu button appear after few seconds
-                returnToMenuButton.SetActive(true);
-                break;
-            default:
-                break;
-        }
-    }
     #endregion
 
     #region

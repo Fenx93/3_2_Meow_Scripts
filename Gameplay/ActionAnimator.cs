@@ -1,6 +1,3 @@
-using Assets._3_2_Meow_Scripts;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ActionAnimator : MonoBehaviour
@@ -32,7 +29,7 @@ public class ActionAnimator : MonoBehaviour
             var targetColor = spriteRenderer.color;
             targetColor.a = 0.9f;
             
-            StartCoroutine(MainHelper.SmoothlyChangeColor(spriteRenderer, tempColor, targetColor, 0.5f));
+            StartCoroutine(CoroutineHelper.SmoothlyChangeColor(spriteRenderer, tempColor, targetColor, 0.5f));
 
             Vector3 targetPosition = new Vector3(0f, 0f, 0f);
 
@@ -51,7 +48,7 @@ public class ActionAnimator : MonoBehaviour
                         break;
                 }
                 //move it towards the centre
-                StartCoroutine(MainHelper.SmoothLerp(time, _playerVisualAction, targetPosition, resolution));
+                StartCoroutine(CoroutineHelper.SmoothLerp(time, _playerVisualAction, targetPosition, resolution));
             }
             else
             {
@@ -70,7 +67,7 @@ public class ActionAnimator : MonoBehaviour
                         break;
                 }
                 //move it towards the centre
-                StartCoroutine(MainHelper.SmoothLerp(time, _enemyVisualAction, targetPosition, resolution));
+                StartCoroutine(CoroutineHelper.SmoothLerp(time, _enemyVisualAction, targetPosition, resolution));
             }
         }
     }

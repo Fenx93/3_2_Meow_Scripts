@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Tab;
+using static InventorySettings;
 
 public class UI_Tabs : MonoBehaviour
 {
@@ -16,7 +16,7 @@ public class UI_Tabs : MonoBehaviour
     [SerializeField] private int fontSizeMin, fontSizeMax;
     [SerializeField] private FontStyles fontStyle;
     [SerializeField] private Sprite tabsItemBackgroundImage, panelsItemBackgroundImage;
-    [SerializeField] private Tab[] tabs;
+    //[SerializeField] private Tab[] tabs;
 
     private readonly List<Transform> tabPanels = new List<Transform>();
     private readonly List<CharacterPart> tabParts = new List<CharacterPart>();
@@ -40,10 +40,14 @@ public class UI_Tabs : MonoBehaviour
             // Create new tabs holder
         }
 
-        for (int i = 0; i < tabs.Length; i++)
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < InventorySettings.tabs.Length; i++)
         {
-            AddPanel(tabs[i]);
-            AddTab(tabs[i].tabName, i);
+            AddPanel(InventorySettings.tabs[i]);
+            AddTab(InventorySettings.tabs[i].tabName, i);
         }
     }
 
@@ -227,28 +231,62 @@ public class UI_Tabs : MonoBehaviour
 
                 int index = i * 5 + j;
 
-                bool isEmpty = false;
+                var itemButtonImage = itemButton.GetComponent<Image>();
+
+                bool isEmpty = true;
                 if (useSprites)
                 {
-                    if (tab.sprites.Length > index)
+                    if (tab.items != null && tab.items.Length > index)
                     {
-                        image.sprite = tab.sprites[index];
-                        isEmpty = true;
-                        button.onClick.AddListener(() => ItemSelected(tab.sprites[index], tab.editedCharacterPart, index));
+                        var tabItem = (SpriteTabItem) tab.items[index];
+                        image.sprite = tabItem.sprite;
+                        itemButtonImage.color = InventorySettings.itemQualities[tabItem.quality];
+
+                        isEmpty = false;
+
+                        if (tabItem.status == ItemStatus.locked)
+                        {
+                            var color = image.color;
+                            color.a = 0.25f;
+                            image.color = color;
+
+                            var tempCol = itemButtonImage.color;
+                            tempCol.a = 0.25f;
+                            itemButtonImage.color = tempCol;
+
+                            button.interactable = false;
+                        }
+                        button.onClick.AddListener(() => ItemSelected(tabItem.sprite, tab.editedCharacterPart, index));
                     }
                 }
                 else
                 {
-                    if (tab.colors.Length > index)
+                    if (tab.items != null && tab.items.Length > index)
                     {
+                        var tabItem = (ColorTabItem) tab.items[index];
                         image.sprite = panelsItemBackgroundImage;
                         image.type = Image.Type.Sliced;
-                        image.color = tab.colors[index];
-                        isEmpty = true;
-                        button.onClick.AddListener(() => ItemSelected(tab.colors[index], tab.editedCharacterPart, index));
+                        image.color = tabItem.color;
+                        itemButtonImage.color = InventorySettings.itemQualities[tabItem.quality];
+
+                        isEmpty = false;
+                        if (tabItem.status == ItemStatus.locked)
+                        {
+                            var color = image.color;
+                            color.a = 0.25f;
+                            image.color = color;
+
+                            var tempCol = itemButtonImage.color;
+                            tempCol.a = 0.25f;
+                            itemButtonImage.color = tempCol;
+
+                            button.interactable = false;
+                        }
+                        button.onClick.AddListener(() => ItemSelected(tabItem.color, tab.editedCharacterPart, index));
                     }
                 }
-                if (!isEmpty)
+
+                if (isEmpty)
                 {
                     button.interactable = false;
                     image.enabled = false;
