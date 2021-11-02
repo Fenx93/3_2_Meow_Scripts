@@ -17,9 +17,8 @@ public class UI_Tab_Button : MonoBehaviour
             case CharacterPart.secondaryColor:
                 FillItems();
                 break;
-            case CharacterPart.eyes:
-            case CharacterPart.nose:
-            case CharacterPart.mouth:
+            case CharacterPart.hat:
+            case CharacterPart.clothes:
                 FillItems(true);
                 break;
         }
@@ -165,14 +164,11 @@ public class UI_Tab_Button : MonoBehaviour
 
         switch (_tab.editedCharacterPart)
         {
-            case CharacterPart.eyes:
-                CharacterStore.eyes = sprite;
+            case CharacterPart.hat:
+                CharacterStore.hat = sprite;
                 break;
-            case CharacterPart.nose:
-                CharacterStore.nose = sprite;
-                break;
-            case CharacterPart.mouth:
-                CharacterStore.mouth = sprite;
+            case CharacterPart.clothes:
+                CharacterStore.clothes = sprite;
                 break;
             default:
                 break;

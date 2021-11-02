@@ -84,9 +84,8 @@ public class UI_Tabs : MonoBehaviour
             case CharacterPart.secondaryColor:
                 FillItems(tab, tabPanel.transform);
                 break;
-            case CharacterPart.eyes:
-            case CharacterPart.nose:
-            case CharacterPart.mouth:
+            case CharacterPart.hat:
+            case CharacterPart.clothes:
                 FillItems(tab, tabPanel.transform, true);
                 break;
         }
@@ -177,14 +176,11 @@ public class UI_Tabs : MonoBehaviour
                 case CharacterPart.secondaryColor:
                     n = MainMenuController.current.secondaryColorId;
                     break;
-                case CharacterPart.eyes:
-                    n = MainMenuController.current.eyesId;
+                case CharacterPart.hat:
+                    n = MainMenuController.current.hatId;
                     break;
-                case CharacterPart.nose:
-                    n = MainMenuController.current.noseId;
-                    break;
-                case CharacterPart.mouth:
-                    n = MainMenuController.current.mouthId;
+                case CharacterPart.clothes:
+                    n = MainMenuController.current.clothesId;
                     break;
                 default:
                     break;
@@ -340,17 +336,13 @@ public class UI_Tabs : MonoBehaviour
         CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
         switch (part)
         {
-            case CharacterPart.eyes:
-                CharacterStore.eyes = sprite;
-                MainMenuController.current.eyesId = index;
+            case CharacterPart.hat:
+                CharacterStore.hat = sprite;
+                MainMenuController.current.hatId = index;
                 break;
-            case CharacterPart.nose:
-                CharacterStore.nose = sprite;
-                MainMenuController.current.noseId = index;
-                break;
-            case CharacterPart.mouth:
-                CharacterStore.mouth = sprite;
-                MainMenuController.current.mouthId = index;
+            case CharacterPart.clothes:
+                CharacterStore.clothes = sprite;
+                MainMenuController.current.clothesId = index;
                 break;
             default:
                 break;

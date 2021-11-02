@@ -69,20 +69,20 @@ public static class CoroutineHelper
         float time = 0;
         while (time < colorChangeDuration)
         {
-            renderer.color = Color.Lerp(start, middle, time / colorChangeDuration);
+            renderer.Color = Color.Lerp(start, middle, time / colorChangeDuration);
             time += Time.deltaTime;
             yield return null;
         }
-        renderer.color = middle;
+        renderer.Color = middle;
 
         time = 0;
         while (time < fadeOutDuration)
         {
-            renderer.color = Color.Lerp(middle, end, time / fadeOutDuration);
+            renderer.Color = Color.Lerp(middle, end, time / fadeOutDuration);
             time += Time.deltaTime;
             yield return null;
         }
-        renderer.color = end;
+        renderer.Color = end;
         yield return null;
     }
 

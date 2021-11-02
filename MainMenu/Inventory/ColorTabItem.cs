@@ -4,4 +4,9 @@ using UnityEngine;
 public class ColorTabItem : TabItem
 {
     public Color color;
+
+    public override string GetID()
+    {
+        return ColorUtility.ToHtmlStringRGB(color);
+    }
 }

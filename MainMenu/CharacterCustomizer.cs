@@ -29,27 +29,32 @@ public class CharacterCustomizer : MonoBehaviour
 
 }
 
+#region SpriteImageAdapter
+
 public abstract class SpriteImageAdapter
 {
-    public abstract Color color { get; set; }
-    public abstract Sprite sprite { get; set; }
+    public abstract Color Color { get; set; }
+    public abstract Sprite Sprite { get; set; }
 }
 
 public class ImageAdapter : SpriteImageAdapter
 {
     Image adaptee;
     public ImageAdapter(Image adaptee) { this.adaptee = adaptee; }
-    public override Color color { get { return adaptee.color; } set { adaptee.color = value; } }
-    public override Sprite sprite { get { return adaptee.sprite; } set { adaptee.sprite = value; } }
+    public override Color Color { get { return adaptee.color; } set { adaptee.color = value; } }
+    public override Sprite Sprite { get { return adaptee.sprite; } set { adaptee.sprite = value; } }
 }
 
 public class SpriteRendererAdapter : SpriteImageAdapter
 {
     SpriteRenderer adaptee;
     public SpriteRendererAdapter(SpriteRenderer adaptee) { this.adaptee = adaptee; }
-    public override Color color { get { return adaptee.color; } set { adaptee.color = value; } }
-    public override Sprite sprite { get { return adaptee.sprite; } set { adaptee.sprite = value; } }
+    public override Color Color { get { return adaptee.color; } 
+        set { adaptee.color = value; } }
+    public override Sprite Sprite { get { return adaptee.sprite; } set { adaptee.sprite = value; } }
 }
+
+#endregion
 
 public class CharacterAvatar 
 {
@@ -68,10 +73,20 @@ public class CharacterAvatar
         _useImage = useImage;
     }
 
+    public void IsDamaged()
+    {
+        var hMC = _head.transform.Find("Primary_Color");
+        LeanTween.color(_head.transform.Find("Primary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
+        LeanTween.color(_head.transform.Find("Secondary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
+
+        LeanTween.color(_body.transform.Find("Primary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
+        LeanTween.color(_body.transform.Find("Secondary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
+    }
+
     public void SetWeapon(Sprite weaponSprite)
     {
         var weapon = GetSpriteImageAdapter(_weapon);
-        weapon.sprite = weaponSprite;
+        weapon.Sprite = weaponSprite;
 
         if (weapon.GetType() == typeof(SpriteRendererAdapter))
         {
@@ -92,19 +107,21 @@ public class CharacterAvatar
             case CharacterPart.eyes:
                 part = _head.transform.Find("Eyes");
                 break;
-            case CharacterPart.nose:
-            case CharacterPart.mouth:
-                part = _head.transform.Find("Nose&Mouth");
+            case CharacterPart.hat:
+                part = _head.transform.Find("Hat");
+                break;
+            case CharacterPart.clothes:
+                part = _body.transform.Find("Clothes");
                 break;
             default:
                 throw new Exception("No Character parts provided!");
         }
-        GetSpriteImageAdapter(part).sprite = sprite;
+        GetSpriteImageAdapter(part).Sprite = sprite;
     }
 
-    public void SetColor(Color color, CharacterPart selectedPart)
+    public void SetColor(Color newColor, CharacterPart selectedPart)
     {
-        if (color == null || color.Equals(Color.clear))
+        if (newColor == null || newColor.Equals(Color.clear))
             return;
         string part = null;
 
@@ -119,8 +136,8 @@ public class CharacterAvatar
             default:
                 throw new Exception("No Character parts provided!");
         }
-        GetSpriteImageAdapter(_head.transform.Find(part)).color = color;
-        GetSpriteImageAdapter(_body.transform.Find(part)).color = color;
+        GetSpriteImageAdapter(_head.transform.Find(part)).Color = newColor;
+        GetSpriteImageAdapter(_body.transform.Find(part)).Color = newColor;
     }
 
     private SpriteImageAdapter GetSpriteImageAdapter(Transform transform)
