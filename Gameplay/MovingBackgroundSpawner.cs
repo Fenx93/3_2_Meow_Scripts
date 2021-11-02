@@ -69,9 +69,9 @@ public class MovingBackgroundSpawner : MonoBehaviour
         sRenderer.sprite = objectSprites[Random.Range(0, (objectSprites.Length))];
         if (flipSprites)
         {
-            sRenderer.flipX = Random.Range(0, 1) > 0.5f;
+            sRenderer.flipX = Random.Range(0f, 1f) > 0.5f;
         }
-        sRenderer.sortingOrder = 0;
+        sRenderer.sortingOrder = Random.Range(0f, 1f) > 0.75f? 10 : 0;
 
         //change opacity
         Color c = sRenderer.color;
