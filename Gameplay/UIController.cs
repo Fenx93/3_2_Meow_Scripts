@@ -86,6 +86,8 @@ public class UIController : MonoBehaviour
         GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
         GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
         GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
+
+        DisplayTimer(true);
     }
 
     #region In Game Functions
@@ -101,6 +103,11 @@ public class UIController : MonoBehaviour
     {
         showingSettings = !showingSettings;
         settingsScreen.SetActive(showingSettings);
+    }
+
+    public void DisplayTimer(bool enable)
+    {
+        timer.gameObject.SetActive(enable);
     }
 
     public void UpdateTimer(int time)

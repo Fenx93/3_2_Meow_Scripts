@@ -4,13 +4,13 @@ using UnityEngine.SceneManagement;
 
 public enum GameModes
 {
-    training, singlePlayer, towers, multiPlayer
+    singlePlayer, towers, multiPlayer
 }
 
 public class MainMenuController : MonoBehaviour
 {
     private int? selectedClassID = null;
-    [SerializeField] private string sceneName;
+    [SerializeField] private string sceneName, trainingScenename;
     [SerializeField] private TextMeshProUGUI selectedClassName;
     [SerializeField] private string[] classNames;
     [SerializeField] private Sprite[] classWeaponSprites;
@@ -20,7 +20,7 @@ public class MainMenuController : MonoBehaviour
     /*[HideInInspector] public Color mainColor, secondaryColor;
     [HideInInspector] public Sprite eyes, ears, nose, mouth;*/
 
-    [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, eyesId = 0, earsId = 0, noseId = 0, mouthId = 0;
+    [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, hatId = 0, earsId = 0, clothesId = 0, mouthId = 0;
 
     [HideInInspector] public GameModes selectedGameMode;
 
@@ -59,6 +59,11 @@ public class MainMenuController : MonoBehaviour
                 : selectedClassID-1;
         }
         SelectClass(selectedClassID.Value);
+    }
+
+    public void StartTraining()
+    {
+        SceneManager.LoadScene(trainingScenename, LoadSceneMode.Single);
     }
 
     public void StartGame()

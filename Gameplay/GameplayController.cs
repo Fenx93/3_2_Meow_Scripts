@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +26,8 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private bool enablePostProcessing;
     [SerializeField] private GameObject postProcessing;
+
+    [SerializeField] private bool startByDefault;
 
     void Awake()
     {
@@ -63,23 +64,36 @@ public class GameplayController : MonoBehaviour
         if (CharacterStore.secondaryColor != null)
             charCustomizer.avatars[0].SetColor(CharacterStore.secondaryColor, CharacterPart.secondaryColor);
 
-        if (CharacterStore.eyes != null)
-            charCustomizer.avatars[0].SetSprite(CharacterStore.eyes, CharacterPart.eyes);
-        if (CharacterStore.ears != null)
-            charCustomizer.avatars[0].SetSprite(CharacterStore.ears, CharacterPart.mouth);
-        if (CharacterStore.mouth != null)
-            charCustomizer.avatars[0].SetSprite(CharacterStore.mouth, CharacterPart.mouth);
+        if (CharacterStore.hat != null)
+            charCustomizer.avatars[0].SetSprite(CharacterStore.hat, CharacterPart.hat);
+        if (CharacterStore.clothes != null)
+            charCustomizer.avatars[0].SetSprite(CharacterStore.clothes, CharacterPart.clothes);
 
 
         UIController.current.DisplayConsumedEnergy(player);
 
         CharacterClass eCharClass = _characterClasses.Where(c => c.CharClass == CharClass.ranger).First();
         _enemy = new RangedEnemy(eCharClass, 5, 5);
+
+        if (EnemyPresetsHolder.mainColor != null)
+            charCustomizer.avatars[1].SetColor(EnemyPresetsHolder.mainColor, CharacterPart.mainColor);
+        if (EnemyPresetsHolder.secondaryColor != null)
+            charCustomizer.avatars[1].SetColor(EnemyPresetsHolder.secondaryColor, CharacterPart.secondaryColor);
+
+        //set enemy's appearance
+        if (EnemyPresetsHolder.hat != null)
+            charCustomizer.avatars[1].SetSprite(EnemyPresetsHolder.hat, CharacterPart.hat);
+        if (EnemyPresetsHolder.clothes != null)
+            charCustomizer.avatars[1].SetSprite(EnemyPresetsHolder.clothes, CharacterPart.clothes);
+
         CharacterCustomizer.current.avatars[1].SetWeapon(eCharClass.WeaponSprite);
 
 
         ResetActions();
-        StartCoroutine(nameof(Countdown));
+        if (startByDefault)
+        {
+            StartCoroutine(nameof(Countdown));
+        }
     }
 
     private void Update()
@@ -99,10 +113,18 @@ public class GameplayController : MonoBehaviour
         }
     }
 
+    public void StartGame()
+    {
+        StartCoroutine(nameof(Countdown));
+    }
+
     public void Pause()
     {
         isPaused = !isPaused;
-        postProcessing.SetActive(isPaused);
+        if (postProcessing != null)
+        {
+            postProcessing.SetActive(isPaused);
+        }
         UIController.current.ShowSettingsIcon(isPaused);
         UIController.current.ShowActionsOnPause(player.Actions, isPaused);
     }
@@ -135,7 +157,10 @@ public class GameplayController : MonoBehaviour
             yield return null;
         }
         ResetActions();
-        StartCoroutine(nameof(Countdown));
+        if (_continueGame)
+        {
+            StartCoroutine(nameof(Countdown));
+        }
     }
 
     private void CountdownEnded()
@@ -268,39 +293,43 @@ public class GameplayController : MonoBehaviour
         string message;
         int exp, money;
 
+        _continueGame = false;
+        UIController.current.DisplayTimer(false);
+
         if (won)
         {
             message = "Victory!";
             exp = 100;
             money = 50;
+            VictoryAnimatorScript.current.SetValues(message, money, exp);
+            VictoryAnimatorScript.current.StartAnimation(CharacterCustomizer.current.characters[0], CharacterCustomizer.current.characters[1], won);
         }
         else
         {
             message = "Defeat!";
             exp = 50;
             money = 25;
+            VictoryAnimatorScript.current.SetValues(message, money, exp);
+            VictoryAnimatorScript.current.StartAnimation(CharacterCustomizer.current.characters[1], CharacterCustomizer.current.characters[0], won);
         }
-
-        _continueGame = false;
-        FinishMatchUI.current.ShowGameEndMessage(message, money, exp);
     }
 
 
     #region Events
 
-    public event Action<bool, bool> OnAmmoIconSetup;
+    public event System.Action<bool, bool> OnAmmoIconSetup;
     public void AmmoIconSetup(bool enabled, bool isPlayer)
     {
         OnAmmoIconSetup?.Invoke(enabled, isPlayer);
     }
 
-    public event Action<bool, bool> OnAmmoUpdate;
+    public event System.Action<bool, bool> OnAmmoUpdate;
     public void AmmoIconUpdate(bool enabled, bool isPlayer)
     {
         OnAmmoUpdate?.Invoke(enabled, isPlayer);
     }
 
-    public event Action<string, bool> OnEnemySelectedAction;
+    public event System.Action<string, bool> OnEnemySelectedAction;
     public void EnemySelectedAction(string actionText)
     {
         OnEnemySelectedAction?.Invoke(actionText, false);
@@ -308,8 +337,15 @@ public class GameplayController : MonoBehaviour
     #endregion
 }
 
-public enum ActionType { none, fire, reload, dodge, slash, parry, block, summon, attack, sacrifice, rest };
+public enum ActionType { none, fire, reload, dodge,
+    slash, parry, block,
+    summon, attack, sacrifice,
+    anti_attack, anti_defense, anti_utility, 
+    smah, concentrate, enrage,
+    rest 
+};
+
 public enum ActionClassification { none, aggressive, utility, defensive };
-public enum CharClass { warrior, ranger, summoner };
+public enum CharClass { warrior, ranger, summoner, trapper, berserk };
 
 public enum CombatResolution { passive, attack, neglected };

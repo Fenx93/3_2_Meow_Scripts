@@ -37,6 +37,11 @@ public class MainMenuUI : MonoBehaviour
         goBackButton.SetActive(false);
     }
 
+    public void StartTraining()
+    {
+        MainMenuController.current.StartTraining();
+    }
+
     public void OpenBattlePreparationScreen(int selectedGameMode)
     {
         gameModeSelectionScreen.SetActive(false);
