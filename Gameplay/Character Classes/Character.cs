@@ -50,16 +50,10 @@ public abstract class Character
         var prevHP = HP;
         HP -= damage;
         //Play is damaged animation
-        if (this is Player)
-        {
-            var animator = CharacterCustomizer.current.characters[0].gameObject.GetComponent<Animator>();
-            animator.SetTrigger("isHit");
-        }
-        else
-        {
-            var animator = CharacterCustomizer.current.characters[1].gameObject.GetComponent<Animator>();
-            animator.SetTrigger("isHit");
-        }
+        int isPlayer = this is Player ? 
+            0 : 1;
+
+        CharacterCustomizer.current.avatars[isPlayer].IsDamaged();
 
         UIController.current.UpdateDamagedHPs(prevHP, HP, this is Player);
 
@@ -68,8 +62,6 @@ public abstract class Character
             bool won = !(this is Player);
             GameplayController.current.GameEnded(won);
         }
-
-
     }
 
     public void ConsumeEnergy(int energyConsumed)
