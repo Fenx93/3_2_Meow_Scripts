@@ -16,9 +16,12 @@ public class InventorySettings : MonoBehaviour
 
     public static InventorySettings current;
 
+    private System.Random rand;
+
     private void Awake()
     {
         current = this;
+        rand = new System.Random();
         itemQualities = _itemQualities;
         tabs = _tabs;
     }
@@ -45,6 +48,11 @@ public class InventorySettings : MonoBehaviour
     public TabItem GetInventoryItem(CharacterPart part, string id)
     {
         Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
-        return selectedTab.items.Where(x => x.GetID() == id).First();
+        return selectedTab.items.Where(x => x.GetID() == id).FirstOrDefault();
+    }
+    public TabItem GetRandom(CharacterPart part)
+    {
+        Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
+        return selectedTab.items[rand.Next(selectedTab.items.Length)];
     }
 }
