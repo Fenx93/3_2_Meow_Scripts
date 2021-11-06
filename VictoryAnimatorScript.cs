@@ -8,6 +8,7 @@ public class VictoryAnimatorScript : MonoBehaviour
     public static VictoryAnimatorScript current;
     [SerializeField] private Sprite defeatedEyes;
     [SerializeField] private ParticleSystem particles;
+    [SerializeField] private GameObject[] hideableUIObjects;
 
     private Transform initialCameraPos, _loser;
     private bool _playerWon;
@@ -75,6 +76,10 @@ public class VictoryAnimatorScript : MonoBehaviour
         _playerWon = playerWon;
         //Start anime lines
         particles.Play();
+        foreach (var gameObj in hideableUIObjects)
+        {
+            gameObj.SetActive(false);
+        }
 
         StartCoroutine(SmoothlyLookAt(winner, Camera.main.transform, 0.75f, 1.5f, 0));
     }
