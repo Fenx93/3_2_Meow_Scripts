@@ -26,7 +26,12 @@ public class InventorySettings : MonoBehaviour
         tabs = _tabs;
     }
 
-    //TO-DO: Add method to change inventory item's status to unlocked
+    public int CountItemsInTab(CharacterPart part)
+    {
+        Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
+        return selectedTab.items.Length;
+    }
+
     public void UnlockItem(TabItem item, CharacterPart part)
     {
         Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
