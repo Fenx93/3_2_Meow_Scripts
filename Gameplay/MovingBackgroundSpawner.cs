@@ -85,7 +85,6 @@ public class MovingBackgroundSpawner : MonoBehaviour
         movBackObj.speed = Random.Range(minSpeed, maxSpeed);
         movBackObj.moveRight = moveRight;
 
-        //var newC = Instantiate(newBackObj, transform);
         newBackObj.transform.parent = parentObject;
         if (fillScreen)
         {
@@ -96,6 +95,11 @@ public class MovingBackgroundSpawner : MonoBehaviour
             var xPos = moveRight ?
                  minX : maxX;
             newBackObj.transform.localPosition = new Vector3(xPos, Random.Range(minY, maxY), 0);
+        }
+
+        if (newBackObj.transform.position.y < 0)
+        {
+            sRenderer.sortingOrder = 10;
         }
         bgObjects.Add(newBackObj);
     }
