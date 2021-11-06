@@ -220,7 +220,7 @@ public class GameplayController : MonoBehaviour
                 if (receiver.SelectedActionType == ActionType.fire ||
                     receiver.SelectedActionType == ActionType.slash)
                 {
-                    delayedActions.Add(receiver.GetDamaged, receiver.CharacterClass.BaseDamage);
+                    delayedActions.Add(receiver.GetDamaged, receiver.Damage);
                     return CombatResolution.attack;
                 }
                 return CombatResolution.passive;
@@ -230,7 +230,7 @@ public class GameplayController : MonoBehaviour
                     receiver.SelectedActionType != ActionType.parry &&
                     receiver.SelectedActionType != ActionType.block)
                 {
-                    delayedActions.Add(receiver.GetDamaged, actor.CharacterClass.BaseDamage);
+                    delayedActions.Add(receiver.GetDamaged, actor.Damage);
                     return CombatResolution.attack;
                 }
                 return CombatResolution.neglected;
@@ -249,8 +249,7 @@ public class GameplayController : MonoBehaviour
                     receiver.SelectedActionType != ActionType.parry &&
                     receiver.SelectedActionType != ActionType.block)
                 {
-
-                    delayedActions.Add(receiver.GetDamaged,actor.CharacterClass.BaseDamage);
+                    delayedActions.Add(receiver.GetDamaged, actor.Damage);
                     return CombatResolution.attack;
                 }
                 return CombatResolution.neglected;
@@ -341,7 +340,7 @@ public enum ActionType { none, fire, reload, dodge,
     slash, parry, block,
     summon, attack, sacrifice,
     anti_attack, anti_defense, anti_utility, 
-    smah, concentrate, enrage,
+    smash, concentrate, enrage,
     rest 
 };
 

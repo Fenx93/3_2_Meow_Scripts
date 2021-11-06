@@ -64,5 +64,18 @@ public abstract class Enemy : Character
             : combatAction;
     }
 
+    protected CombatAction CheckSeveralActionForEnergy(CombatAction prioritizedAction, CombatAction secondaryAction)
+    {
+        if (prioritizedAction.EnergyConsumed > Energy)
+        {
+            return prioritizedAction;
+        }
+        else if(secondaryAction.EnergyConsumed > Energy)
+        {
+            return secondaryAction;
+        }
+        return GetActionByType(ActionType.rest);
+    }
+
     protected enum AIType { random, aggressive, defensive }
 }

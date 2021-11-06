@@ -6,10 +6,10 @@ public class CharacterClass : ScriptableObject
 {
     [SerializeField] private CharClass charClass;
     [SerializeField] private SerializableAction[] actions;
-    /*[SerializeField] private int hp;*/
     [SerializeField] private int baseDamage;
     [SerializeField] private Sprite weaponSprite;
     [SerializeField] private bool hasAmmo = false;
+    [SerializeField] private int unlocksAtLevel = 1;
 
     private CombatAction[] _actions;
 
@@ -28,9 +28,11 @@ public class CharacterClass : ScriptableObject
             return _actions;
         }
     }
+    public string ClassName { get => CharClass.ToString(); }
     /*public int HP { get => hp; }*/
     public int BaseDamage { get => baseDamage; }
     public bool HasAmmo { get => hasAmmo; }
     public Sprite WeaponSprite { get => weaponSprite; }
+    public int UnlocksAtLevel { get => unlocksAtLevel; }
 
 }

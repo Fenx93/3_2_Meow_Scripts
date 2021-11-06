@@ -19,8 +19,10 @@ public abstract class Character
             Actions[i] = CharacterClass.Actions[i].Clone();
         }
         Energy = maxEnergy;
+        Damage = CharacterClass.BaseDamage;
     }
 
+    public virtual int Damage { get; set; }
     public virtual int HP { get; set; }
     public virtual int Energy { 
         get => _energy; 
