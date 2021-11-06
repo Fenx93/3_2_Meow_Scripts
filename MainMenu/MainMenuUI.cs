@@ -16,6 +16,10 @@ public class MainMenuUI : MonoBehaviour
     [Header("EXP Slider")]
     [SerializeField] private Slider expSlider;
 
+    [Header("Start Game Button")]
+    [SerializeField] private Button startGameButton;
+    [SerializeField] private TextMeshProUGUI classUnlocksAtText;
+
     public static MainMenuUI current;
 
     void Awake()
@@ -40,6 +44,17 @@ public class MainMenuUI : MonoBehaviour
     public void StartTraining()
     {
         MainMenuController.current.StartTraining();
+    }
+
+    public void SetStartGameButton(bool isLocked, string buttonText, int? unlocksAtLevel = null)
+    {
+        startGameButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+        startGameButton.interactable = !isLocked;
+        classUnlocksAtText.enabled = isLocked;
+        if (isLocked && unlocksAtLevel.HasValue)
+        {
+            classUnlocksAtText.text = "Class will be unlocked at level " + unlocksAtLevel.Value;
+        }
     }
 
     public void OpenBattlePreparationScreen(int selectedGameMode)

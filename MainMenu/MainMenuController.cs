@@ -12,13 +12,10 @@ public class MainMenuController : MonoBehaviour
     private int? selectedClassID = null;
     [SerializeField] private string sceneName, trainingScenename;
     [SerializeField] private TextMeshProUGUI selectedClassName;
-    [SerializeField] private string[] classNames;
-    [SerializeField] private Sprite[] classWeaponSprites;
+
+    [SerializeField] private CharacterClass[] classes;
 
     public static MainMenuController current;
-
-    /*[HideInInspector] public Color mainColor, secondaryColor;
-    [HideInInspector] public Sprite eyes, ears, nose, mouth;*/
 
     [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, hatId = 0, earsId = 0, clothesId = 0, mouthId = 0;
 
@@ -39,15 +36,25 @@ public class MainMenuController : MonoBehaviour
     public void SelectClass(int classID)
     {
         selectedClassID = classID;
-        selectedClassName.text = classNames[classID];
-        CharacterCustomizer.current.avatars[0].SetWeapon(classWeaponSprites[classID]);
+        selectedClassName.text = classes[classID].ClassName;
+        CharacterCustomizer.current.avatars[0].SetWeapon(classes[classID].WeaponSprite);
+
+        bool locked = PlayerStatsTracker.CurrentLvl < classes[classID].UnlocksAtLevel;
+        if (locked)
+        {
+            MainMenuUI.current.SetStartGameButton(locked, "Character class locked!", classes[classID].UnlocksAtLevel);
+        }
+        else
+        {
+            MainMenuUI.current.SetStartGameButton(locked, "To Battle!");
+        }
     }
 
     public void CycleThroughClasses(int direction)
     {
         if (direction == 1)
         {
-            selectedClassID = (selectedClassID == classNames.Length-1) ?
+            selectedClassID = (selectedClassID == classes.Length-1) ?
                 0
                 : selectedClassID+1;
 
@@ -55,7 +62,7 @@ public class MainMenuController : MonoBehaviour
         else if (direction == -1)
         {
             selectedClassID = (selectedClassID == 0) ?
-                classNames.Length-1
+                classes.Length-1
                 : selectedClassID-1;
         }
         SelectClass(selectedClassID.Value);
