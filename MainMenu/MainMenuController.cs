@@ -15,6 +15,8 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] private CharacterClass[] classes;
 
+    [SerializeField] private AudioClip mainMenuTheme;
+
     public static MainMenuController current;
 
     [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, hatId = 0, earsId = 0, clothesId = 0, mouthId = 0;
@@ -28,6 +30,7 @@ public class MainMenuController : MonoBehaviour
 
     void Start()
     {
+        AudioController.current.PlayMusic(mainMenuTheme);
         PlayerStatsTracker.SetData(1, 0, 75, 0);
         PlayerStatsTracker.UpdateUI();
         SelectClass(0);

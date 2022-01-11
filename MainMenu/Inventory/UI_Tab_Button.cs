@@ -144,6 +144,8 @@ public class UI_Tab_Button : MonoBehaviour
 
     private void ItemSelected(Color color)
     {
+        Debug.Log("Item selected");
+        PlayItemClick();
         CharacterCustomizer.current.avatars[0].SetColor(color, _tab.editedCharacterPart);
         switch (_tab.editedCharacterPart)
         {
@@ -160,6 +162,8 @@ public class UI_Tab_Button : MonoBehaviour
     
     private void ItemSelected(Sprite sprite)
     {
+        Debug.Log("Item selected");
+        PlayItemClick();
         CharacterCustomizer.current.avatars[0].SetSprite(sprite, _tab.editedCharacterPart);
 
         switch (_tab.editedCharacterPart)
@@ -173,5 +177,10 @@ public class UI_Tab_Button : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void PlayItemClick()
+    {
+        AudioController.current.PlayButtonClick();
     }
 }

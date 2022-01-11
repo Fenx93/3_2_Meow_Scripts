@@ -191,9 +191,9 @@ public class GameplayController : MonoBehaviour
     private void ResetActions()
     {
         //deselect all actions
-        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null);
+        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null, null);
         UIController.current.UpdateSelectedActionText("");
-        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null);
+        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null, null);
         // disable action buttons that are on cooldown
         UIController.current.EnableActionButtons(player);
         ActionAnimator.current.DisableActionVisualisations();
@@ -203,6 +203,7 @@ public class GameplayController : MonoBehaviour
     {
         //actor.SelectedAction.StartCooldown();
         actor.ConsumeEnergy(actor.SelectedAction.EnergyConsumed);
+        AudioController.current.PlaySFX(actor.SelectedAction.ActionSound);
         switch (actor.SelectedAction.Type)
         {
             case ActionType.none:
@@ -309,6 +310,7 @@ public class GameplayController : MonoBehaviour
             exp = 50;
             money = 25;
             VictoryAnimatorScript.current.SetValues(message, money, exp);
+            AudioController.current.PlayLosingSound();
             VictoryAnimatorScript.current.StartAnimation(CharacterCustomizer.current.characters[1], CharacterCustomizer.current.characters[0], won);
         }
     }

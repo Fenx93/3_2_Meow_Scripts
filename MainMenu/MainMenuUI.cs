@@ -53,7 +53,7 @@ public class MainMenuUI : MonoBehaviour
         classUnlocksAtText.enabled = isLocked;
         if (isLocked && unlocksAtLevel.HasValue)
         {
-            classUnlocksAtText.text = "Class will be unlocked at level " + unlocksAtLevel.Value;
+            classUnlocksAtText.text = "Unlocks at level " + unlocksAtLevel.Value;
         }
     }
 

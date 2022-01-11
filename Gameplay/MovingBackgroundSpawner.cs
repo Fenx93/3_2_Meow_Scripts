@@ -12,7 +12,7 @@ public class MovingBackgroundSpawner : MonoBehaviour
         minScale, maxScale,
         minSpeed, maxSpeed,
         minSpawnTime = 0.1f, maxSpawnTime = 2.5f;
-
+    [SerializeField] private int sortingOrder = 12;
     private float timeLeft = 0.1f;
     private List<GameObject> bgObjects = new List<GameObject>();
 
@@ -99,7 +99,7 @@ public class MovingBackgroundSpawner : MonoBehaviour
 
         if (newBackObj.transform.position.y < 0)
         {
-            sRenderer.sortingOrder = 10;
+            sRenderer.sortingOrder = sortingOrder;
         }
         bgObjects.Add(newBackObj);
     }

@@ -63,6 +63,14 @@ public class VictoryAnimatorScript : MonoBehaviour
                 break;
             case 6:
                 cinematographicBars.SetActive(false);
+                if (_playerWon)
+                {
+                    AudioController.current.PlayWinningSound();
+                }
+                else
+                {
+                    AudioController.current.PlayLosingSound();
+                }
                 FinishMatchUI.current.ShowGameEndMessage(_message, _money, _exp);
                 break;
             default:

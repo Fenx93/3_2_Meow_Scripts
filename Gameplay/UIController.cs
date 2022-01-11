@@ -112,9 +112,23 @@ public class UIController : MonoBehaviour
 
     public void UpdateTimer(int time)
     {
-        timer.text = time > 1 ? 
-            "" + time
-            : "MEOW!";
+        string prevTimerText = timer.text;
+        if (time > 1)
+        {
+            timer.text = "" + time;
+            if (timer.text != prevTimerText)
+            {
+                AudioController.current.PlayBeepSound();
+            }
+        }
+        else
+        {
+            timer.text = "MEOW!";
+            if (timer.text != prevTimerText)
+            {
+                AudioController.current.PlayMeowSound();
+            }
+        }
     }
 
     // display consumed energy for each action button

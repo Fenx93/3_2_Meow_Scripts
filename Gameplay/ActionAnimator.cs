@@ -46,6 +46,9 @@ public class ActionAnimator : MonoBehaviour
                     case CombatResolution.attack:
                         targetPosition = new Vector3(5f, -0.5f, 0f);
                         break;
+                    case CombatResolution.neglected:
+                        AudioController.current.PlayActionNeglectedSound();
+                        break;
                 }
                 //move it towards the centre
                 StartCoroutine(CoroutineHelper.SmoothLerp(time, _playerVisualAction, targetPosition, resolution));
@@ -64,6 +67,9 @@ public class ActionAnimator : MonoBehaviour
                         break;
                     case CombatResolution.attack:
                         targetPosition = new Vector3(-5f, -0.5f, 0f);
+                        break;
+                    case CombatResolution.neglected:
+                        AudioController.current.PlayActionNeglectedSound();
                         break;
                 }
                 //move it towards the centre

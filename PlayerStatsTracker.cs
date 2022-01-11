@@ -38,6 +38,7 @@ public static class PlayerStatsTracker
                 if (levelUP)
                 {
                     FinishMatchUI.current.ShowLevelUP(true);
+                    AudioController.current.PlayCelebrationSound();
                 }
             }
         }
