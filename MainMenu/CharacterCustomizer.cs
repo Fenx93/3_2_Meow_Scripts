@@ -75,12 +75,18 @@ public class CharacterAvatar
 
     public void IsDamaged()
     {
-        var hMC = _head.transform.Find("Primary_Color");
-        LeanTween.color(_head.transform.Find("Primary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
-        LeanTween.color(_head.transform.Find("Secondary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
+        DamagePulseAnimate(_head.transform.Find("Primary_Color").gameObject);
+        DamagePulseAnimate(_head.transform.Find("Secondary_Color").gameObject);
+        DamagePulseAnimate(_head.Find("Hat").gameObject);
 
-        LeanTween.color(_body.transform.Find("Primary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
-        LeanTween.color(_body.transform.Find("Secondary_Color").gameObject, Color.red, 0.5f).setLoopPingPong(3);
+        DamagePulseAnimate(_body.transform.Find("Primary_Color").gameObject);
+        DamagePulseAnimate(_body.transform.Find("Secondary_Color").gameObject);
+        DamagePulseAnimate(_body.Find("Clothes").gameObject);
+    }
+
+    private void DamagePulseAnimate(GameObject targetObject)
+    {
+        LeanTween.color(targetObject, Color.red, 0.5f).setLoopPingPong(3);
     }
 
     public void SetWeapon(Sprite weaponSprite)
