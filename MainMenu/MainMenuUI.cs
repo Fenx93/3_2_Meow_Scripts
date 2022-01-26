@@ -6,7 +6,8 @@ public class MainMenuUI : MonoBehaviour
 {
     [Header("Panels that are turned on/off when going from screen to screen")]
     [SerializeField] private GameObject gameModeSelectionScreen;
-    [SerializeField] private GameObject battlePreparationScreen, settingsScreen;
+    [SerializeField] private GameObject battlePreparationScreen, inventoryScreen, settingsScreen;
+    [SerializeField] private GameObject topBarPanel;
     [SerializeField] private GameObject goBackButton;
 
     [Header("Text Fields")]
@@ -33,10 +34,21 @@ public class MainMenuUI : MonoBehaviour
     }
 
     #region Switch Between Screens
+    public void OpenInventoryScreen()
+    {
+        inventoryScreen.SetActive(true);
+        gameModeSelectionScreen.SetActive(false);
+        //topBarPanel.SetActive(false);
+        battlePreparationScreen.SetActive(false);
+        settingsScreen.SetActive(false);
+        goBackButton.SetActive(true);
+    }
     public void OpenGameModeSelectionScreen()
     {
         gameModeSelectionScreen.SetActive(true);
+        topBarPanel.SetActive(true);
         battlePreparationScreen.SetActive(false);
+        inventoryScreen.SetActive(false);
         settingsScreen.SetActive(false);
         goBackButton.SetActive(false);
     }
@@ -61,8 +73,10 @@ public class MainMenuUI : MonoBehaviour
     {
         gameModeSelectionScreen.SetActive(false);
         battlePreparationScreen.SetActive(true);
+        topBarPanel.SetActive(false);
+        inventoryScreen.SetActive(false);
         settingsScreen.SetActive(false);
-        goBackButton.SetActive(true);
+        goBackButton.SetActive(false);
 
         MainMenuController.current.selectedGameMode = (GameModes) selectedGameMode;
     }
@@ -71,6 +85,7 @@ public class MainMenuUI : MonoBehaviour
     {
         gameModeSelectionScreen.SetActive(false);
         battlePreparationScreen.SetActive(false);
+        inventoryScreen.SetActive(false);
         settingsScreen.SetActive(true);
         goBackButton.SetActive(true);
     }

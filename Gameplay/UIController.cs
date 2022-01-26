@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+[Serializable] public class MyDictionary1 : SerializableDictionary<ActionClassification, Color> { }
+
 public class UIController : MonoBehaviour
 {
     [Header("In Game UI")]
@@ -17,8 +19,6 @@ public class UIController : MonoBehaviour
 
     public Button[] actionButtons;
     private bool[] buttonStatuses;
-
-    [Serializable] public class MyDictionary1 : SerializableDictionary<ActionClassification, Color> { }
 
     public MyDictionary1 selectedActionColors;
 

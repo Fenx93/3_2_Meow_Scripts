@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,11 +10,11 @@ public enum GameModes
 
 public class MainMenuController : MonoBehaviour
 {
-    private int? selectedClassID = null;
+    private string selectedClassID = null;
     [SerializeField] private string sceneName, trainingScenename;
     [SerializeField] private TextMeshProUGUI selectedClassName;
 
-    [SerializeField] private CharacterClass[] classes;
+    public CharacterClass[] classes;
 
     [SerializeField] private AudioClip mainMenuTheme;
 
@@ -31,21 +32,22 @@ public class MainMenuController : MonoBehaviour
     void Start()
     {
         AudioController.current.PlayMusic(mainMenuTheme);
+        BattlePreparationScreenController.current.UpdateClassButtons(classes);
         PlayerStatsTracker.SetData(1, 0, 75, 0);
         PlayerStatsTracker.UpdateUI();
-        SelectClass(0);
     }
 
-    public void SelectClass(int classID)
+    public void SelectClass(int classInteger)
     {
-        selectedClassID = classID;
-        selectedClassName.text = classes[classID].ClassName;
-        CharacterCustomizer.current.avatars[0].SetWeapon(classes[classID].WeaponSprite);
+        CharacterClass selectedClass = classes[classInteger];
+        selectedClassID = selectedClass.ClassName;
+        selectedClassName.text = selectedClass.ClassName;
+        CharacterCustomizer.current.avatars[0].SetWeapon(selectedClass.WeaponSprite);
 
-        bool locked = PlayerStatsTracker.CurrentLvl < classes[classID].UnlocksAtLevel;
+        bool locked = PlayerStatsTracker.CurrentLvl < selectedClass.UnlocksAtLevel;
         if (locked)
         {
-            MainMenuUI.current.SetStartGameButton(locked, "Character class locked!", classes[classID].UnlocksAtLevel);
+            MainMenuUI.current.SetStartGameButton(locked, "Character class locked!", selectedClass.UnlocksAtLevel);
         }
         else
         {
@@ -53,23 +55,23 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
-    public void CycleThroughClasses(int direction)
-    {
-        if (direction == 1)
-        {
-            selectedClassID = (selectedClassID == classes.Length-1) ?
-                0
-                : selectedClassID+1;
+    //public void CycleThroughClasses(int direction)
+    //{
+    //    if (direction == 1)
+    //    {
+    //        selectedClassID = (selectedClassID == classes.Length-1) ?
+    //            0
+    //            : selectedClassID+1;
 
-        }
-        else if (direction == -1)
-        {
-            selectedClassID = (selectedClassID == 0) ?
-                classes.Length-1
-                : selectedClassID-1;
-        }
-        SelectClass(selectedClassID.Value);
-    }
+    //    }
+    //    else if (direction == -1)
+    //    {
+    //        selectedClassID = (selectedClassID == 0) ?
+    //            classes.Length-1
+    //            : selectedClassID-1;
+    //    }
+    //    SelectClass(selectedClassID.Value);
+    //}
 
     public void StartTraining()
     {
@@ -81,7 +83,7 @@ public class MainMenuController : MonoBehaviour
         if (selectedClassID != null)
         {
             //run game
-            PlayerPrefs.SetInt("SelectedClass", selectedClassID.Value);
+            PlayerPrefs.SetString("SelectedClass", selectedClassID);
 
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }

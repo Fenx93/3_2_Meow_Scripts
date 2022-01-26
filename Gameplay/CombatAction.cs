@@ -52,7 +52,7 @@ public class CombatAction
 
     public override string ToString()
     {
-        return Type.ToString().ToUpper();
+        return Type.ToString().ToUpper().Replace('_','-');
     }
 
     internal CombatAction Clone()

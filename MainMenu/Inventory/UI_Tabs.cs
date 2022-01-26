@@ -362,6 +362,7 @@ public class UI_Tabs : MonoBehaviour
     {
         PlayItemClickSound();
         CharacterCustomizer.current.avatars[0].SetColor(color, part);
+        CharacterCustomizer.current.avatars[1].SetColor(color, part);
         switch (part)
         {
             case CharacterPart.mainColor:
@@ -381,6 +382,7 @@ public class UI_Tabs : MonoBehaviour
     {
         PlayItemClickSound();
         CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
+        CharacterCustomizer.current.avatars[1].SetSprite(sprite, part);
         switch (part)
         {
             case CharacterPart.hat:
