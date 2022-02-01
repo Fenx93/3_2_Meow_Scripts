@@ -21,8 +21,6 @@ public abstract class Character
             Actions[i] = SelectedCharacterClass.Actions[i].Clone();
         }
         Energy = maxEnergy;
-        //HasAdditionalVictoryCondition = SelectedCharacterClass.HasAdditionalVictory;
-        //Damage = SelectedCharacterClass.BaseDamage;
     }
 
     public virtual int Damage { get => SelectedCharacterClass.Damage; }
@@ -44,11 +42,10 @@ public abstract class Character
         }
     }
     public virtual int MaxEnergy { get; set; }
-    public virtual bool HasAmmo { get; set; }
+    //public virtual bool HasAmmo { get; set; }
     public virtual CharacterClass SelectedCharacterClass { get; set; }
     public virtual CombatAction[] Actions { get; }
     public virtual CombatAction SelectedAction { get; set; }
-    public virtual ActionType SelectedActionType { get { return SelectedAction.Type; } }
 
     public void GetDamaged(int damage)
     {

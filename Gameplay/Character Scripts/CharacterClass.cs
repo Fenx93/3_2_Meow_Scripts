@@ -10,7 +10,7 @@ public abstract class CharacterClass
     public Sprite WeaponSprite { get; protected set; }
     //public Sprite ClassIcon { get; protected set; }
     //public int UnlocksAtLevel { get; protected set; }
-    public bool HasAmmo { get; protected set; }
+    //public bool HasAmmo { get; protected set; }
     public bool HasAdditionalVictory { get; protected set; }
     public bool IsPlayer { get; set; }
 
@@ -23,7 +23,7 @@ public abstract class CharacterClass
         WeaponSprite = characterClass.WeaponSprite;
         //ClassIcon = characterClass.ClassIcon;
         //UnlocksAtLevel = characterClass.UnlocksAtLevel;
-        HasAmmo = false;
+        //HasAmmo = false;
         HasAdditionalVictory = false;
     }
     public virtual CombatResolution ExecuteAction(Character actor, Character receiver)

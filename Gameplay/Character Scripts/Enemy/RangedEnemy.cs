@@ -4,7 +4,7 @@ public class RangedEnemy : Enemy
 
     public RangedEnemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     {
-        HasAmmo = false;
+        //HasAmmo = false;
     }
 
     //public override bool HasAmmo
@@ -18,15 +18,23 @@ public class RangedEnemy : Enemy
     //        GetActionByType(ActionType.reload).Enabled = !value;
     //    }
     //}
-    public override bool HasAmmo
+    //public override bool HasAmmo
+    //{
+    //    get { return _enemyHasAmmo; }
+    //    set
+    //    {
+    //        _enemyHasAmmo = value;
+    //        GameplayController.current.AmmoIconUpdate(_enemyHasAmmo, false);
+    //        GetActionByType(ActionType.fire).Enabled = value;
+    //        GetActionByType(ActionType.reload).Enabled = !value;
+    //    }
+    //}
+    private bool HasAmmo
     {
-        get { return _enemyHasAmmo; }
-        set
+        get
         {
-            _enemyHasAmmo = value;
-            GameplayController.current.AmmoIconUpdate(_enemyHasAmmo, false);
-            GetActionByType(ActionType.fire).Enabled = value;
-            GetActionByType(ActionType.reload).Enabled = !value;
+            var c = (RangerClass)SelectedCharacterClass;
+            return c.HasAmmo;
         }
     }
     public override void SelectAction()

@@ -1,23 +1,29 @@
 ﻿public class RangerClass : CharacterClass
 {
     public RangerClass(ScriptableCharacterClass characterClass) : base(characterClass)
-    {
-        HasAmmo = characterClass.HasAmmo;
-    }
+    { }
 
     private bool _hasAmmo;
 
-    //public bool HasAmmo
-    //{
-    //    get { return _hasAmmo; }
-    //    set
-    //    {
-    //        _hasAmmo = value;
-    //        GameplayController.current.AmmoIconUpdate(_hasAmmo, IsPlayer);
-    //        GetActionByType(ActionType.fire).Enabled = value;
-    //        GetActionByType(ActionType.reload).Enabled = !value;
-    //    }
-    //}
+    public bool HasAmmo
+    {
+        get { return _hasAmmo; }
+        set
+        {
+            _hasAmmo = value;
+            GameplayController.current.AmmoIconUpdate(_hasAmmo, IsPlayer);
+            if (IsPlayer)
+            {
+                GameplayController.current.player.GetActionByType(ActionType.fire).Enabled = value;
+                GameplayController.current.player.GetActionByType(ActionType.reload).Enabled = !value;
+            }
+            else
+            {
+                GameplayController.current.enemy.GetActionByType(ActionType.fire).Enabled = value;
+                GameplayController.current.enemy.GetActionByType(ActionType.reload).Enabled = !value;
+            }
+        }
+    }
 
     public override CombatResolution ExecuteAction(Character actor, Character receiver)
     {
@@ -28,7 +34,7 @@
                 return CombatResolution.neglected;
 
             case ActionType.reload:
-                actor.HasAmmo = true;
+                HasAmmo = true;
                 return CombatResolution.passive;
 
             case ActionType.fire:
@@ -47,7 +53,7 @@
     {
         if (actor.SelectedAction.Type == ActionType.fire)
         {
-                actor.HasAmmo = false;
+            HasAmmo = false;
         }
     }
 }

@@ -4,18 +4,18 @@ public class RangedPlayer : Player
 
     public RangedPlayer(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     {
-        HasAmmo = false;
+        //HasAmmo = false;
     }
 
-    public override bool HasAmmo
-    {
-        get { return _playerHasAmmo; }
-        set
-        {
-            _playerHasAmmo = value;
-            GameplayController.current.AmmoIconUpdate(_playerHasAmmo, this is Player);
-            GetActionByType(ActionType.fire).Enabled = value;
-            GetActionByType(ActionType.reload).Enabled = !value;
-        }
-    }
+    //public override bool HasAmmo
+    //{
+    //    get { return _playerHasAmmo; }
+    //    set
+    //    {
+    //        _playerHasAmmo = value;
+    //        GameplayController.current.AmmoIconUpdate(_playerHasAmmo, this is Player);
+    //        GetActionByType(ActionType.fire).Enabled = value;
+    //        GetActionByType(ActionType.reload).Enabled = !value;
+    //    }
+    //}
 }

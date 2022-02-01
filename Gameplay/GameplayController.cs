@@ -13,7 +13,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private ScriptableCharacterClass[] _characterClasses;
 
     [HideInInspector] public Player player;
-    private Enemy _enemy;
+    [HideInInspector] public Enemy enemy;
 
     [HideInInspector] public bool isPaused = false;
 
@@ -42,7 +42,7 @@ public class GameplayController : MonoBehaviour
         }
 
         delayedActions = new Dictionary<DelayedDelegate, int>();
-        var selectedClass = CharClass.warrior;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
+        var selectedClass = CharClass.ranger;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
         CharacterClass charClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == selectedClass).First());
         switch (selectedClass)
         {
@@ -82,7 +82,7 @@ public class GameplayController : MonoBehaviour
         UIController.current.DisplayConsumedEnergy(player);
 
         CharacterClass eCharClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == CharClass.ranger).First());
-        _enemy = new RangedEnemy(eCharClass, 5, 5);
+        enemy = new RangedEnemy(eCharClass, 5, 5);
 
         if (EnemyPresetsHolder.mainColor != null)
             charCustomizer.avatars[1].SetColor(EnemyPresetsHolder.mainColor, CharacterPart.mainColor);
@@ -175,22 +175,22 @@ public class GameplayController : MonoBehaviour
     private void CountdownEnded()
     {
         UIController.current.EnableActionButtons();
-        _enemy.SelectAction();
+        enemy.SelectAction();
         // decrease action cooldowns
         player.DecreaseActionCooldowns();
-        _enemy.DecreaseActionCooldowns();
+        enemy.DecreaseActionCooldowns();
 
         while (_continueGame)
         {
             //TO-DO: attach initiative based on class
-            var playerResult = ResolveAction(player, _enemy);
-            var enemyResult = ResolveAction(_enemy, player);
+            var playerResult = ResolveAction(player, enemy);
+            var enemyResult = ResolveAction(enemy, player);
             //animate selected actions
             ActionAnimator.current.UpdateSelectedAction(player.SelectedAction, playerResult);
-            ActionAnimator.current.UpdateSelectedAction(_enemy.SelectedAction, enemyResult, false);
+            ActionAnimator.current.UpdateSelectedAction(enemy.SelectedAction, enemyResult, false);
 
             player.CheckForAdditionalVictoryCondition();
-            _enemy.CheckForAdditionalVictoryCondition();
+            enemy.CheckForAdditionalVictoryCondition();
 
             if (!_continueGame)
                 break;
@@ -205,7 +205,7 @@ public class GameplayController : MonoBehaviour
         //deselect all actions
         player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null, null);
         UIController.current.UpdateSelectedActionText("");
-        _enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null, null);
+        enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null, null);
         // disable action buttons that are on cooldown
         UIController.current.EnableActionButtons(player);
         ActionAnimator.current.DisableActionVisualisations();
@@ -256,7 +256,7 @@ public class GameplayController : MonoBehaviour
         if (isPaused)
         {
             var actions = isPlayer ? player.Actions :
-                _enemy.Actions;
+                enemy.Actions;
             UIController.current.ShowActionsOnPause(actions);
         }
     }
