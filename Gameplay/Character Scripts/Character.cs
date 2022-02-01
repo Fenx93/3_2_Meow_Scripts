@@ -6,23 +6,26 @@ public abstract class Character
     private int _energy;
     public Character(CharacterClass characterClass, int hp, int maxEnergy)
     {
-        CharacterClass = characterClass;
+        SelectedCharacterClass = characterClass;
         HP = hp;
         MaxEnergy = maxEnergy;
         UIController.current.SetupHPImages(HP, this is Player);
-        GameplayController.current.AmmoIconSetup(CharacterClass.HasAmmo, this is Player);
+        GameplayController.current.AmmoIconSetup(characterClass.CharClass == CharClass.ranger, this is Player);
+        GameplayController.current.SummonIconSetup(characterClass.CharClass == CharClass.summoner, this is Player);
+        GameplayController.current.TrapIconSetup(characterClass.CharClass == CharClass.trapper, this is Player);
 
         // copy actions, as cooldowns must belong to a particular character's action, not common action
-        Actions = new CombatAction[CharacterClass.Actions.Length];
-        for (int i = 0; i < CharacterClass.Actions.Length; i++)
+        Actions = new CombatAction[SelectedCharacterClass.Actions.Length];
+        for (int i = 0; i < SelectedCharacterClass.Actions.Length; i++)
         {
-            Actions[i] = CharacterClass.Actions[i].Clone();
+            Actions[i] = SelectedCharacterClass.Actions[i].Clone();
         }
         Energy = maxEnergy;
-        Damage = CharacterClass.BaseDamage;
+        //HasAdditionalVictoryCondition = SelectedCharacterClass.HasAdditionalVictory;
+        //Damage = SelectedCharacterClass.BaseDamage;
     }
 
-    public virtual int Damage { get; set; }
+    public virtual int Damage { get => SelectedCharacterClass.Damage; }
     public virtual int HP { get; set; }
     public virtual int Energy { 
         get => _energy; 
@@ -42,7 +45,7 @@ public abstract class Character
     }
     public virtual int MaxEnergy { get; set; }
     public virtual bool HasAmmo { get; set; }
-    public virtual CharacterClass CharacterClass { get; }
+    public virtual CharacterClass SelectedCharacterClass { get; set; }
     public virtual CombatAction[] Actions { get; }
     public virtual CombatAction SelectedAction { get; set; }
     public virtual ActionType SelectedActionType { get { return SelectedAction.Type; } }
@@ -78,6 +81,13 @@ public abstract class Character
         Energy = MaxEnergy;
     }
 
+    public void CheckForAdditionalVictoryCondition()
+    {
+        if (SelectedCharacterClass.HasAdditionalVictory)
+        {
+            SelectedCharacterClass.CheckForAdditionalVictoryCondition(this is Player);
+        }
+    }
 
     public CombatAction GetActionByType(ActionType type)
     {

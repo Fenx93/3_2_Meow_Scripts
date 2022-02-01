@@ -1,33 +1,17 @@
 public class SummonerEnemy : Enemy
 {
-    private int _minionsNumber;
+    private int MinionsNumber
+    {
+        get
+        {
+            var c = (SummonerClass)SelectedCharacterClass;
+            return c.MinionsNumber;
+        }
+    }
 
     public SummonerEnemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     { }
-
-    public void AddMinions()
-    {
-        if (MinionsNumber == 0)
-        {
-            MinionsNumber++;
-        }
-        else
-        {
-            MinionsNumber *= 2;
-        }
-    }
-    public void RemoveMinions()
-    {
-        if (MinionsNumber > 0)
-        {
-            MinionsNumber--;
-        }
-    }
-    public int MinionsNumber { get => _minionsNumber; set => _minionsNumber = value; }
-
-    public override int Damage { get => CharacterClass.BaseDamage * MinionsNumber * 2; }
-
-
+    
     public override void SelectAction()
     {
         CombatAction selectedAction;

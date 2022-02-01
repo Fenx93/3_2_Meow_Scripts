@@ -4,7 +4,6 @@ public class WarriorEnemy : Enemy
     public WarriorEnemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     { }
 
-
     public override void SelectAction()
     {
         switch (_aiType)

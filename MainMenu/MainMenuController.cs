@@ -14,7 +14,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private string sceneName, trainingScenename;
     [SerializeField] private TextMeshProUGUI selectedClassName;
 
-    public CharacterClass[] classes;
+    public ScriptableCharacterClass[] classes;
 
     [SerializeField] private AudioClip mainMenuTheme;
 
@@ -39,7 +39,7 @@ public class MainMenuController : MonoBehaviour
 
     public void SelectClass(int classInteger)
     {
-        CharacterClass selectedClass = classes[classInteger];
+        ScriptableCharacterClass selectedClass = classes[classInteger];
         selectedClassID = selectedClass.ClassName;
         selectedClassName.text = selectedClass.ClassName;
         CharacterCustomizer.current.avatars[0].SetWeapon(selectedClass.WeaponSprite);

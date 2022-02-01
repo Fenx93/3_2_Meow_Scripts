@@ -202,7 +202,7 @@ public class UI_Tabs : MonoBehaviour
     private void FillItems(Tab tab, Transform parent, bool useSprites = false)
     {
         // Create Item pages with count = tab.items / 4*5
-        var calc = (tab.items.Length / (float)(4 * 5));
+        var calc = (tab.items.Length / (float)(5 * 5));
         int calculatedPageCount = Convert.ToInt32(Math.Ceiling(calc));
 
         GameObject[] pages = new GameObject[calculatedPageCount];
@@ -243,8 +243,8 @@ public class UI_Tabs : MonoBehaviour
 
     private void FillPagesWithItems(Tab tab, Transform parent, int pageIndex, bool useSprites = false)
     {
-        GameObject[] newBackObj = new GameObject[4];
-        for (int i = 0; i < 4; i++)
+        GameObject[] newBackObj = new GameObject[5];
+        for (int i = 0; i < 5; i++)
         {
             GameObject obj = new GameObject("Panel (" + i + ")");
             var horizontalLayoutGroup = obj.AddComponent(typeof(HorizontalLayoutGroup)) as HorizontalLayoutGroup;
@@ -267,8 +267,8 @@ public class UI_Tabs : MonoBehaviour
                 GameObject item = new GameObject(useSprites ? "Image Item" : "Color Item");
                 var image = item.AddComponent(typeof(Image)) as Image;
                 var rect = item.GetComponent<RectTransform>();
-                rect.anchorMin = new Vector2(0.1f, 0.1f);
-                rect.anchorMax = new Vector2(0.9f, 0.9f);
+                rect.anchorMin = new Vector2(0.2f, 0.1f);
+                rect.anchorMax = new Vector2(0.8f, 0.9f);
 
                 int index = i * 5 + j +(20 * pageIndex);
 
@@ -280,7 +280,7 @@ public class UI_Tabs : MonoBehaviour
                     if (tab.items != null && tab.items.Length > index)
                     {
                         var tabItem = (SpriteTabItem) tab.items[index];
-                        image.sprite = tabItem.sprite;
+                        image.sprite = tabItem.itemIcon;
                         itemButtonImage.color = InventorySettings.itemQualities[tabItem.quality];
 
                         isEmpty = false;

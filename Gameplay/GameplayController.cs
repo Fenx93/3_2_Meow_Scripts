@@ -10,7 +10,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] float countdownMultiplier = 1.5f, countdownDuration = 4f;
 
     private bool _continueGame = true;
-    [SerializeField] private CharacterClass[] _characterClasses;
+    [SerializeField] private ScriptableCharacterClass[] _characterClasses;
 
     [HideInInspector] public Player player;
     private Enemy _enemy;
@@ -42,8 +42,8 @@ public class GameplayController : MonoBehaviour
         }
 
         delayedActions = new Dictionary<DelayedDelegate, int>();
-        var selectedClass = (CharClass)PlayerPrefs.GetInt("SelectedClass");
-        CharacterClass charClass = _characterClasses.Where(c => c.CharClass == selectedClass).First();
+        var selectedClass = CharClass.warrior;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
+        CharacterClass charClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == selectedClass).First());
         switch (selectedClass)
         {
             case CharClass.warrior:
@@ -51,6 +51,15 @@ public class GameplayController : MonoBehaviour
                 break;
             case CharClass.ranger:
                 player = new RangedPlayer(charClass, 5, 5);
+                break;
+            case CharClass.summoner:
+                player = new SummonerPlayer(charClass, 5, 5);
+                break;
+            case CharClass.berserk:
+                player = new BerserkPlayer(charClass, 5, 5);
+                break;
+            case CharClass.trapper:
+                player = new TrapperPlayer(charClass, 5, 5);
                 break;
             default:
                 break;
@@ -72,7 +81,7 @@ public class GameplayController : MonoBehaviour
 
         UIController.current.DisplayConsumedEnergy(player);
 
-        CharacterClass eCharClass = _characterClasses.Where(c => c.CharClass == CharClass.ranger).First();
+        CharacterClass eCharClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == CharClass.ranger).First());
         _enemy = new RangedEnemy(eCharClass, 5, 5);
 
         if (EnemyPresetsHolder.mainColor != null)
@@ -180,6 +189,9 @@ public class GameplayController : MonoBehaviour
             ActionAnimator.current.UpdateSelectedAction(player.SelectedAction, playerResult);
             ActionAnimator.current.UpdateSelectedAction(_enemy.SelectedAction, enemyResult, false);
 
+            player.CheckForAdditionalVictoryCondition();
+            _enemy.CheckForAdditionalVictoryCondition();
+
             if (!_continueGame)
                 break;
 
@@ -204,58 +216,19 @@ public class GameplayController : MonoBehaviour
         //actor.SelectedAction.StartCooldown();
         actor.ConsumeEnergy(actor.SelectedAction.EnergyConsumed);
         AudioController.current.PlaySFX(actor.SelectedAction.ActionSound);
-        switch (actor.SelectedAction.Type)
+
+        bool executeAction = true;
+
+        //Cancel action if enemy has cancelled action
+        if (CharacterClassHelper.CharacterIsTrapper(receiver, out TrapperClass trapper))
         {
-            case ActionType.none:
-                return CombatResolution.passive;
-
-            case ActionType.rest:
-                actor.RestoreEnergy();
-                return CombatResolution.passive;
-
-            //warrior actions
-            case ActionType.block:
-                return CombatResolution.neglected;
-
-            case ActionType.parry:
-                if (receiver.SelectedActionType == ActionType.fire ||
-                    receiver.SelectedActionType == ActionType.slash)
-                {
-                    delayedActions.Add(receiver.GetDamaged, receiver.Damage);
-                    return CombatResolution.attack;
-                }
-                return CombatResolution.passive;
-
-            case ActionType.slash:
-                if (receiver.SelectedActionType != ActionType.dodge &&
-                    receiver.SelectedActionType != ActionType.parry &&
-                    receiver.SelectedActionType != ActionType.block)
-                {
-                    delayedActions.Add(receiver.GetDamaged, actor.Damage);
-                    return CombatResolution.attack;
-                }
-                return CombatResolution.neglected;
-
-            //ranger actions
-            case ActionType.dodge:
-                return CombatResolution.neglected;
-
-            case ActionType.reload:
-                actor.HasAmmo = true;
-                return CombatResolution.passive;
-
-            case ActionType.fire:
-                actor.HasAmmo = false;
-                if (receiver.SelectedActionType != ActionType.dodge &&
-                    receiver.SelectedActionType != ActionType.parry &&
-                    receiver.SelectedActionType != ActionType.block)
-                {
-                    delayedActions.Add(receiver.GetDamaged, actor.Damage);
-                    return CombatResolution.attack;
-                }
-                return CombatResolution.neglected;
+            if (trapper.ActionWasCancelled(actor, receiver))
+                executeAction = false;
         }
-        return CombatResolution.passive;
+        actor.SelectedCharacterClass.ExecuteActionPrerequisition(actor);
+        return executeAction ?
+            actor.SelectedCharacterClass.ExecuteAction(actor, receiver)
+            : CombatResolution.neglected;
     }
 
     public void ExecuteDelayedActions()
@@ -318,6 +291,30 @@ public class GameplayController : MonoBehaviour
 
     #region Events
 
+    public event System.Action<bool, bool> OnSummonIconSetup;
+    public void SummonIconSetup(bool enabled, bool isPlayer)
+    {
+        OnSummonIconSetup?.Invoke(enabled, isPlayer);
+    }
+
+    public event System.Action<int, bool> OnSummonUpdate;
+    public void SummonIconUpdate(int summonCount, bool isPlayer)
+    {
+        OnSummonUpdate?.Invoke(summonCount, isPlayer);
+    }
+
+    public event System.Action<bool, bool> OnTrapIconSetup;
+    public void TrapIconSetup(bool enabled, bool isPlayer)
+    {
+        OnTrapIconSetup?.Invoke(enabled, isPlayer);
+    }
+
+    public event System.Action<int, bool> OnTrapUpdate;
+    public void TrapIconUpdate(int summonCount, bool isPlayer)
+    {
+        OnTrapUpdate?.Invoke(summonCount, isPlayer);
+    }
+
     public event System.Action<bool, bool> OnAmmoIconSetup;
     public void AmmoIconSetup(bool enabled, bool isPlayer)
     {
@@ -348,5 +345,4 @@ public enum ActionType { none, fire, reload, dodge,
 
 public enum ActionClassification { none, aggressive, utility, defensive };
 public enum CharClass { warrior, ranger, summoner, trapper, berserk };
-
 public enum CombatResolution { passive, attack, neglected };

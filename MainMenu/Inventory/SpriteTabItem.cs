@@ -4,6 +4,7 @@ using UnityEngine;
 public class SpriteTabItem : TabItem
 {
     public Sprite sprite;
+    public Sprite itemIcon;
 
     public override string GetID()
     {

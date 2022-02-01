@@ -1,0 +1,53 @@
+﻿public class RangerClass : CharacterClass
+{
+    public RangerClass(ScriptableCharacterClass characterClass) : base(characterClass)
+    {
+        HasAmmo = characterClass.HasAmmo;
+    }
+
+    private bool _hasAmmo;
+
+    //public bool HasAmmo
+    //{
+    //    get { return _hasAmmo; }
+    //    set
+    //    {
+    //        _hasAmmo = value;
+    //        GameplayController.current.AmmoIconUpdate(_hasAmmo, IsPlayer);
+    //        GetActionByType(ActionType.fire).Enabled = value;
+    //        GetActionByType(ActionType.reload).Enabled = !value;
+    //    }
+    //}
+
+    public override CombatResolution ExecuteAction(Character actor, Character receiver)
+    {
+        switch (actor.SelectedAction.Type)
+        {
+            //ranger actions
+            case ActionType.dodge:
+                return CombatResolution.neglected;
+
+            case ActionType.reload:
+                actor.HasAmmo = true;
+                return CombatResolution.passive;
+
+            case ActionType.fire:
+                if (receiver.SelectedAction.Classification != ActionClassification.defensive)
+                {
+                    GameplayController.current.delayedActions.Add(receiver.GetDamaged, actor.Damage);
+                    return CombatResolution.attack;
+                }
+                return CombatResolution.neglected;
+            default:
+                return base.ExecuteAction(actor, receiver);
+        }
+    }
+
+    public override void ExecuteActionPrerequisition(Character actor)
+    {
+        if (actor.SelectedAction.Type == ActionType.fire)
+        {
+                actor.HasAmmo = false;
+        }
+    }
+}

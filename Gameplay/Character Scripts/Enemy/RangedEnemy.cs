@@ -7,6 +7,17 @@ public class RangedEnemy : Enemy
         HasAmmo = false;
     }
 
+    //public override bool HasAmmo
+    //{
+    //    get { return _enemyHasAmmo; }
+    //    set
+    //    {
+    //        _enemyHasAmmo = value;
+    //        GameplayController.current.AmmoIconUpdate(_enemyHasAmmo, false);
+    //        GetActionByType(ActionType.fire).Enabled = value;
+    //        GetActionByType(ActionType.reload).Enabled = !value;
+    //    }
+    //}
     public override bool HasAmmo
     {
         get { return _enemyHasAmmo; }
@@ -18,7 +29,6 @@ public class RangedEnemy : Enemy
             GetActionByType(ActionType.reload).Enabled = !value;
         }
     }
-
     public override void SelectAction()
     {
         CombatAction selectedAction;

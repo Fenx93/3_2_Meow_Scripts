@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +26,7 @@ public class BattlePreparationScreenController : MonoBehaviour
         current = this;
     }
 
-    public void UpdateClassButtons(CharacterClass[] classes)
+    public void UpdateClassButtons(ScriptableCharacterClass[] classes)
     {
         var buttons = classButtonHolder.GetComponentsInChildren<Button>();
         if (buttons.Length != classes.Length)
@@ -35,11 +34,15 @@ public class BattlePreparationScreenController : MonoBehaviour
         for (int i = 0; i < classes.Length; i++)
         {
             buttons[i].GetComponentInChildren<TextMeshProUGUI>().text = classes[i].ClassName;
+            var classIcon = buttons[i].transform.GetChild(1).gameObject.GetComponent<Image>();
+            classIcon.sprite = classes[i].ClassIcon;
             if (classes[i].UnlocksAtLevel > PlayerStatsTracker.CurrentLvl)
             {
-                var unlocksAtGameObject = buttons[i].transform.GetChild(1);
+                var unlocksAtGameObject = buttons[i].transform.GetChild(2);
                 unlocksAtGameObject.gameObject.SetActive(true);
                 unlocksAtGameObject.gameObject.GetComponent<TextMeshProUGUI>().text = "Unlocks at level " + classes[i].UnlocksAtLevel;
+
+                classIcon.color = Color.gray;
             }
         }
         SelectClass(0);

@@ -2,12 +2,13 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CharacterClass", menuName = "Create new character class")]
-public class CharacterClass : ScriptableObject
+public class ScriptableCharacterClass : ScriptableObject
 {
     [SerializeField] private CharClass charClass;
     [SerializeField] private SerializableAction[] actions;
     [SerializeField] private int baseDamage;
     [SerializeField] private Sprite weaponSprite;
+    [SerializeField] private Sprite classIcon;
     [SerializeField] private bool hasAmmo = false;
     [SerializeField] private int unlocksAtLevel = 1;
 
@@ -33,6 +34,6 @@ public class CharacterClass : ScriptableObject
     public int BaseDamage { get => baseDamage; }
     public bool HasAmmo { get => hasAmmo; }
     public Sprite WeaponSprite { get => weaponSprite; }
+    public Sprite ClassIcon { get => classIcon; }
     public int UnlocksAtLevel { get => unlocksAtLevel; }
-
 }

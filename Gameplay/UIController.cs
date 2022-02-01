@@ -16,6 +16,10 @@ public class UIController : MonoBehaviour
 
     private Image[] _playerHeartHPImages, _enemyHeartHPImages;
     private Image _playerAmmoImage, _enemyAmmoImage;
+    private GameObject _playerSummonObject, _enemySummonObject;
+    private TextMeshProUGUI _playerSummonText, _enemySummonText;
+    private GameObject _playerTrapObject, _enemyTrapObject;
+    private TextMeshProUGUI _playerTrapText, _enemyTrapText;
 
     public Button[] actionButtons;
     private bool[] buttonStatuses;
@@ -42,6 +46,8 @@ public class UIController : MonoBehaviour
     private void AssignUI(GameObject gameObject, bool isPlayer)
     {
         var tempAmmoImage = gameObject.transform.Find("Ammo Icon").GetComponent<Image>();
+        var tempSummonObject = gameObject.transform.Find("Summon Icon");
+        var tempTrapObject = gameObject.transform.Find("Trap Icon");
         var tempActionText = gameObject.transform.Find("Action").GetComponent<TextMeshProUGUI>();
         var tempImages = gameObject.transform.Find("HP Holder").GetComponentsInChildren<Image>();
         var energyPanel = gameObject.transform.Find("EnergyPanel");
@@ -51,6 +57,10 @@ public class UIController : MonoBehaviour
         if (isPlayer)
         {
             _playerAmmoImage = tempAmmoImage;
+            _playerSummonObject = tempSummonObject.gameObject;
+            _playerSummonText = tempSummonObject.GetComponentInChildren<TextMeshProUGUI>();
+            _playerTrapObject = tempTrapObject.gameObject;
+            _playerTrapText = tempTrapObject.GetComponentInChildren<TextMeshProUGUI>();
             _playerAction = tempActionText;
             _playerHeartHPImages = tempImages;
             _playerEnergy = tempEnergyText;
@@ -59,6 +69,10 @@ public class UIController : MonoBehaviour
         else
         {
             _enemyAmmoImage = tempAmmoImage;
+            _enemySummonObject = tempSummonObject.gameObject;
+            _enemySummonText = tempSummonObject.GetComponentInChildren<TextMeshProUGUI>();
+            _enemyTrapObject = tempTrapObject.gameObject;
+            _enemyTrapText = tempTrapObject.GetComponentInChildren<TextMeshProUGUI>();
             _enemyAction = tempActionText;
             _enemyHeartHPImages = tempImages;
             _enemyEnergy = tempEnergyText;
@@ -85,6 +99,10 @@ public class UIController : MonoBehaviour
 
         GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
         GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
+        GameplayController.current.OnSummonIconSetup += SetupSummonImage;
+        GameplayController.current.OnSummonUpdate += UpdateSummonText;
+        GameplayController.current.OnTrapIconSetup += SetupTrapImage;
+        GameplayController.current.OnTrapUpdate += UpdateTrapText;
         GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
 
         DisplayTimer(true);
@@ -297,6 +315,52 @@ public class UIController : MonoBehaviour
             Color.white;
     }
 
+    public void SetupSummonImage(bool enable, bool isPlayer = false)
+    {
+        GameObject gObject = isPlayer ?
+            _playerSummonObject
+            : _enemySummonObject;
+
+        gObject.SetActive(enable);
+
+        TextMeshProUGUI text = isPlayer ?
+            _playerSummonText
+            : _enemySummonText;
+
+        text.text = "0";
+    }
+
+    public void UpdateSummonText(int summonCount, bool isPlayer = false)
+    {
+        TextMeshProUGUI text = isPlayer ?
+            _playerSummonText
+            : _enemySummonText;
+
+        text.text = summonCount.ToString();
+    }
+    public void SetupTrapImage(bool enable, bool isPlayer = false)
+    {
+        GameObject gObject = isPlayer ?
+            _playerTrapObject
+            : _enemyTrapObject;
+
+        gObject.SetActive(enable);
+
+        TextMeshProUGUI text = isPlayer ?
+            _playerTrapText
+            : _enemyTrapText;
+
+        text.text = "0/10";
+    }
+
+    public void UpdateTrapText(int trapPointsCount, bool isPlayer = false)
+    {
+        TextMeshProUGUI text = isPlayer ?
+            _playerTrapText
+            : _enemyTrapText;
+
+        text.text = trapPointsCount+"/10";
+    }
 
     public void SetupHPImages(int hpCount, bool isPlayer)
     {
@@ -304,7 +368,8 @@ public class UIController : MonoBehaviour
         {
             throw new Exception("More than 10 hp are not supported!");
         }
-        UpdateHPs(hpCount, isPlayer ? _playerHeartHPImages : _enemyHeartHPImages);
+        UpdateHPs(hpCount, isPlayer ?
+            _playerHeartHPImages : _enemyHeartHPImages);
     }
 
     private void UpdateHPs(int hpCount, Image[] hearthHPImages)

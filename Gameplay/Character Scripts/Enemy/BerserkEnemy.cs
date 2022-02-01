@@ -3,12 +3,22 @@ public class BerserkEnemy : Enemy
     public BerserkEnemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     { }
 
-    public float HitChance { get; set; }
-    public int CurrentAttackDamage { get; set; }
-    public override int Damage { get => CurrentAttackDamage; }
-
-
-
+    private float HitChance
+    {
+        get
+        {
+            var c = (BerserkClass)SelectedCharacterClass;
+            return c.HitChance;
+        }
+    }
+    private int CurrentAttackDamage
+    {
+        get
+        {
+            var c = (BerserkClass)SelectedCharacterClass;
+            return c.CurrentAttackDamage;
+        }
+    }
 
     public override void SelectAction()
     {
