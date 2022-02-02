@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using UnityEngine;
 
 public abstract class Character
 {
@@ -13,6 +12,7 @@ public abstract class Character
         GameplayController.current.AmmoIconSetup(characterClass.CharClass == CharClass.ranger, this is Player);
         GameplayController.current.SummonIconSetup(characterClass.CharClass == CharClass.summoner, this is Player);
         GameplayController.current.TrapIconSetup(characterClass.CharClass == CharClass.trapper, this is Player);
+        GameplayController.current.BerserkIconsSetup(characterClass.CharClass == CharClass.berserk, this is Player);
 
         // copy actions, as cooldowns must belong to a particular character's action, not common action
         Actions = new CombatAction[SelectedCharacterClass.Actions.Length];
@@ -35,10 +35,14 @@ public abstract class Character
             {
                 action.AvailableEnergy = _energy;
             }
-            //disable rest action if full energy
-            GetActionByType(ActionType.rest).Enabled = !(_energy == MaxEnergy);
-            // Visually update energy
-            UIController.current.UpdateEnergyText(Energy, MaxEnergy, this is Player);
+            // Check if character uses energy at all (i.e. berserk)
+            if (MaxEnergy != 0)
+            {
+                //disable rest action if full energy
+                GetActionByType(ActionType.rest).Enabled = !(_energy == MaxEnergy);
+                // Visually update energy
+                UIController.current.UpdateEnergyText(Energy, MaxEnergy, this is Player);
+            }
         }
     }
     public virtual int MaxEnergy { get; set; }

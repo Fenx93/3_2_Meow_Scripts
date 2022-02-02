@@ -24,6 +24,8 @@ public class GameplayController : MonoBehaviour
 
     private bool alreadyExecuting = false;
 
+    public SerializableAction doNothingAction;
+
     [SerializeField] private bool enablePostProcessing;
     [SerializeField] private GameObject postProcessing;
 
@@ -42,7 +44,7 @@ public class GameplayController : MonoBehaviour
         }
 
         delayedActions = new Dictionary<DelayedDelegate, int>();
-        var selectedClass = CharClass.warrior;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
+        var selectedClass = CharClass.berserk;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
         CharacterClass charClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == selectedClass).First());
         switch (selectedClass)
         {
@@ -56,7 +58,7 @@ public class GameplayController : MonoBehaviour
                 player = new SummonerPlayer(charClass, 5, 5);
                 break;
             case CharClass.berserk:
-                player = new BerserkPlayer(charClass, 5, 5);
+                player = new BerserkPlayer(charClass, 5, 0);
                 break;
             case CharClass.trapper:
                 player = new TrapperPlayer(charClass, 5, 5);
@@ -225,12 +227,6 @@ public class GameplayController : MonoBehaviour
                 executeAction = false;
         }
 
-        //Cancel action if enemy has cancelled action
-        //if (CharacterClassHelper.CharacterIsTrapper(receiver, out TrapperClass trapper))
-        //{
-        //    if (trapper.ActionWasCancelled(actor, receiver))
-        //        executeAction = false;
-        //}
         actor.SelectedCharacterClass.ExecuteActionPrerequisition(actor);
         return executeAction ?
             actor.SelectedCharacterClass.ExecuteAction(actor, receiver)
@@ -297,6 +293,20 @@ public class GameplayController : MonoBehaviour
 
     #region Events
 
+    //Ranger
+    public event System.Action<bool, bool> OnAmmoIconSetup;
+    public void AmmoIconSetup(bool enabled, bool isPlayer)
+    {
+        OnAmmoIconSetup?.Invoke(enabled, isPlayer);
+    }
+
+    public event System.Action<bool, bool> OnAmmoUpdate;
+    public void AmmoIconUpdate(bool enabled, bool isPlayer)
+    {
+        OnAmmoUpdate?.Invoke(enabled, isPlayer);
+    }
+
+    //Summoner
     public event System.Action<bool, bool> OnSummonIconSetup;
     public void SummonIconSetup(bool enabled, bool isPlayer)
     {
@@ -309,6 +319,7 @@ public class GameplayController : MonoBehaviour
         OnSummonUpdate?.Invoke(summonCount, isPlayer);
     }
 
+    //Trapper
     public event System.Action<bool, bool> OnTrapIconSetup;
     public void TrapIconSetup(bool enabled, bool isPlayer)
     {
@@ -321,17 +332,24 @@ public class GameplayController : MonoBehaviour
         OnTrapUpdate?.Invoke(summonCount, isPlayer);
     }
 
-    public event System.Action<bool, bool> OnAmmoIconSetup;
-    public void AmmoIconSetup(bool enabled, bool isPlayer)
+    //Berserk
+    public event System.Action<bool, bool> OnBerserkIconsSetup;
+    public void BerserkIconsSetup(bool enabled, bool isPlayer)
     {
-        OnAmmoIconSetup?.Invoke(enabled, isPlayer);
+        OnBerserkIconsSetup?.Invoke(enabled, isPlayer);
     }
 
-    public event System.Action<bool, bool> OnAmmoUpdate;
-    public void AmmoIconUpdate(bool enabled, bool isPlayer)
+    public event System.Action<int, bool> OnBerserkDamageUpdate;
+    public void BerserkDamageUpdate(int damage, bool isPlayer)
     {
-        OnAmmoUpdate?.Invoke(enabled, isPlayer);
+        OnBerserkDamageUpdate?.Invoke(damage, isPlayer);
     }
+    public event System.Action<float, bool> OnBerserkConcentrationUpdate;
+    public void BerserkConcentrationUpdate(float concentration, bool isPlayer)
+    {
+        OnBerserkConcentrationUpdate?.Invoke(concentration, isPlayer);
+    }
+
 
     public event System.Action<string, bool> OnEnemySelectedAction;
     public void EnemySelectedAction(string actionText)

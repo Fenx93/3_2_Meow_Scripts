@@ -16,10 +16,22 @@ public class UIController : MonoBehaviour
 
     private Image[] _playerHeartHPImages, _enemyHeartHPImages;
     private Image _playerAmmoImage, _enemyAmmoImage;
+
+    #region Summoner UI fields
     private GameObject _playerSummonObject, _enemySummonObject;
     private TextMeshProUGUI _playerSummonText, _enemySummonText;
-    private GameObject _playerTrapObject, _enemyTrapObject;
+    #endregion
+
+    #region Trapper UI fields
+    private GameObject _playerTrapUIObject, _enemyTrapUIObject;
     private TextMeshProUGUI _playerTrapText, _enemyTrapText;
+    #endregion
+    
+    #region Berserk UI fields
+    private GameObject _playerBerserkObject, _enemyBerserkObject;
+    private TextMeshProUGUI _playerBerserkConcentrationText, _enemyBerserkConcentrationText;
+    private TextMeshProUGUI _playerBerserkDamageText, _enemyBerserkDamageText;
+    #endregion
 
     public Button[] actionButtons;
     private bool[] buttonStatuses;
@@ -48,6 +60,7 @@ public class UIController : MonoBehaviour
         var tempAmmoImage = gameObject.transform.Find("Ammo Icon").GetComponent<Image>();
         var tempSummonObject = gameObject.transform.Find("Summon Icon");
         var tempTrapObject = gameObject.transform.Find("Trap Icon");
+        var tempBerserkObject = gameObject.transform.Find("Berserk Icons");
         var tempActionText = gameObject.transform.Find("Action").GetComponent<TextMeshProUGUI>();
         var tempImages = gameObject.transform.Find("HP Holder").GetComponentsInChildren<Image>();
         var energyPanel = gameObject.transform.Find("EnergyPanel");
@@ -59,8 +72,11 @@ public class UIController : MonoBehaviour
             _playerAmmoImage = tempAmmoImage;
             _playerSummonObject = tempSummonObject.gameObject;
             _playerSummonText = tempSummonObject.GetComponentInChildren<TextMeshProUGUI>();
-            _playerTrapObject = tempTrapObject.gameObject;
+            _playerTrapUIObject = tempTrapObject.gameObject;
             _playerTrapText = tempTrapObject.GetComponentInChildren<TextMeshProUGUI>();
+            _playerBerserkObject = tempBerserkObject.gameObject;
+            _playerBerserkDamageText = tempBerserkObject.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+            _playerBerserkConcentrationText = tempBerserkObject.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
             _playerAction = tempActionText;
             _playerHeartHPImages = tempImages;
             _playerEnergy = tempEnergyText;
@@ -71,8 +87,11 @@ public class UIController : MonoBehaviour
             _enemyAmmoImage = tempAmmoImage;
             _enemySummonObject = tempSummonObject.gameObject;
             _enemySummonText = tempSummonObject.GetComponentInChildren<TextMeshProUGUI>();
-            _enemyTrapObject = tempTrapObject.gameObject;
+            _enemyTrapUIObject = tempTrapObject.gameObject;
             _enemyTrapText = tempTrapObject.GetComponentInChildren<TextMeshProUGUI>();
+            _enemyBerserkObject = tempBerserkObject.gameObject;
+            _enemyBerserkDamageText = tempBerserkObject.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+            _enemyBerserkConcentrationText = tempBerserkObject.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
             _enemyAction = tempActionText;
             _enemyHeartHPImages = tempImages;
             _enemyEnergy = tempEnergyText;
@@ -97,12 +116,20 @@ public class UIController : MonoBehaviour
 
         FinishMatchUI.current.ShowEndGamePanel(false);
 
+        //Class Icons events
         GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
         GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
+
         GameplayController.current.OnSummonIconSetup += SetupSummonImage;
         GameplayController.current.OnSummonUpdate += UpdateSummonText;
+
         GameplayController.current.OnTrapIconSetup += SetupTrapImage;
         GameplayController.current.OnTrapUpdate += UpdateTrapText;
+
+        GameplayController.current.OnBerserkIconsSetup += SetupBerserkImages;
+        GameplayController.current.OnBerserkDamageUpdate += UpdateBerserkDamageText;
+        GameplayController.current.OnBerserkConcentrationUpdate += UpdateBerserkConcentrationText;
+
         GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
 
         DisplayTimer(true);
@@ -294,7 +321,9 @@ public class UIController : MonoBehaviour
             _enemyEnergySlider.value = (float)energy / (float)maxEnergy;
         }
     }
+    #region Setup/Update class icons methods
 
+    //RangerUI
     public void SetupAmmoImage(bool enable, bool isPlayer = false)
     {
         Image img = isPlayer ? 
@@ -315,19 +344,21 @@ public class UIController : MonoBehaviour
             Color.white;
     }
 
-    public void SetupSummonImage(bool enable, bool isPlayer = false)
+    private void SetupClassIconUI(GameObject playerObject, GameObject enemyObject, bool enable, bool isPlayer)
     {
         GameObject gObject = isPlayer ?
-            _playerSummonObject
-            : _enemySummonObject;
+            playerObject
+            : enemyObject;
 
         gObject.SetActive(enable);
+    }
 
-        TextMeshProUGUI text = isPlayer ?
-            _playerSummonText
-            : _enemySummonText;
+    //Summoner UI
+    public void SetupSummonImage(bool enable, bool isPlayer = false)
+    {
+        SetupClassIconUI(_playerSummonObject, _enemySummonObject, enable, isPlayer);
 
-        text.text = "0";
+        UpdateSummonText(0, isPlayer);
     }
 
     public void UpdateSummonText(int summonCount, bool isPlayer = false)
@@ -338,19 +369,13 @@ public class UIController : MonoBehaviour
 
         text.text = summonCount.ToString();
     }
+
+    //TrapperUI
     public void SetupTrapImage(bool enable, bool isPlayer = false)
     {
-        GameObject gObject = isPlayer ?
-            _playerTrapObject
-            : _enemyTrapObject;
+        SetupClassIconUI(_playerTrapUIObject, _enemyTrapUIObject, enable, isPlayer);
 
-        gObject.SetActive(enable);
-
-        TextMeshProUGUI text = isPlayer ?
-            _playerTrapText
-            : _enemyTrapText;
-
-        text.text = "0/10";
+        UpdateTrapText(0, isPlayer);
     }
 
     public void UpdateTrapText(int trapPointsCount, bool isPlayer = false)
@@ -361,6 +386,32 @@ public class UIController : MonoBehaviour
 
         text.text = trapPointsCount+"/10";
     }
+    public void SetupBerserkImages(bool enable, bool isPlayer = false)
+    {
+        SetupClassIconUI(_playerBerserkObject, _enemyBerserkObject, enable, isPlayer);
+
+        UpdateBerserkConcentrationText(0.5f, isPlayer);
+        UpdateBerserkDamageText(1, isPlayer);
+    }
+
+    public void UpdateBerserkConcentrationText(float concentration, bool isPlayer = false)
+    {
+        TextMeshProUGUI text = isPlayer ?
+            _playerBerserkConcentrationText
+            : _enemyBerserkConcentrationText;
+
+        text.text = String.Format("{0:0.##\\%}", concentration*100);
+    }
+    public void UpdateBerserkDamageText(int damage, bool isPlayer = false)
+    {
+        TextMeshProUGUI text = isPlayer ?
+            _playerBerserkDamageText
+            : _enemyBerserkDamageText;
+
+        text.text = damage.ToString();
+    }
+
+    #endregion
 
     public void SetupHPImages(int hpCount, bool isPlayer)
     {
