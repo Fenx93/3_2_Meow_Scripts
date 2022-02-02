@@ -9,8 +9,8 @@ public abstract class Enemy : Character
     public Enemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     {
         characterClass.IsPlayer = false;
-        _aiType = AIType.aggressive;
-        //_aiType = (AIType) Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length);
+        //_aiType = AIType.passive;
+        _aiType = (AIType) Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length-1);
         Debug.Log("Enemy AI is: " + _aiType.ToString());
     }
 
@@ -56,7 +56,15 @@ public abstract class Enemy : Character
         }
     }
 
-    public abstract void SelectAction();
+    public virtual void SelectAction()
+    {
+        switch (_aiType)
+        {
+            case AIType.passive:
+                SelectedAction = new CombatAction(GameplayController.current.doNothingAction);
+                break;
+        }
+    }
 
     protected CombatAction CheckActionForEnergy(CombatAction combatAction)
     {
@@ -78,5 +86,6 @@ public abstract class Enemy : Character
         return GetActionByType(ActionType.rest);
     }
 
-    protected enum AIType { random, aggressive, defensive }
+    // Make sure AIType.passive is last!
+    protected enum AIType { random, aggressive, defensive, passive }
 }

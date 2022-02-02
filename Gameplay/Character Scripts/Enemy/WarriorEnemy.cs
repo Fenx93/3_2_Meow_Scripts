@@ -21,6 +21,7 @@ public class WarriorEnemy : Enemy
                 SelectedAction = CheckSeveralActionForEnergy(parry, block);
                 break;
             default:
+                base.SelectAction();
                 break;
         }
     }

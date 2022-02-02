@@ -47,6 +47,7 @@ public class BerserkEnemy : Enemy
                 SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             default:
+                base.SelectAction();
                 break;
         }
     }

@@ -45,6 +45,7 @@ public class SummonerEnemy : Enemy
                 SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             default:
+                base.SelectAction();
                 break;
         }
     }

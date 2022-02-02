@@ -55,6 +55,7 @@ public class TrapperEnemy : Enemy
                 SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             default:
+                base.SelectAction();
                 break;
         }
     }
