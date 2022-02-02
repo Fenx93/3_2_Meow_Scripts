@@ -58,6 +58,9 @@ public class RangedEnemy : Enemy
                                             : SelectRandomAvailableAction();
                 SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
+            case AIType.passive:
+                SelectedAction = new CombatAction(GameplayController.current.doNothingAction);
+                break;
             default:
                 break;
         }
