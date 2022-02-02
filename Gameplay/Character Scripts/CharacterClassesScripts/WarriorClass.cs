@@ -1,9 +1,19 @@
-﻿using UnityEngine;
-
-public class WarriorClass : CharacterClass
+﻿public class WarriorClass : CharacterClass
 {
     public WarriorClass(ScriptableCharacterClass characterClass) : base(characterClass)
     { }
+
+    public override bool ActionWasCancelled(Character actionExecutor, Character actionDenier)
+    {
+        switch (actionExecutor.SelectedAction.Classification)
+        {
+            case ActionClassification.aggressive:
+                if (actionDenier.SelectedAction.Type == ActionType.parry)
+                    return true;
+                break;
+        }
+        return false;
+    }
 
     public override CombatResolution ExecuteAction(Character actor, Character receiver)
     {

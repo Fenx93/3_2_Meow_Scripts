@@ -10,5 +10,6 @@ public class SerializableAction : ScriptableObject
     public int energyConsumed;
     public string description;
     public bool enabled = true;
+    public bool ableToCancelActions = false;
     public AudioClip actionSound;
 }

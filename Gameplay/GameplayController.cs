@@ -42,7 +42,7 @@ public class GameplayController : MonoBehaviour
         }
 
         delayedActions = new Dictionary<DelayedDelegate, int>();
-        var selectedClass = CharClass.ranger;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
+        var selectedClass = CharClass.warrior;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
         CharacterClass charClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == selectedClass).First());
         switch (selectedClass)
         {
@@ -219,12 +219,18 @@ public class GameplayController : MonoBehaviour
 
         bool executeAction = true;
 
-        //Cancel action if enemy has cancelled action
-        if (CharacterClassHelper.CharacterIsTrapper(receiver, out TrapperClass trapper))
+        if (CharacterClassHelper.CharacterCanCancelActions(receiver))
         {
-            if (trapper.ActionWasCancelled(actor, receiver))
+            if (receiver.SelectedCharacterClass.ActionWasCancelled(actor, receiver))
                 executeAction = false;
         }
+
+        //Cancel action if enemy has cancelled action
+        //if (CharacterClassHelper.CharacterIsTrapper(receiver, out TrapperClass trapper))
+        //{
+        //    if (trapper.ActionWasCancelled(actor, receiver))
+        //        executeAction = false;
+        //}
         actor.SelectedCharacterClass.ExecuteActionPrerequisition(actor);
         return executeAction ?
             actor.SelectedCharacterClass.ExecuteAction(actor, receiver)

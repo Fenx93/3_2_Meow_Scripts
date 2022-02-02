@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class CombatAction
 {
-    public CombatAction(ActionType type, ActionClassification classification, int energyConsumed, Sprite visualisation, string description, AudioClip actionSound, int? cooldown = null, bool enabled = true)
+    public CombatAction(ActionType type, ActionClassification classification, int energyConsumed, 
+        Sprite visualisation, string description, AudioClip actionSound, int? cooldown = null, bool enabled = true, bool ableToCancelActions = false)
     {
         Type = type;
         Cooldown = cooldown;
@@ -11,6 +12,7 @@ public class CombatAction
         EnergyConsumed = energyConsumed;
         Classification = classification;
         Description = description;
+        ActionSound = actionSound;
         ActionSound = actionSound;
     }
     public CombatAction(SerializableAction action)
@@ -23,6 +25,7 @@ public class CombatAction
         Classification = action.classification;
         Description = action.description;
         ActionSound = action.actionSound;
+        AbleToCancelActions = action.ableToCancelActions;
     }
 
     public ActionType Type { get; set; }
@@ -35,6 +38,7 @@ public class CombatAction
     public string Description { get; set; }
     public AudioClip ActionSound { get; set; }
     public bool Enabled { get; set; }
+    public bool AbleToCancelActions { get; set; }
 
 
     public void StartCooldown()

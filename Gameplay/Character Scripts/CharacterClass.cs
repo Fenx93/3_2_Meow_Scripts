@@ -1,18 +1,16 @@
+using System.Linq;
 using UnityEngine;
 
 public abstract class CharacterClass
 {
     public CharClass CharClass { get; protected set; }
     public CombatAction[] Actions { get; protected set; }
-    //public string ClassName { get => CharClass.ToString(); }
     public int BaseDamage { get; protected set; }
     public virtual int Damage { get; protected set; }
     public Sprite WeaponSprite { get; protected set; }
-    //public Sprite ClassIcon { get; protected set; }
-    //public int UnlocksAtLevel { get; protected set; }
-    //public bool HasAmmo { get; protected set; }
     public bool HasAdditionalVictory { get; protected set; }
     public bool IsPlayer { get; set; }
+    public bool AbleToCancelActions { get; set; }
 
     public CharacterClass(ScriptableCharacterClass characterClass)
     {
@@ -21,10 +19,8 @@ public abstract class CharacterClass
         BaseDamage = characterClass.BaseDamage;
         Damage = characterClass.BaseDamage;
         WeaponSprite = characterClass.WeaponSprite;
-        //ClassIcon = characterClass.ClassIcon;
-        //UnlocksAtLevel = characterClass.UnlocksAtLevel;
-        //HasAmmo = false;
         HasAdditionalVictory = false;
+        AbleToCancelActions = Actions.Any(a => a.AbleToCancelActions);
     }
     public virtual CombatResolution ExecuteAction(Character actor, Character receiver)
     {
@@ -39,6 +35,8 @@ public abstract class CharacterClass
         }
         return CombatResolution.passive;
     }
+
+    public virtual bool ActionWasCancelled(Character actionExecutor, Character actionDenier) { return false; }
 
     public virtual void ExecuteActionPrerequisition(Character actor) {}
 
@@ -70,6 +68,16 @@ public static class CharacterClassHelper{
                 throw new System.Exception("Missing character class type!");
         }
         return charClass;
+    }
+
+    public static bool CharacterCanCancelActions(Character character)
+    {
+        bool condition = character.SelectedCharacterClass.AbleToCancelActions;
+        if (condition)
+        {
+            //trapperClass = (TrapperClass)character.SelectedCharacterClass;
+        }
+        return condition;
     }
 
     public static bool CharacterIsTrapper(Character character, out TrapperClass trapperClass )

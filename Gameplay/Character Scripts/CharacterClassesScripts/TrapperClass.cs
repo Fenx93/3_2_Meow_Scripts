@@ -26,22 +26,22 @@ public class TrapperClass : CharacterClass
     public bool AntiDefenseTurnedOn { get; private set; }
     public bool AntiUtilityTurnedOn { get; private set; }*/
 
-    public bool ActionWasCancelled(Character receiver, Character trapper)
+    public override bool ActionWasCancelled(Character actionExecutor, Character actionDenier)
     {
-        switch (receiver.SelectedAction.Classification)
+        switch (actionExecutor.SelectedAction.Classification)
         {
             case ActionClassification.aggressive:
-                if (trapper.SelectedAction.Type == ActionType.anti_attack)
+                if (actionDenier.SelectedAction.Type == ActionType.anti_attack)
                     return true;
                 break;
 
             case ActionClassification.defensive:
-                if (trapper.SelectedAction.Type == ActionType.anti_defense)
+                if (actionDenier.SelectedAction.Type == ActionType.anti_defense)
                     return true;
                 break;
 
             case ActionClassification.utility:
-                if (trapper.SelectedAction.Type == ActionType.anti_utility)
+                if (actionDenier.SelectedAction.Type == ActionType.anti_utility)
                     return true;
                 break;
         }
