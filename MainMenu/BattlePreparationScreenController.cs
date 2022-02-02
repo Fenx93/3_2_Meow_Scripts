@@ -36,7 +36,7 @@ public class BattlePreparationScreenController : MonoBehaviour
             buttons[i].GetComponentInChildren<TextMeshProUGUI>().text = classes[i].ClassName;
             var classIcon = buttons[i].transform.GetChild(1).gameObject.GetComponent<Image>();
             classIcon.sprite = classes[i].ClassIcon;
-            if (classes[i].UnlocksAtLevel > PlayerStatsTracker.CurrentLvl)
+            if (classes[i].UnlocksAtLevel > PlayerStatsTracker.CurrentLvl && !MainMenuController.current.unlockClasses)
             {
                 var unlocksAtGameObject = buttons[i].transform.GetChild(2);
                 unlocksAtGameObject.gameObject.SetActive(true);

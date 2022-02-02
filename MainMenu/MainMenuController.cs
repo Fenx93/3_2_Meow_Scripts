@@ -18,6 +18,8 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] private AudioClip mainMenuTheme;
 
+    public bool unlockClasses = false;
+
     public static MainMenuController current;
 
     [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, hatId = 0, earsId = 0, clothesId = 0, mouthId = 0;
@@ -44,7 +46,7 @@ public class MainMenuController : MonoBehaviour
         selectedClassName.text = selectedClass.ClassName;
         CharacterCustomizer.current.avatars[0].SetWeapon(selectedClass.WeaponSprite);
 
-        bool locked = PlayerStatsTracker.CurrentLvl < selectedClass.UnlocksAtLevel;
+        bool locked = (PlayerStatsTracker.CurrentLvl < selectedClass.UnlocksAtLevel && !unlockClasses);
         if (locked)
         {
             MainMenuUI.current.SetStartGameButton(locked, "Character class locked!", selectedClass.UnlocksAtLevel);
