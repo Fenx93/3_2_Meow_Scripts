@@ -55,8 +55,8 @@ public class TrapperClass : CharacterClass
             case ActionType.anti_attack:
                 if (receiver.SelectedAction.Classification == ActionClassification.aggressive)
                 {
-                    TrapPoints++;
-                    GameplayController.current.delayedActions.Add(receiver.GetDamaged, receiver.Damage);
+                    //TrapPoints++;
+                    //GameplayController.current.delayedActions.Add(receiver.GetDamaged, receiver.Damage);
                     return CombatResolution.attack;
                 }
                 break;
