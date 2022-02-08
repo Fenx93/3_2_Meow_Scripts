@@ -72,6 +72,7 @@ public class LocalisationSystem
             csvLoader = new CSVLoader();
         }
     }
+#if UNITY_EDITOR
     public static void Add(string key, string value)
     {
         Initialise(value);
@@ -104,4 +105,5 @@ public class LocalisationSystem
 
         UpdateDictionaries();
     }
+#endif
 }
