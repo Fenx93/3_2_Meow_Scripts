@@ -65,7 +65,7 @@ public class MainMenuUI : MonoBehaviour
         classUnlocksAtText.enabled = isLocked;
         if (isLocked && unlocksAtLevel.HasValue)
         {
-            classUnlocksAtText.text = "Unlocks at level " + unlocksAtLevel.Value;
+            classUnlocksAtText.text = LocalisationSystem.GetLocalisedValue("unlocks_at_level") + " " + unlocksAtLevel.Value;
         }
     }
 

@@ -8,13 +8,13 @@ public class LocalisationSystem
 {
     public enum Language
     {
-        English, French
+        English, Russian
     }
 
-    public static Language language = Language.English;
+    public static Language language = Language.Russian;
 
     private static Dictionary<string, string> localisedEN;
-    private static Dictionary<string, string> localisedFR;
+    private static Dictionary<string, string> localisedRU;
 
     public static bool isInit;
     public static CSVLoader csvLoader;
@@ -31,7 +31,7 @@ public class LocalisationSystem
     private static void UpdateDictionaries()
     {
         localisedEN = csvLoader.GetDictionaryValues("en");
-        localisedFR = csvLoader.GetDictionaryValues("fr");
+        localisedRU = csvLoader.GetDictionaryValues("ru");
     }
 
     public static Dictionary<string,string> GetDictionaryForEditor()
@@ -53,8 +53,8 @@ public class LocalisationSystem
             case Language.English:
                 localisedEN.TryGetValue(key, out value);
                 break;
-            case Language.French:
-                localisedFR.TryGetValue(key, out value);
+            case Language.Russian:
+                localisedRU.TryGetValue(key, out value);
                 break;
         }
         return value;

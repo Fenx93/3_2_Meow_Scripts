@@ -29,7 +29,7 @@ public class ScriptableCharacterClass : ScriptableObject
             return _actions;
         }
     }
-    public string ClassName { get => CharClass.ToString(); }
+    public string ClassName { get => LocalisationSystem.GetLocalisedValue(CharClass.ToString()); }
     /*public int HP { get => hp; }*/
     public int BaseDamage { get => baseDamage; }
     public bool HasAmmo { get => hasAmmo; }

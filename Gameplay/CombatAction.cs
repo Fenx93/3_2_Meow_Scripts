@@ -3,7 +3,7 @@ using UnityEngine;
 public class CombatAction
 {
     public CombatAction(ActionType type, ActionClassification classification, int energyConsumed, 
-        Sprite visualisation, string description, AudioClip actionSound, int? cooldown = null, bool enabled = true, bool ableToCancelActions = false)
+        Sprite visualisation, AudioClip actionSound, int? cooldown = null, bool enabled = true, bool ableToCancelActions = false)
     {
         Type = type;
         Cooldown = cooldown;
@@ -11,7 +11,7 @@ public class CombatAction
         Enabled = enabled;
         EnergyConsumed = energyConsumed;
         Classification = classification;
-        Description = description;
+        //Description = description;
         ActionSound = actionSound;
         ActionSound = actionSound;
     }
@@ -23,7 +23,7 @@ public class CombatAction
         Enabled = action.enabled;
         EnergyConsumed = action.energyConsumed;
         Classification = action.classification;
-        Description = action.description;
+        //Description = action.description;
         ActionSound = action.actionSound;
         AbleToCancelActions = action.ableToCancelActions;
     }
@@ -35,7 +35,7 @@ public class CombatAction
     public int? Cooldown { get; set; }
     public int CurrentCooldown { get; set; }
     public int AvailableEnergy { get; set; }
-    public string Description { get; set; }
+    public string Description { get => LocalisationSystem.GetLocalisedValue(Type.ToString().ToLower() + "_description"); /*set;*/ }
     public AudioClip ActionSound { get; set; }
     public bool Enabled { get; set; }
     public bool AbleToCancelActions { get; set; }
@@ -56,11 +56,11 @@ public class CombatAction
 
     public override string ToString()
     {
-        return Type.ToString().ToUpper().Replace('_','-');
+        return LocalisationSystem.GetLocalisedValue(Type.ToString()).ToUpper()/*.Replace('_','-')*/;
     }
 
     internal CombatAction Clone()
     {
-        return new CombatAction(Type, Classification, EnergyConsumed, Visualisation, Description, ActionSound, Cooldown, Enabled);
+        return new CombatAction(Type, Classification, EnergyConsumed, Visualisation, ActionSound, Cooldown, Enabled);
     }
 }

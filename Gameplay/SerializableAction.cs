@@ -8,7 +8,7 @@ public class SerializableAction : ScriptableObject
     public Sprite visualisation;
     public int cooldown;
     public int energyConsumed;
-    public string description;
+    //public string description;
     public bool enabled = true;
     public bool ableToCancelActions = false;
     public AudioClip actionSound;

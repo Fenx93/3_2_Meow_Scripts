@@ -40,7 +40,7 @@ public class BattlePreparationScreenController : MonoBehaviour
             {
                 var unlocksAtGameObject = buttons[i].transform.GetChild(2);
                 unlocksAtGameObject.gameObject.SetActive(true);
-                unlocksAtGameObject.gameObject.GetComponent<TextMeshProUGUI>().text = "Unlocks at level " + classes[i].UnlocksAtLevel;
+                unlocksAtGameObject.gameObject.GetComponent<TextMeshProUGUI>().text = LocalisationSystem.GetLocalisedValue("unlocks_at_level") + " " + classes[i].UnlocksAtLevel;
 
                 classIcon.color = Color.gray;
             }
@@ -85,7 +85,7 @@ public class BattlePreparationScreenController : MonoBehaviour
     {
         var action = _actions[actionIndex];
         actionNameText.text = action.ToString();
-        energyConsumedText.text = "Energy Consumed : " + action.EnergyConsumed;
-        actionDescriptionText.text = action.Description;
+        energyConsumedText.text = LocalisationSystem.GetLocalisedValue("energy_consumed") +": " + action.EnergyConsumed;
+        actionDescriptionText.text = action.Description;//LocalisationSystem.GetLocalisedValue(action.Type.ToString().ToLower() + "_description");
     }
 }

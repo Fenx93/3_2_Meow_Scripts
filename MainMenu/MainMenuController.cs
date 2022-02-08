@@ -49,11 +49,11 @@ public class MainMenuController : MonoBehaviour
         bool locked = (PlayerStatsTracker.CurrentLvl < selectedClass.UnlocksAtLevel && !unlockClasses);
         if (locked)
         {
-            MainMenuUI.current.SetStartGameButton(locked, "Character class locked!", selectedClass.UnlocksAtLevel);
+            MainMenuUI.current.SetStartGameButton(locked, LocalisationSystem.GetLocalisedValue("character_class_locked"), selectedClass.UnlocksAtLevel);
         }
         else
         {
-            MainMenuUI.current.SetStartGameButton(locked, "To Battle!");
+            MainMenuUI.current.SetStartGameButton(locked, LocalisationSystem.GetLocalisedValue("to_battle"));
         }
     }
 

@@ -30,6 +30,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private GameObject postProcessing;
 
     [SerializeField] private bool startByDefault;
+    [SerializeField] private bool isTraining;
 
     void Awake()
     {
@@ -44,8 +45,13 @@ public class GameplayController : MonoBehaviour
         }
 
         delayedActions = new Dictionary<DelayedDelegate, int>();
+
         var selectedClass = CharClass.berserk;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
-        CharacterClass charClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == selectedClass).First());
+        if (isTraining)
+            selectedClass = CharClass.ranger;
+        
+        CharacterClass charClass = CharacterClassHelper.GetCharacterClass(
+            _characterClasses.Where(c => c.CharClass == selectedClass).First());
         switch (selectedClass)
         {
             case CharClass.warrior:
@@ -205,9 +211,9 @@ public class GameplayController : MonoBehaviour
     private void ResetActions()
     {
         //deselect all actions
-        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null, null);
+        player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null);
         UIController.current.UpdateSelectedActionText("");
-        enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null, null);
+        enemy.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null);
         // disable action buttons that are on cooldown
         UIController.current.EnableActionButtons(player);
         ActionAnimator.current.DisableActionVisualisations();
@@ -273,7 +279,7 @@ public class GameplayController : MonoBehaviour
 
         if (won)
         {
-            message = "Victory!";
+            message = LocalisationSystem.GetLocalisedValue("match_result_victory");
             exp = 100;
             money = 50;
             VictoryAnimatorScript.current.SetValues(message, money, exp);
@@ -281,7 +287,7 @@ public class GameplayController : MonoBehaviour
         }
         else
         {
-            message = "Defeat!";
+            message = LocalisationSystem.GetLocalisedValue("match_result_defeat");
             exp = 50;
             money = 25;
             VictoryAnimatorScript.current.SetValues(message, money, exp);

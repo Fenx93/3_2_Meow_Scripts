@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -14,6 +15,7 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private AudioMixer musicMixer, sfxMixer;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Slider musicSlider, sfxSlider;
+    [SerializeField] private TMP_Dropdown languagesDropdown;
     private Resolution[] resolutions;
 
     private float musicVolume, sfxVolume;
@@ -54,6 +56,7 @@ public class SettingsMenu : MonoBehaviour
             resolutionDropdown.value = currentResolutionIndex;
             resolutionDropdown.RefreshShownValue();
         }
+        //PopulateLanguagesDropdown();
     }
 
     public void SetMusicVolume(float volumeSet)
@@ -79,6 +82,36 @@ public class SettingsMenu : MonoBehaviour
         PlayerPrefs.SetInt("fullScreen", isFullScreen ? 1 : 0);
         PlayerPrefs.Save();
         Screen.fullScreen = isFullScreen;
+    }
+
+    public void SetLanguage(int selectedLanguage)
+    {
+        LocalisationSystem.language = (LocalisationSystem.Language)selectedLanguage;
+        var foundTextLocaliserUIObjects = FindObjectsOfType<TextLocaliserUI>(true);
+        foreach (var item in foundTextLocaliserUIObjects)
+        {
+            item.SetLanguageValue();
+        }
+    }
+
+    private void PopulateLanguagesDropdown()
+    {
+        var languages = Enum.GetValues(typeof(LocalisationSystem.Language));
+
+        List<string> options = new List<string>();
+        int selectedOption = 0;
+        for (int i = 0; i < languages.Length; i++)
+        {
+            var language = (LocalisationSystem.Language[]) languages;
+            if (language[i] == LocalisationSystem.language)
+            {
+                selectedOption = i;
+            }
+            options.Add(language[i].ToString());
+        }
+        languagesDropdown.ClearOptions();
+        languagesDropdown.AddOptions(options);
+        languagesDropdown.SetValueWithoutNotify(selectedOption);
     }
 
     public void Exit()

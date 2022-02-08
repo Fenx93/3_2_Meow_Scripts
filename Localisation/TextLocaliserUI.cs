@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
@@ -15,7 +10,12 @@ public class TextLocaliserUI : MonoBehaviour
 
     private void Start()
     {
+        SetLanguageValue();
+    }
+
+    public void SetLanguageValue()
+    {
         textField = GetComponent<TextMeshProUGUI>();
-        textField.text = localisedString.value;
+        textField.text = localisedString.Value;
     }
 }

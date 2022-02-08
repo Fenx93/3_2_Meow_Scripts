@@ -13,7 +13,7 @@ public class CSVLoader
 
     public void LoadCSV()
     {
-        csvFile = Resources.Load<TextAsset>("losalisation");
+        csvFile = Resources.Load<TextAsset>("localisation_backup");
     }
 
 
@@ -27,7 +27,7 @@ public class CSVLoader
 
         string[] headers = lines[0].Split(fieldSeperator, System.StringSplitOptions.None);
 
-        for(int i=0; i<headers.Length; i++)
+        for(int i = 0; i < headers.Length; i++)
         {
             if (headers[i].Contains(attributeId))
             {
@@ -38,7 +38,7 @@ public class CSVLoader
 
         Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
 
-        for(int i=1; i < lines.Length; i++)
+        for(int i = 1; i < lines.Length; i++)
         {
             string line = lines[i];
             string[] fields = CSVParser.Split(line);
@@ -57,7 +57,8 @@ public class CSVLoader
                     continue;
 
                 var value = fields[attributeIndex];
-
+                if (value.Contains("\\n"))
+                    value = value.Replace("\\n", "\r\n");
                 dictionary.Add(key, value);
             }
         }

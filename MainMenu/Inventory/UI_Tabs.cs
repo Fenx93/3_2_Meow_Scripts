@@ -117,7 +117,7 @@ public class UI_Tabs : MonoBehaviour
         rect.offsetMin = new Vector2(0, 0);
 
         text.font = font;
-        text.text = tabname;
+        text.text = LocalisationSystem.GetLocalisedValue(tabname.ToLower());
         text.fontStyle = fontStyle;
         text.enableAutoSizing = enableAutoSize;
         text.lineSpacing = 30;
