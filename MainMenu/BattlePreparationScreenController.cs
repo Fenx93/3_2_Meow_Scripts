@@ -33,12 +33,12 @@ public class BattlePreparationScreenController : MonoBehaviour
             Debug.LogError("Battle Preparation screen error! There are more classes than class buttons(in classHolder).");
         for (int i = 0; i < classes.Length; i++)
         {
-            buttons[i].GetComponentInChildren<TextMeshProUGUI>().text = classes[i].ClassName;
-            var classIcon = buttons[i].transform.GetChild(1).gameObject.GetComponent<Image>();
+            //buttons[i].GetComponentInChildren<TextMeshProUGUI>().text = classes[i].ClassName;
+            var classIcon = buttons[i].transform.GetChild(0).gameObject.GetComponent<Image>();
             classIcon.sprite = classes[i].ClassIcon;
             if (classes[i].UnlocksAtLevel > PlayerStatsTracker.CurrentLvl && !MainMenuController.current.unlockClasses)
             {
-                var unlocksAtGameObject = buttons[i].transform.GetChild(2);
+                var unlocksAtGameObject = buttons[i].transform.GetChild(1);
                 unlocksAtGameObject.gameObject.SetActive(true);
                 unlocksAtGameObject.gameObject.GetComponent<TextMeshProUGUI>().text = LocalisationSystem.GetLocalisedValue("unlocks_at_level") + " " + classes[i].UnlocksAtLevel;
 

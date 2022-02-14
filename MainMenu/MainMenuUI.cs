@@ -21,6 +21,10 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private Button startGameButton;
     [SerializeField] private TextMeshProUGUI classUnlocksAtText;
 
+    [Header("Battle preparation screen UI")]
+    [SerializeField] private GameObject classDescriptionPanel;
+    [SerializeField] private GameObject actionDescriptionPanel;
+
     public static MainMenuUI current;
 
     void Awake()
@@ -71,8 +75,9 @@ public class MainMenuUI : MonoBehaviour
 
     public void OpenBattlePreparationScreen(int selectedGameMode)
     {
-        gameModeSelectionScreen.SetActive(false);
+        gameModeSelectionScreen.SetActive(true);
         battlePreparationScreen.SetActive(true);
+        DisplayClassDescriptionPanel(true);
         topBarPanel.SetActive(false);
         inventoryScreen.SetActive(false);
         settingsScreen.SetActive(false);
@@ -114,6 +119,14 @@ public class MainMenuUI : MonoBehaviour
     public void UpdateExpSlider(int currentExp, int expCap)
     {
         expSlider.value = (float)currentExp / (float)expCap;
+    }
+    #endregion
+
+    #region BattlePreparationScreen
+    public void DisplayClassDescriptionPanel(bool showClass)
+    {
+        classDescriptionPanel.SetActive(showClass);
+        actionDescriptionPanel.SetActive(!showClass);
     }
     #endregion
 }
