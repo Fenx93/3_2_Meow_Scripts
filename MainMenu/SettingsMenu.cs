@@ -62,13 +62,13 @@ public class SettingsMenu : MonoBehaviour
     public void SetMusicVolume(float volumeSet)
     {
         musicVolume = volumeSet;
-        musicMixer.SetFloat("musicVolume", volumeSet);
+        musicMixer.SetFloat("musicVolume", Mathf.Log10(volumeSet) * 20);
     }
 
     public void SetSFXVolume(float volumeSet)
     {
         sfxVolume = volumeSet;
-        sfxMixer.SetFloat("sfxVolume", volumeSet);
+        sfxMixer.SetFloat("sfxVolume", Mathf.Log10(volumeSet)*20);
     }
 
     public void SetResolution(int resolutionIndex)
