@@ -95,14 +95,17 @@ public class FinishMatchUI : MonoBehaviour
     }
     public void SetUnlockedItemPanel(TabItem item, CharacterPart part)
     {
-        itemUnlockedPanel.GetComponentInChildren<TextMeshProUGUI>().text = "New " + part.ToString() + " Unlocked!";
+        var tmpro = itemUnlockedPanel.GetComponentInChildren<TextMeshProUGUI>();
         if (item is SpriteTabItem it)
         {
+            var keyString = part.ToString().ToLower();
+            tmpro.text =LocalisationSystem.GetLocalisedValue("new_item_unlocked")+ " " + LocalisationSystem.GetLocalisedValue(keyString);
             unlockedItemIcon.color = InventorySettings.itemQualities[item.quality];
             unlockedItemIconImage.sprite = it.sprite;
         }
         else
         {
+            tmpro.text = LocalisationSystem.GetLocalisedValue("new_color_unlocked");
             unlockedItemIconImage.color = ((ColorTabItem)item).color;
         }
 
