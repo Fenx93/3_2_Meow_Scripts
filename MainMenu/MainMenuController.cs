@@ -42,7 +42,7 @@ public class MainMenuController : MonoBehaviour
     public void SelectClass(int classInteger)
     {
         ScriptableCharacterClass selectedClass = classes[classInteger];
-        selectedClassID = selectedClass.ClassName;
+        selectedClassID = selectedClass.CharClass.ToString();
         selectedClassName.text = selectedClass.ClassName;
         CharacterCustomizer.current.avatars[0].SetWeapon(selectedClass.WeaponSprite);
 
@@ -56,24 +56,6 @@ public class MainMenuController : MonoBehaviour
             MainMenuUI.current.SetStartGameButton(locked, LocalisationSystem.GetLocalisedValue("to_battle"));
         }
     }
-
-    //public void CycleThroughClasses(int direction)
-    //{
-    //    if (direction == 1)
-    //    {
-    //        selectedClassID = (selectedClassID == classes.Length-1) ?
-    //            0
-    //            : selectedClassID+1;
-
-    //    }
-    //    else if (direction == -1)
-    //    {
-    //        selectedClassID = (selectedClassID == 0) ?
-    //            classes.Length-1
-    //            : selectedClassID-1;
-    //    }
-    //    SelectClass(selectedClassID.Value);
-    //}
 
     public void StartTraining()
     {

@@ -46,7 +46,7 @@ public class GameplayController : MonoBehaviour
 
         delayedActions = new Dictionary<DelayedDelegate, int>();
 
-        var selectedClass = CharClass.berserk;//(CharClass)PlayerPrefs.GetInt("SelectedClass");
+        var selectedClass = /*CharClass.berserk;*/(CharClass)System.Enum.Parse(typeof(CharClass), PlayerPrefs.GetString("SelectedClass"));
         if (isTraining)
             selectedClass = CharClass.ranger;
         
