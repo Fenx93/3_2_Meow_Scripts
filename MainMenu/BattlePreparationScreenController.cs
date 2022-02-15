@@ -20,7 +20,7 @@ public class BattlePreparationScreenController : MonoBehaviour
     [SerializeField] private Transform classDescriptionPanel;
 
     private TextMeshProUGUI classDescriptionText;
-    private GameObject iconDescriptionHolder, iconDescriptionHolder1;
+    private GameObject classIconsHolder, iconDescriptionHolder, iconDescriptionHolder1;
 
     public static BattlePreparationScreenController current;
 
@@ -33,10 +33,11 @@ public class BattlePreparationScreenController : MonoBehaviour
 
     public void SetupClassDescriptionItems()
     {
-        classDescriptionText = classDescriptionPanel.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        var classIconsDescription = classDescriptionPanel.GetChild(1);
-        iconDescriptionHolder = classIconsDescription.GetChild(0).gameObject;
-        iconDescriptionHolder1 = classIconsDescription.GetChild(1).gameObject;
+        classDescriptionText = classDescriptionPanel.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        var classIconsHolderTransform = classDescriptionPanel.GetChild(1);
+        classIconsHolder = classIconsHolderTransform.gameObject;
+        iconDescriptionHolder = classIconsHolderTransform.GetChild(0).gameObject;
+        iconDescriptionHolder1 = classIconsHolderTransform.GetChild(1).gameObject;
     }
 
     public void UpdateClassButtons(ScriptableCharacterClass[] classes)
@@ -76,8 +77,11 @@ public class BattlePreparationScreenController : MonoBehaviour
         //get classDescription Text, assign it
         classDescriptionText.text = LocalisationSystem.GetLocalisedValue(currentClass.classDescription);
 
+        classIconsHolder.SetActive(true);
+
         //get currentClass.icon1 - if not null, get IconDescriptionHolder, assign icon and text to corresponding fields
-        if (currentClass.classSpecificIcon != null && currentClass.classSpecificIconDescription != null)
+        bool firstUsed = currentClass.classSpecificIcon != null && currentClass.classSpecificIconDescription != null;
+        if (firstUsed)
         {
             iconDescriptionHolder.SetActive(true);
             iconDescriptionHolder.GetComponentInChildren<Image>().sprite = currentClass.classSpecificIcon;
@@ -87,8 +91,9 @@ public class BattlePreparationScreenController : MonoBehaviour
         {
             iconDescriptionHolder.SetActive(false);
         }
+        bool secondUsed = currentClass.classSpecificIcon2 != null && currentClass.classSpecificIconDescription2 != null;
         //get currentClass.icon2 - if not null, get IconDescriptionHolder, assign icon and text to corresponding fields
-        if (currentClass.classSpecificIcon2 != null && currentClass.classSpecificIconDescription2 != null)
+        if (secondUsed)
         {
             iconDescriptionHolder1.SetActive(true);
             iconDescriptionHolder1.GetComponentInChildren<Image>().sprite = currentClass.classSpecificIcon2;
@@ -98,6 +103,11 @@ public class BattlePreparationScreenController : MonoBehaviour
         {
             iconDescriptionHolder1.SetActive(false);
         }
+        if (!firstUsed && !secondUsed)
+        {
+            classIconsHolder.SetActive(false);
+        }
+
     }
 
     private void UpdateActionButtons(int classInteger)
