@@ -9,8 +9,13 @@ public class ScriptableCharacterClass : ScriptableObject
     [SerializeField] private int baseDamage;
     [SerializeField] private Sprite weaponSprite;
     [SerializeField] private Sprite classIcon;
-    [SerializeField] private bool hasAmmo = false;
     [SerializeField] private int unlocksAtLevel = 1;
+    [Header("Descriptions")]
+    public string classDescription = null;
+    public Sprite classSpecificIcon = null;
+    public string classSpecificIconDescription = null;
+    public Sprite classSpecificIcon2 = null;
+    public string classSpecificIconDescription2 = null;
 
     private CombatAction[] _actions;
 
@@ -30,9 +35,7 @@ public class ScriptableCharacterClass : ScriptableObject
         }
     }
     public string ClassName { get => LocalisationSystem.GetLocalisedValue(CharClass.ToString()); }
-    /*public int HP { get => hp; }*/
     public int BaseDamage { get => baseDamage; }
-    public bool HasAmmo { get => hasAmmo; }
     public Sprite WeaponSprite { get => weaponSprite; }
     public Sprite ClassIcon { get => classIcon; }
     public int UnlocksAtLevel { get => unlocksAtLevel; }

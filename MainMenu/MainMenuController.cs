@@ -34,6 +34,7 @@ public class MainMenuController : MonoBehaviour
     void Start()
     {
         AudioController.current.PlayMusic(mainMenuTheme);
+        BattlePreparationScreenController.current.SetupClassDescriptionItems();
         BattlePreparationScreenController.current.UpdateClassButtons(classes);
         PlayerStatsTracker.SetData(1, 0, 75, 0);
         PlayerStatsTracker.UpdateUI();

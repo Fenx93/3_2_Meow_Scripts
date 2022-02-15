@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,10 @@ public class BattlePreparationScreenController : MonoBehaviour
     private TextMeshProUGUI actionNameText,
         energyConsumedText, actionDescriptionText;
 
+    [SerializeField] private Transform classDescriptionPanel;
+
+    private TextMeshProUGUI classDescriptionText;
+    private GameObject iconDescriptionHolder, iconDescriptionHolder1;
 
     public static BattlePreparationScreenController current;
 
@@ -24,6 +29,14 @@ public class BattlePreparationScreenController : MonoBehaviour
     void Awake()
     {
         current = this;
+    }
+
+    public void SetupClassDescriptionItems()
+    {
+        classDescriptionText = classDescriptionPanel.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        var classIconsDescription = classDescriptionPanel.GetChild(1);
+        iconDescriptionHolder = classIconsDescription.GetChild(0).gameObject;
+        iconDescriptionHolder1 = classIconsDescription.GetChild(1).gameObject;
     }
 
     public void UpdateClassButtons(ScriptableCharacterClass[] classes)
@@ -52,7 +65,39 @@ public class BattlePreparationScreenController : MonoBehaviour
     {
         MainMenuController.current.SelectClass(classInteger);
         AudioController.current.PlayButtonClick();
+        UpdateClassDescriptions(classInteger);
         UpdateActionButtons(classInteger);
+    }
+
+    private void UpdateClassDescriptions(int classInteger)
+    {
+        var currentClass = MainMenuController.current.classes[classInteger];
+
+        //get classDescription Text, assign it
+        classDescriptionText.text = LocalisationSystem.GetLocalisedValue(currentClass.classDescription);
+
+        //get currentClass.icon1 - if not null, get IconDescriptionHolder, assign icon and text to corresponding fields
+        if (currentClass.classSpecificIcon != null && currentClass.classSpecificIconDescription != null)
+        {
+            iconDescriptionHolder.SetActive(true);
+            iconDescriptionHolder.GetComponentInChildren<Image>().sprite = currentClass.classSpecificIcon;
+            iconDescriptionHolder.GetComponentInChildren<TextMeshProUGUI>().text = LocalisationSystem.GetLocalisedValue(currentClass.classSpecificIconDescription);
+        }
+        else
+        {
+            iconDescriptionHolder.SetActive(false);
+        }
+        //get currentClass.icon2 - if not null, get IconDescriptionHolder, assign icon and text to corresponding fields
+        if (currentClass.classSpecificIcon2 != null && currentClass.classSpecificIconDescription2 != null)
+        {
+            iconDescriptionHolder1.SetActive(true);
+            iconDescriptionHolder1.GetComponentInChildren<Image>().sprite = currentClass.classSpecificIcon2;
+            iconDescriptionHolder1.GetComponentInChildren<TextMeshProUGUI>().text = LocalisationSystem.GetLocalisedValue(currentClass.classSpecificIconDescription2);
+        }
+        else
+        {
+            iconDescriptionHolder1.SetActive(false);
+        }
     }
 
     private void UpdateActionButtons(int classInteger)
