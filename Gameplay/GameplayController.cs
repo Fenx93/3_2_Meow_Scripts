@@ -31,6 +31,7 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private bool startByDefault;
     [SerializeField] private bool isTraining;
+    [SerializeField] private GameObject trainingObject;
 
     void Awake()
     {
@@ -39,6 +40,7 @@ public class GameplayController : MonoBehaviour
 
     void Start()
     {
+        isTraining = System.Convert.ToBoolean(PlayerPrefs.GetInt("IsTraining"));
         if (enablePostProcessing)
         {
             postProcessing.SetActive(false);
@@ -48,8 +50,11 @@ public class GameplayController : MonoBehaviour
 
         var selectedClass = /*CharClass.berserk;*/(CharClass)System.Enum.Parse(typeof(CharClass), PlayerPrefs.GetString("SelectedClass"));
         if (isTraining)
+        {
             selectedClass = CharClass.ranger;
-        
+            startByDefault = false;
+        }
+
         CharacterClass charClass = CharacterClassHelper.GetCharacterClass(
             _characterClasses.Where(c => c.CharClass == selectedClass).First());
         switch (selectedClass)
@@ -105,6 +110,7 @@ public class GameplayController : MonoBehaviour
 
         CharacterCustomizer.current.avatars[1].SetWeapon(eCharClass.WeaponSprite);
 
+        trainingObject.SetActive(isTraining);
 
         ResetActions();
         if (startByDefault)

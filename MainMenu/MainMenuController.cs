@@ -60,7 +60,8 @@ public class MainMenuController : MonoBehaviour
 
     public void StartTraining()
     {
-        SceneManager.LoadScene(trainingScenename, LoadSceneMode.Single);
+        PlayerPrefs.SetInt("IsTraining", 1);
+        SceneManager.LoadScene(sceneName/*trainingScenename*/, LoadSceneMode.Single);
     }
 
     public void StartGame()
@@ -68,6 +69,7 @@ public class MainMenuController : MonoBehaviour
         if (selectedClassID != null)
         {
             //run game
+            PlayerPrefs.SetInt("IsTraining", 0);
             PlayerPrefs.SetString("SelectedClass", selectedClassID);
 
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
