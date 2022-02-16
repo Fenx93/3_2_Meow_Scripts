@@ -35,6 +35,7 @@ public class MainMenuUI : MonoBehaviour
     private void Start()
     {
         OpenGameModeSelectionScreen();
+        DisplayClassDescriptionPanel(false);
     }
 
     #region Switch Between Screens
@@ -77,7 +78,6 @@ public class MainMenuUI : MonoBehaviour
     {
         gameModeSelectionScreen.SetActive(true);
         battlePreparationScreen.SetActive(true);
-        DisplayClassDescriptionPanel(true);
         topBarPanel.SetActive(false);
         inventoryScreen.SetActive(false);
         settingsScreen.SetActive(false);
