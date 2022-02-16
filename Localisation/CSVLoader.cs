@@ -13,7 +13,7 @@ public class CSVLoader
 
     public void LoadCSV()
     {
-        csvFile = Resources.Load<TextAsset>("localisation_backup");
+        csvFile = Resources.Load<TextAsset>("localisation");
     }
 
 
