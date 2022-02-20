@@ -202,13 +202,13 @@ public class UIController : MonoBehaviour
             {
                 var action = player.Actions[i];
                 var canPerform = action.CanPerform();
-                // display cooldown timer on a button - no longer required
-                /*if (!canPerform && action.CurrentCooldown > 0)
+
+                if (!canPerform && action.CurrentCooldown > 0)
                 {
                     var textUI = actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
                     textUI.enabled = true;
                     textUI.text = action.CurrentCooldown.ToString();
-                }*/
+                }
 
                 actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().enabled = canPerform && action.EnergyConsumed != 0;
                 actionButtons[i].interactable = canPerform;
@@ -219,7 +219,7 @@ public class UIController : MonoBehaviour
             for (int i = 0; i < actionButtons.Length; i++)
             {
                 actionButtons[i].interactable = false;
-                //actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
+                actionButtons[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
                 actionButtons[i].transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().enabled = false;
             }
         }

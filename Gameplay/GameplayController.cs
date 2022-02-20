@@ -68,7 +68,7 @@ public class GameplayController : MonoBehaviour
     {
         delayedActions = new Dictionary<DelayedDelegate, int>();
 
-        var selectedClass = /*CharClass.berserk;*/(CharClass)System.Enum.Parse(typeof(CharClass), PlayerPrefs.GetString("SelectedClass"));
+        var selectedClass = (CharClass)System.Enum.Parse(typeof(CharClass), PlayerPrefs.GetString("SelectedClass"));
         if (isTraining)
         {
             selectedClass = CharClass.ranger;
@@ -111,17 +111,57 @@ public class GameplayController : MonoBehaviour
         if (CharacterStore.clothes != null)
             charCustomizer.avatars[0].SetSprite(CharacterStore.clothes, CharacterPart.clothes);
 
-        //if (isTraining)
-        //{
-        //    var ranger = (RangerClass)player.SelectedCharacterClass;
-        //    ranger.HasAmmo = true;
-        //}
-
         UIController.current.DisplayConsumedEnergy(player);
 
-        CharacterClass eCharClass = CharacterClassHelper.GetCharacterClass(_characterClasses.Where(c => c.CharClass == CharClass.ranger).First());
-        enemy = new RangedEnemy(eCharClass, 5, 5);
+        enemy = GetRandomEnemyClass();
 
+        trainingObject.SetActive(isTraining);
+
+        ResetActions();
+        if (startByDefault)
+        {
+            StartCoroutine(nameof(Countdown));
+        }
+    }
+
+    private Enemy GetRandomEnemyClass()
+    {
+        Enemy enemy = null;
+        var selectedClass = (CharClass)Random.Range(0, System.Enum.GetNames(typeof(CharClass)).Length);
+        if (isTraining)
+            selectedClass = CharClass.ranger;
+
+        CharacterClass charClass = CharacterClassHelper.GetCharacterClass(
+            _characterClasses.Where(c => c.CharClass == selectedClass).First());
+        switch (selectedClass)
+        {
+            case CharClass.warrior:
+                enemy = new WarriorEnemy(charClass, 5, 5);
+                break;
+            case CharClass.ranger:
+                enemy = new RangedEnemy(charClass, 5, 5);
+                break;
+            case CharClass.summoner:
+                enemy = new SummonerEnemy(charClass, 5, 5);
+                break;
+            case CharClass.berserk:
+                enemy = new BerserkEnemy(charClass, 5, 0);
+                break;
+            case CharClass.trapper:
+                enemy = new TrapperEnemy(charClass, 5, 5);
+                break;
+            default:
+                throw new System.Exception("Encountered missing CharClass!");
+        }
+
+        CharacterCustomizer.current.avatars[1].SetWeapon(enemy.SelectedCharacterClass.WeaponSprite);
+        SetupEnemyLooks();
+        return enemy;
+    }
+
+    private void SetupEnemyLooks()
+    {
+        var charCustomizer = CharacterCustomizer.current;
         if (EnemyPresetsHolder.mainColor != null)
             charCustomizer.avatars[1].SetColor(EnemyPresetsHolder.mainColor, CharacterPart.mainColor);
         if (EnemyPresetsHolder.secondaryColor != null)
@@ -133,15 +173,6 @@ public class GameplayController : MonoBehaviour
         if (EnemyPresetsHolder.clothes != null)
             charCustomizer.avatars[1].SetSprite(EnemyPresetsHolder.clothes, CharacterPart.clothes);
 
-        CharacterCustomizer.current.avatars[1].SetWeapon(eCharClass.WeaponSprite);
-
-        trainingObject.SetActive(isTraining);
-
-        ResetActions();
-        if (startByDefault)
-        {
-            StartCoroutine(nameof(Countdown));
-        }
     }
 
     public void StartGame()
@@ -235,7 +266,7 @@ public class GameplayController : MonoBehaviour
 
     public CombatResolution ResolveAction(Character actor, Character receiver)
     {
-        //actor.SelectedAction.StartCooldown();
+        actor.SelectedAction.StartCooldown();
         actor.ConsumeEnergy(actor.SelectedAction.EnergyConsumed);
         AudioController.current.PlaySFX(actor.SelectedAction.ActionSound);
 

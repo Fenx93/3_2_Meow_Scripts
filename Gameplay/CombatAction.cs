@@ -51,7 +51,7 @@ public class CombatAction
 
     public bool CanPerform()
     {
-        return Enabled /*&& CurrentCooldown == 0*/&& EnergyConsumed <= AvailableEnergy;
+        return Enabled && CurrentCooldown == 0 && EnergyConsumed <= AvailableEnergy;
     }
 
     public override string ToString()
