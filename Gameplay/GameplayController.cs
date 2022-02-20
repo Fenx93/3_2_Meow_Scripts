@@ -7,7 +7,7 @@ using static InventorySettings;
 
 public class GameplayController : MonoBehaviour
 {
-    [SerializeField] float countdownMultiplier = 1.5f, countdownDuration = 4f;
+    public float countdownMultiplier = 1.5f, countdownDuration = 4f;
 
     private bool _continueGame = true;
     [SerializeField] private ScriptableCharacterClass[] _characterClasses;
@@ -29,8 +29,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private bool enablePostProcessing;
     [SerializeField] private GameObject postProcessing;
 
-    [SerializeField] private bool startByDefault;
-    [SerializeField] private bool isTraining;
+    public bool startByDefault, isTraining;
     [SerializeField] private GameObject trainingObject;
 
     void Awake()
@@ -45,7 +44,28 @@ public class GameplayController : MonoBehaviour
         {
             postProcessing.SetActive(false);
         }
+        SetupGame();
+    }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            GameEnded(true);
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            GameEnded(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Player damaged");
+            player.GetDamaged(1);
+        }
+    }
+
+    public void SetupGame()
+    {
         delayedActions = new Dictionary<DelayedDelegate, int>();
 
         var selectedClass = /*CharClass.berserk;*/(CharClass)System.Enum.Parse(typeof(CharClass), PlayerPrefs.GetString("SelectedClass"));
@@ -91,6 +111,11 @@ public class GameplayController : MonoBehaviour
         if (CharacterStore.clothes != null)
             charCustomizer.avatars[0].SetSprite(CharacterStore.clothes, CharacterPart.clothes);
 
+        //if (isTraining)
+        //{
+        //    var ranger = (RangerClass)player.SelectedCharacterClass;
+        //    ranger.HasAmmo = true;
+        //}
 
         UIController.current.DisplayConsumedEnergy(player);
 
@@ -116,23 +141,6 @@ public class GameplayController : MonoBehaviour
         if (startByDefault)
         {
             StartCoroutine(nameof(Countdown));
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            GameEnded(true);
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            GameEnded(false);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Player damaged");
-            player.GetDamaged(1);
         }
     }
 
@@ -214,7 +222,7 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    private void ResetActions()
+    public void ResetActions()
     {
         //deselect all actions
         player.SelectedAction = new CombatAction(ActionType.none, ActionClassification.none, 0, null, null);
@@ -225,7 +233,7 @@ public class GameplayController : MonoBehaviour
         ActionAnimator.current.DisableActionVisualisations();
     }
 
-    private CombatResolution ResolveAction(Character actor, Character receiver)
+    public CombatResolution ResolveAction(Character actor, Character receiver)
     {
         //actor.SelectedAction.StartCooldown();
         actor.ConsumeEnergy(actor.SelectedAction.EnergyConsumed);

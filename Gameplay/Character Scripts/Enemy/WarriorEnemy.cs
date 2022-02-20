@@ -6,7 +6,7 @@ public class WarriorEnemy : Enemy
 
     public override void SelectAction()
     {
-        switch (_aiType)
+        switch (EnemyAIType)
         {
             case AIType.random:
                 SelectedAction = SelectRandomAvailableAction();

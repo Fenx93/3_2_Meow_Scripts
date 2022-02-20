@@ -4,14 +4,19 @@ using UnityEngine;
 public abstract class Enemy : Character
 {
     private CombatAction _selectedAction;
-    protected readonly AIType _aiType;
+    public virtual AIType EnemyAIType { get; set; }
 
     public Enemy(CharacterClass characterClass, int hp, int maxEnergy) : base(characterClass, hp, maxEnergy)
     {
         characterClass.IsPlayer = false;
         //_aiType = AIType.passive;
-        _aiType = (AIType) Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length-1);
-        Debug.Log("Enemy AI is: " + _aiType.ToString());
+        UpdateAI();
+        Debug.Log("Enemy AI is: " + EnemyAIType.ToString());
+    }
+
+    public void UpdateAI()
+    {
+        EnemyAIType = (AIType)Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length - 1);
     }
 
     public override CombatAction SelectedAction
@@ -58,7 +63,7 @@ public abstract class Enemy : Character
 
     public virtual void SelectAction()
     {
-        switch (_aiType)
+        switch (EnemyAIType)
         {
             case AIType.passive:
                 SelectedAction = new CombatAction(GameplayController.current.doNothingAction);
@@ -86,6 +91,6 @@ public abstract class Enemy : Character
         return GetActionByType(ActionType.rest);
     }
 
-    // Make sure AIType.passive is last!
-    protected enum AIType { random, aggressive, defensive, passive }
 }
+// Make sure AIType.passive is last!
+public enum AIType { random, aggressive, defensive, passive }

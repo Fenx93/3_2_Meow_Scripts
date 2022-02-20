@@ -280,7 +280,7 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void SelectedAction(int id)
+    public void SelectedAction(int id)
     {
         CombatAction selectedAction = _actions[id];
         if (!GameplayController.current.isPaused)

@@ -40,7 +40,7 @@ public class RangedEnemy : Enemy
     public override void SelectAction()
     {
         CombatAction selectedAction;
-        switch (_aiType)
+        switch (EnemyAIType)
         {
             case AIType.random:
                 SelectedAction = SelectRandomAvailableAction();

@@ -61,7 +61,8 @@ public class MainMenuController : MonoBehaviour
     public void StartTraining()
     {
         PlayerPrefs.SetInt("IsTraining", 1);
-        SceneManager.LoadScene(sceneName/*trainingScenename*/, LoadSceneMode.Single);
+        PlayerPrefs.SetString("SelectedClass", selectedClassID);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     public void StartGame()
