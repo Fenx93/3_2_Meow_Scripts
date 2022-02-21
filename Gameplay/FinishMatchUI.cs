@@ -99,7 +99,7 @@ public class FinishMatchUI : MonoBehaviour
         if (item is SpriteTabItem it)
         {
             var keyString = part.ToString().ToLower();
-            tmpro.text =LocalisationSystem.GetLocalisedValue("new_item_unlocked")+ " " + LocalisationSystem.GetLocalisedValue(keyString);
+            tmpro.text = $"{LocalisationSystem.GetLocalisedValue("new_item_unlocked")} {LocalisationSystem.GetLocalisedValue(keyString)}";
             unlockedItemIcon.color = InventorySettings.itemQualities[item.quality];
             unlockedItemIconImage.sprite = it.sprite;
         }

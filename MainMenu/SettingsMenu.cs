@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
@@ -92,26 +90,9 @@ public class SettingsMenu : MonoBehaviour
         {
             item.SetLanguageValue();
         }
-    }
 
-    private void PopulateLanguagesDropdown()
-    {
-        var languages = Enum.GetValues(typeof(LocalisationSystem.Language));
-
-        List<string> options = new List<string>();
-        int selectedOption = 0;
-        for (int i = 0; i < languages.Length; i++)
-        {
-            var language = (LocalisationSystem.Language[]) languages;
-            if (language[i] == LocalisationSystem.language)
-            {
-                selectedOption = i;
-            }
-            options.Add(language[i].ToString());
-        }
-        languagesDropdown.ClearOptions();
-        languagesDropdown.AddOptions(options);
-        languagesDropdown.SetValueWithoutNotify(selectedOption);
+        // manually update battle preparation screen
+        BattlePreparationScreenController.current.SelectClassWithoutSound(0);
     }
 
     public void Exit()

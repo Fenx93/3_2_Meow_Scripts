@@ -35,7 +35,7 @@ public class CombatAction
     public int? Cooldown { get; set; }
     public int CurrentCooldown { get; set; }
     public int AvailableEnergy { get; set; }
-    public string Description { get => LocalisationSystem.GetLocalisedValue(Type.ToString().ToLower() + "_description"); /*set;*/ }
+    public string Description { get => LocalisationSystem.GetLocalisedValue($"{Type.ToString().ToLower()}_description"); }
     public AudioClip ActionSound { get; set; }
     public bool Enabled { get; set; }
     public bool AbleToCancelActions { get; set; }

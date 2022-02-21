@@ -69,6 +69,12 @@ public class BattlePreparationScreenController : MonoBehaviour
         UpdateClassDescriptions(classInteger);
         UpdateActionButtons(classInteger);
     }
+    public void SelectClassWithoutSound(int classInteger)
+    {
+        MainMenuController.current.SelectClass(classInteger);
+        UpdateClassDescriptions(classInteger);
+        UpdateActionButtons(classInteger);
+    }
 
     private void UpdateClassDescriptions(int classInteger)
     {
@@ -140,7 +146,7 @@ public class BattlePreparationScreenController : MonoBehaviour
     {
         var action = _actions[actionIndex];
         actionNameText.text = action.ToString();
-        energyConsumedText.text = LocalisationSystem.GetLocalisedValue("energy_consumed") +": " + action.EnergyConsumed;
-        actionDescriptionText.text = action.Description;//LocalisationSystem.GetLocalisedValue(action.Type.ToString().ToLower() + "_description");
+        energyConsumedText.text = $"{LocalisationSystem.GetLocalisedValue("energy_consumed")}: {action.EnergyConsumed}";
+        actionDescriptionText.text = action.Description;
     }
 }

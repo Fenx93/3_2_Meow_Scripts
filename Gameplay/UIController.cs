@@ -481,7 +481,7 @@ public class UIController : MonoBehaviour
     public void ShowActionDescription(string actionName, int energyConsumed, string actionDescription)
     {
         _actionName.text = actionName;
-        _energyConsumed.text = LocalisationSystem.GetLocalisedValue("energy_consumed")+": " + energyConsumed;
+        _energyConsumed.text = $"{LocalisationSystem.GetLocalisedValue("energy_consumed")}: {energyConsumed}";
         _actionDescription.text = actionDescription;
     }
     #endregion
