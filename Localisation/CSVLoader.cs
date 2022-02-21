@@ -26,6 +26,7 @@ public class CSVLoader
 
         string[] headers = lines[0].Split(fieldSeperator, System.StringSplitOptions.None);
 
+        for (int i = 0; i < headers.Length; i++)
         {
             if (headers[i].Contains(attributeId))
             {
