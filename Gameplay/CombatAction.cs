@@ -23,6 +23,7 @@ public class CombatAction
         Enabled = action.enabled;
         EnergyConsumed = action.energyConsumed;
         Classification = action.classification;
+        BaseClassificationEnabled = action.baseClassificationEnabled;
         //Description = action.description;
         ActionSound = action.actionSound;
         AbleToCancelActions = action.ableToCancelActions;
@@ -30,6 +31,7 @@ public class CombatAction
 
     public ActionType Type { get; set; }
     public ActionClassification Classification { get; set; }
+    public bool BaseClassificationEnabled { get; private set; }
     public Sprite Visualisation { get; set; }
     public int EnergyConsumed { get; set; }
     public int? Cooldown { get; set; }
@@ -40,6 +42,10 @@ public class CombatAction
     public bool Enabled { get; set; }
     public bool AbleToCancelActions { get; set; }
 
+    public bool CanNeglectActions(ActionClassification classification)
+    {
+        return classification == Classification && BaseClassificationEnabled;
+    }
 
     public void StartCooldown()
     {

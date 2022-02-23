@@ -50,7 +50,7 @@ public class SummonerClass : CharacterClass
                 actor.HP += 2;
                 return CombatResolution.passive;
             case ActionType.attack:
-                if (receiver.SelectedAction.Classification != ActionClassification.defensive)
+                if (!receiver.SelectedAction.CanNeglectActions(ActionClassification.defensive))
                 {
                     GameplayController.current.delayedActions.Add(receiver.GetDamaged, actor.Damage);
                     return CombatResolution.attack;

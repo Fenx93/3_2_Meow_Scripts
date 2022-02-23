@@ -5,6 +5,7 @@ public class SerializableAction : ScriptableObject
 {
     public ActionType type;
     public ActionClassification classification;
+    public bool baseClassificationEnabled = true;
     public Sprite visualisation;
     public int cooldown;
     public int energyConsumed;

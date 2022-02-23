@@ -45,7 +45,7 @@ public class BerserkClass : CharacterClass
         switch (actor.SelectedAction.Type)
         {
             case ActionType.smash:
-                if (receiver.SelectedAction.Classification != ActionClassification.defensive)
+                if (!receiver.SelectedAction.CanNeglectActions(ActionClassification.defensive))
                 {
                     var chance = Random.Range(0f, 1f);
                     var hitOpponent = HitChance >= chance;

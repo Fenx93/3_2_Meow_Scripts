@@ -31,7 +31,7 @@
                 return CombatResolution.passive;
 
             case ActionType.slash:
-                if (receiver.SelectedAction.Classification != ActionClassification.defensive)
+                if (!receiver.SelectedAction.CanNeglectActions(ActionClassification.defensive))
                 {
                     GameplayController.current.delayedActions.Add(receiver.GetDamaged, actor.Damage);
                     return CombatResolution.attack;

@@ -9,7 +9,7 @@ public class AudioController : MonoBehaviour
         rewardWheelSpinningSound, rewardWheelSpinningStopSound,
         winningSound, losingSound, celebrationSound;
 
-    private AudioSource spinningWheelSource = null;
+    private AudioSource loopedAudioSource = null;
     public static AudioController current;
     void Awake()
     {
@@ -28,18 +28,24 @@ public class AudioController : MonoBehaviour
         {
             sfxSource.clip = clip;
             sfxSource.loop = playWithLoop;
+            if (playWithLoop)
+                loopedAudioSource = sfxSource;
             sfxSource.Play();
         }
         else if(!extraSfxSource.isPlaying)
         {
             extraSfxSource.clip = clip;
             extraSfxSource.loop = playWithLoop;
+            if (playWithLoop)
+                loopedAudioSource = sfxSource;
             extraSfxSource.Play();
         }
         else
         {
             extraSfxSource2.clip = clip;
             extraSfxSource2.loop = playWithLoop;
+            if (playWithLoop)
+                loopedAudioSource = sfxSource;
             extraSfxSource.Play();
         }
     }
@@ -71,8 +77,8 @@ public class AudioController : MonoBehaviour
     }
     public void PlayRewardWheelStopSpinningSound()
     {
-        spinningWheelSource.loop = false;
-        spinningWheelSource.Stop();
+        loopedAudioSource.loop = false;
+        loopedAudioSource.Stop();
         PlayBeepSound();
     }
     public void PlayWinningSound()
