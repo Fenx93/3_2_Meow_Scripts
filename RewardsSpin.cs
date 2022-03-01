@@ -90,6 +90,7 @@ public class RewardsSpin : MonoBehaviour
 
                 typeText.text = selectedpart.ToString();
                 item.status = ItemStatus.unlocked;
+                MainMenuController.current.ItemUnlocked(item.GetID());
 
                 AudioController.current.PlayRewardWheelStopSpinningSound();
 

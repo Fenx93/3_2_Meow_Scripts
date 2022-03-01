@@ -301,6 +301,17 @@ public class UI_Tabs : MonoBehaviour
                             button.interactable = false;
                         }
                         button.onClick.AddListener(() => ItemSelected(tabItem.sprite, tab.editedCharacterPart, index));
+                        try
+                        {
+                            if (tabItem.GetID() != "empty")
+                            {
+                                MainMenuController.current.idsToItems.Add(tabItem.GetID(), itemButton);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
                 }
                 else
@@ -327,6 +338,17 @@ public class UI_Tabs : MonoBehaviour
                             button.interactable = false;
                         }
                         button.onClick.AddListener(() => ItemSelected(tabItem.color, tab.editedCharacterPart, index));
+                        try
+                        {
+                            if (tabItem.GetID() != "empty")
+                            {
+                                MainMenuController.current.idsToItems.Add(tabItem.GetID(), itemButton);
+                            }
+                        }
+                        catch(Exception e)
+                        {
+
+                        }
                     }
                 }
 

@@ -48,11 +48,47 @@ public class UIController : MonoBehaviour
 
     private bool showingSettings = false;
 
-    void Awake()
+    private void Awake()
     {
         current = this;
         AssignUI(playerUI, true);
         AssignUI(enemyUI, false);
+    }
+
+    private void Start()
+    {
+        print("UIController called!");
+        Button btn = actionButtons[0].GetComponent<Button>();
+        btn.onClick.AddListener(delegate { SelectedAction(0); });
+
+        Button btn1 = actionButtons[1].GetComponent<Button>();
+        btn1.onClick.AddListener(delegate { SelectedAction(1); });
+
+        Button btn2 = actionButtons[2].GetComponent<Button>();
+        btn2.onClick.AddListener(delegate { SelectedAction(2); });
+
+        Button btn3 = actionButtons[3].GetComponent<Button>();
+        btn3.onClick.AddListener(delegate { SelectedAction(3); });
+
+        FinishMatchUI.current.ShowEndGamePanel(false);
+
+        //Class Icons events
+        GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
+        GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
+
+        GameplayController.current.OnSummonIconSetup += SetupSummonImage;
+        GameplayController.current.OnSummonUpdate += UpdateSummonText;
+
+        GameplayController.current.OnTrapIconSetup += SetupTrapImage;
+        GameplayController.current.OnTrapUpdate += UpdateTrapText;
+
+        GameplayController.current.OnBerserkIconsSetup += SetupBerserkImages;
+        GameplayController.current.OnBerserkDamageUpdate += UpdateBerserkDamageText;
+        GameplayController.current.OnBerserkConcentrationUpdate += UpdateBerserkConcentrationText;
+
+        GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
+
+        DisplayTimer(true);
     }
 
     private void AssignUI(GameObject gameObject, bool isPlayer)
@@ -97,42 +133,6 @@ public class UIController : MonoBehaviour
             _enemyEnergy = tempEnergyText;
             _enemyEnergySlider = tempEnergySlider;
         }
-    }
-
-    void Start()
-    {
-
-        Button btn = actionButtons[0].GetComponent<Button>();
-        btn.onClick.AddListener(delegate { SelectedAction(0); });
-
-        Button btn1 = actionButtons[1].GetComponent<Button>();
-        btn1.onClick.AddListener(delegate { SelectedAction(1); });
-
-        Button btn2 = actionButtons[2].GetComponent<Button>();
-        btn2.onClick.AddListener(delegate { SelectedAction(2); });
-
-        Button btn3 = actionButtons[3].GetComponent<Button>();
-        btn3.onClick.AddListener(delegate { SelectedAction(3); });
-
-        FinishMatchUI.current.ShowEndGamePanel(false);
-
-        //Class Icons events
-        GameplayController.current.OnAmmoIconSetup += SetupAmmoImage;
-        GameplayController.current.OnAmmoUpdate += UpdateAmmoImage;
-
-        GameplayController.current.OnSummonIconSetup += SetupSummonImage;
-        GameplayController.current.OnSummonUpdate += UpdateSummonText;
-
-        GameplayController.current.OnTrapIconSetup += SetupTrapImage;
-        GameplayController.current.OnTrapUpdate += UpdateTrapText;
-
-        GameplayController.current.OnBerserkIconsSetup += SetupBerserkImages;
-        GameplayController.current.OnBerserkDamageUpdate += UpdateBerserkDamageText;
-        GameplayController.current.OnBerserkConcentrationUpdate += UpdateBerserkConcentrationText;
-
-        GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
-
-        DisplayTimer(true);
     }
 
     #region In Game Functions

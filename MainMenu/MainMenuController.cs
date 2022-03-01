@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum GameModes
 {
@@ -26,6 +28,8 @@ public class MainMenuController : MonoBehaviour
 
     [HideInInspector] public GameModes selectedGameMode;
 
+    [HideInInspector] public Dictionary<string, GameObject> idsToItems = new Dictionary<string, GameObject>();
+
     void Awake()
     {
         current = this;
@@ -33,6 +37,7 @@ public class MainMenuController : MonoBehaviour
 
     void Start()
     {
+        print("Main Menu Controller Start called!");
         AudioController.current.PlayMusic(mainMenuTheme);
         BattlePreparationScreenController.current.SetupClassDescriptionItems();
         BattlePreparationScreenController.current.UpdateClassButtons(classes);
@@ -85,5 +90,32 @@ public class MainMenuController : MonoBehaviour
     public void TestAddMoney()
     {
         PlayerStatsTracker.AddMoney();
+    }
+
+    public void ItemUnlocked(string id)
+    {
+        var itemButton = idsToItems[id];
+        if (itemButton != null)
+        {
+            var button = itemButton.GetComponent<Button>();
+            button.interactable = true;
+
+            var image = itemButton.GetComponentsInChildren<Image>().Last();
+            if (image != null)
+            {
+                var color = image.color;
+                color.a = 1f;
+                image.color = color;
+            }
+
+            var itemButtonImage = itemButton.GetComponent<Image>();
+            if (itemButtonImage != null)
+            {
+                var tempCol = itemButtonImage.color;
+                tempCol.a = 1f;
+                itemButtonImage.color = tempCol;
+            }
+        }
+        
     }
 }
