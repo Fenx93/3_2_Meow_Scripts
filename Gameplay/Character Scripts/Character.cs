@@ -103,4 +103,23 @@ public abstract class Character
                 action.CurrentCooldown--;
         }
     }
+
+    public virtual bool CanAttack()
+    {
+        bool canAttack = false;
+        var aggressiveActions = Actions.Where(x => x.Classification == ActionClassification.aggressive);
+        foreach (var action in aggressiveActions)
+        {
+            if (action.EnergyConsumed <= Energy)
+                return true;
+        }
+        return canAttack;
+    }
+
+    protected CombatAction CheckActionForEnergy(CombatAction combatAction)
+    {
+        return combatAction.EnergyConsumed > Energy ?
+            GetActionByType(ActionType.rest)
+            : combatAction;
+    }
 }

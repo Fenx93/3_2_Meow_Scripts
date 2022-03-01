@@ -15,10 +15,17 @@ public class WarriorEnemy : Enemy
                 SelectedAction = CheckActionForEnergy(GetActionByType(ActionType.slash));
                 break;
             case AIType.defensive:
-                var parry = GetActionByType(ActionType.parry);
-                var block = GetActionByType(ActionType.block);
+                CombatAction selectedAction;
+                if (GameplayController.current.player.CanAttack())
+                {
+                    selectedAction = CheckSeveralActionForEnergy(ActionType.parry, ActionType.block);
+                }
+                else
+                {
+                    selectedAction = CheckActionForEnergy(GetActionByType(ActionType.slash));
+                }
 
-                SelectedAction = CheckSeveralActionForEnergy(parry, block);
+                SelectedAction = selectedAction;
                 break;
             default:
                 base.SelectAction();

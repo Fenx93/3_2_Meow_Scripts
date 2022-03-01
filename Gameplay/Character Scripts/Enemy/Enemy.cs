@@ -14,9 +14,11 @@ public abstract class Enemy : Character
         Debug.Log("Enemy AI is: " + EnemyAIType.ToString());
     }
 
-    public void UpdateAI()
+    public void UpdateAI(AIType? aIType = null)
     {
-        EnemyAIType = (AIType)Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length - 1);
+        EnemyAIType = aIType.HasValue? 
+            aIType.Value
+            : (AIType)Random.Range(0, System.Enum.GetNames(typeof(AIType)).Length - 1);
     }
 
     public override CombatAction SelectedAction
@@ -71,24 +73,33 @@ public abstract class Enemy : Character
         }
     }
 
-    protected CombatAction CheckActionForEnergy(CombatAction combatAction)
+    protected CombatAction CheckSeveralActionForEnergy(ActionType prioritizedActionType, ActionType secondaryActionType)
     {
-        return combatAction.EnergyConsumed > Energy?
-            GetActionByType(ActionType.rest)
-            : combatAction;
+        return CheckSeveralActionForEnergy(prioritizedActionType, secondaryActionType);
     }
-
     protected CombatAction CheckSeveralActionForEnergy(CombatAction prioritizedAction, CombatAction secondaryAction)
     {
-        if (prioritizedAction.EnergyConsumed > Energy)
+        if (prioritizedAction.EnergyConsumed <= Energy)
         {
             return prioritizedAction;
         }
-        else if(secondaryAction.EnergyConsumed > Energy)
+        else if(secondaryAction.EnergyConsumed <= Energy)
         {
             return secondaryAction;
         }
         return GetActionByType(ActionType.rest);
+    }
+
+    protected CombatAction CheckSeveralActions(CombatAction prioritizedAction, CombatAction secondaryAction, bool condition)
+    {
+        return condition ? prioritizedAction : secondaryAction;
+    }
+
+    protected CombatAction CheckSeveralActions(bool condition, ActionType prioritizedActionType, ActionType secondaryActionType)
+    {
+        return condition ? 
+            GetActionByType(prioritizedActionType) 
+            : GetActionByType(secondaryActionType);
     }
 
 }

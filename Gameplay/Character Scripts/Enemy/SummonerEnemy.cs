@@ -28,8 +28,8 @@ public class SummonerEnemy : Enemy
                 SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             case AIType.defensive:
-
-                if (HP < 2 && MinionsNumber > 0)
+                var playerCanAttack = GameplayController.current.player.CanAttack();
+                if (playerCanAttack && HP < 2 && MinionsNumber > 0)
                 {
                     selectedAction = GetActionByType(ActionType.sacrifice);
                 }

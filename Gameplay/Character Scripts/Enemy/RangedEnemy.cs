@@ -29,10 +29,15 @@ public class RangedEnemy : Enemy
                 SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             case AIType.defensive:
-                var dodge = GetActionByType(ActionType.dodge);
-                selectedAction = dodge.CanPerform() ?
-                                            dodge 
-                                            : SelectRandomAvailableAction();
+
+                if (GameplayController.current.player.CanAttack())
+                {
+                    selectedAction = CheckActionForEnergy(GetActionByType(ActionType.dodge));
+                }
+                else
+                {
+                    selectedAction = CheckSeveralActions(HasAmmo, ActionType.fire, ActionType.reload);
+                }
                 SelectedAction = CheckActionForEnergy(selectedAction);
                 break;
             default:

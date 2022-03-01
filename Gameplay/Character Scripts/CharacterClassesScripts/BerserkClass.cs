@@ -39,7 +39,6 @@ public class BerserkClass : CharacterClass
     }
     public override int Damage { get => CurrentAttackDamage; }
 
-
     public override CombatResolution ExecuteAction(Character actor, Character receiver)
     {
         switch (actor.SelectedAction.Type)
