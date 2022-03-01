@@ -113,7 +113,7 @@ public class GameplayController : MonoBehaviour
 
         UIController.current.DisplayConsumedEnergy(player);
 
-        enemy = GetRandomEnemyClass();
+        enemy = GetRandomEnemyClass(/*CharClass.warrior, AIType.defensive*/);
 
         trainingObject.SetActive(isTraining);
 
@@ -124,10 +124,12 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    private Enemy GetRandomEnemyClass()
+    private Enemy GetRandomEnemyClass(CharClass? passedClass = null, AIType? aIType = null)
     {
         Enemy enemy = null;
-        var selectedClass = (CharClass)Random.Range(0, System.Enum.GetNames(typeof(CharClass)).Length);
+        var selectedClass = passedClass == null?
+            (CharClass)Random.Range(0, System.Enum.GetNames(typeof(CharClass)).Length)
+            : passedClass.Value;
         if (isTraining)
             selectedClass = CharClass.ranger;
 
@@ -153,6 +155,9 @@ public class GameplayController : MonoBehaviour
             default:
                 throw new System.Exception("Encountered missing CharClass!");
         }
+
+        if (aIType.HasValue)
+            enemy.UpdateAI(aIType.Value);
 
         CharacterCustomizer.current.avatars[1].SetWeapon(enemy.SelectedCharacterClass.WeaponSprite);
         SetupEnemyLooks();

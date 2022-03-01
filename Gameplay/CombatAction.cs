@@ -3,7 +3,7 @@ using UnityEngine;
 public class CombatAction
 {
     public CombatAction(ActionType type, ActionClassification classification, int energyConsumed, 
-        Sprite visualisation, AudioClip actionSound, int? cooldown = null, bool enabled = true, bool ableToCancelActions = false)
+        Sprite visualisation, AudioClip actionSound, int? cooldown = null, bool enabled = true, bool baseClassificationEnabled = false, bool ableToCancelActions = false)
     {
         Type = type;
         Cooldown = cooldown;
@@ -11,6 +11,8 @@ public class CombatAction
         Enabled = enabled;
         EnergyConsumed = energyConsumed;
         Classification = classification;
+        BaseClassificationEnabled = baseClassificationEnabled;
+        AbleToCancelActions = ableToCancelActions;
         //Description = description;
         ActionSound = actionSound;
         ActionSound = actionSound;
@@ -67,6 +69,6 @@ public class CombatAction
 
     internal CombatAction Clone()
     {
-        return new CombatAction(Type, Classification, EnergyConsumed, Visualisation, ActionSound, Cooldown, Enabled);
+        return new CombatAction(Type, Classification, EnergyConsumed, Visualisation, ActionSound, Cooldown, Enabled, BaseClassificationEnabled, AbleToCancelActions);
     }
 }
