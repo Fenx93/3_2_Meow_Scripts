@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -203,6 +204,15 @@ public class UI_Tabs : MonoBehaviour
     // useSprites sets either items or sprites
     private void FillItems(Tab tab, Transform parent, bool useSprites = false)
     {
+        // Sort items by quality 
+
+        int[] map = new[] { (int)ItemQuality.common, (int)ItemQuality.rare, (int)ItemQuality.epic, (int)ItemQuality.legendary };
+
+        var sortedArray = tab.items
+          .OrderBy(x => map[(int)(x.quality)])
+          .ToArray();
+
+        tab.items = sortedArray;
         // Create Item pages with count = tab.items / (rows * columns)
         float calc = tab.items.Length / (float)(rows * columns);
         int calculatedPageCount = Convert.ToInt32(Math.Ceiling(calc));
@@ -211,7 +221,7 @@ public class UI_Tabs : MonoBehaviour
 
         for (int i = 0; i < calculatedPageCount; i++)
         {
-            GameObject page = new GameObject("Items Page (" + (i+1) + ")");
+            GameObject page = new GameObject($"Items Page ({i+1})");
             var rect = page.AddComponent<RectTransform>();
             rect.anchorMin = new Vector2(0.01f, 0.01f);
             rect.anchorMax = new Vector2(0.99f, 0.99f);
