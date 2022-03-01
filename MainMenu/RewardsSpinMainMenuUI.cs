@@ -24,16 +24,19 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
 
     public void UpdateButtons(bool enoughMoney)
     {
-        rewardsSpinTitle.SetActive(true);
-        buttonWithoutAds.SetActive(enoughMoney);
-        if (enoughMoney)
-            return;
-        buttonWithAds.SetActive(false);
-        if (AdManager.current.AdsAvailable() && !enoughMoney)
-            buttonWithAds.SetActive(true);
-        else
+        if (rewardsSpinTitle != null)
         {
-            rewardsSpinTitle.SetActive(false);
+            rewardsSpinTitle.SetActive(true);
+            buttonWithoutAds.SetActive(enoughMoney);
+            if (enoughMoney)
+                return;
+            buttonWithAds.SetActive(false);
+            if (AdManager.current.AdsAvailable() && !enoughMoney)
+                buttonWithAds.SetActive(true);
+            else
+            {
+                rewardsSpinTitle.SetActive(false);
+            }
         }
     }
 
