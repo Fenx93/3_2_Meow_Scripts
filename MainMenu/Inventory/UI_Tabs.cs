@@ -21,6 +21,8 @@ public class UI_Tabs : MonoBehaviour
     [Header("Inventory")]
     [SerializeField] private GameObject paging;
 
+    [SerializeField] private int rows = 4;
+    [SerializeField] private int columns = 5;
     private readonly List<InventoryTab> tabPanels = new List<InventoryTab>();
 
     private GameObject currentPanel, currentPage;
@@ -30,13 +32,13 @@ public class UI_Tabs : MonoBehaviour
 
     private void Awake()
     {
-        tabsTransform = this.transform.Find("Tabs");
+        tabsTransform = transform.Find("Tabs");
         if (tabsTransform == null)
         {
             Debug.LogError("No Tabs gameobject found!");
         }
 
-        panelsTransform = this.transform.Find("Item Panels");
+        panelsTransform = transform.Find("Item Panels");
         if (panelsTransform == null)
         {
             Debug.LogError("No Panels gameobject found!");
@@ -47,10 +49,10 @@ public class UI_Tabs : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < InventorySettings.tabs.Length; i++)
+        for (int i = 0; i < tabs.Length; i++)
         {
-            AddPanel(InventorySettings.tabs[i]);
-            AddTab(InventorySettings.tabs[i].tabName, i);
+            AddPanel(tabs[i]);
+            AddTab(tabs[i].tabName, i);
         }
         currentButton.onClick.Invoke();
     }
@@ -97,7 +99,7 @@ public class UI_Tabs : MonoBehaviour
         var button = tabButton.AddComponent(typeof(Button)) as Button;
         var c = button.colors;
         c.normalColor = normalButtonColor;
-        // in order to keep tabs look like "selected" whn clicking on something else
+        // in order to keep tabs look like "selected" when clicking on something else
         c.disabledColor = selectedButtonColor;
         c.selectedColor = selectedButtonColor;
         c.highlightedColor = higlightedButtonColor;
@@ -201,8 +203,8 @@ public class UI_Tabs : MonoBehaviour
     // useSprites sets either items or sprites
     private void FillItems(Tab tab, Transform parent, bool useSprites = false)
     {
-        // Create Item pages with count = tab.items / 4*5
-        var calc = (tab.items.Length / (float)(5 * 5));
+        // Create Item pages with count = tab.items / (rows * columns)
+        float calc = tab.items.Length / (float)(rows * columns);
         int calculatedPageCount = Convert.ToInt32(Math.Ceiling(calc));
 
         GameObject[] pages = new GameObject[calculatedPageCount];
@@ -243,10 +245,10 @@ public class UI_Tabs : MonoBehaviour
 
     private void FillPagesWithItems(Tab tab, Transform parent, int pageIndex, bool useSprites = false)
     {
-        GameObject[] newBackObj = new GameObject[5];
-        for (int i = 0; i < 5; i++)
+        GameObject[] rowsObject = new GameObject[rows];
+        for (int i = 0; i < rows; i++)
         {
-            GameObject obj = new GameObject("Panel (" + i + ")");
+            GameObject obj = new GameObject($"Items Row ({i})");
             var horizontalLayoutGroup = obj.AddComponent(typeof(HorizontalLayoutGroup)) as HorizontalLayoutGroup;
             horizontalLayoutGroup.childControlHeight = true;
             horizontalLayoutGroup.childControlWidth = true;
@@ -254,14 +256,14 @@ public class UI_Tabs : MonoBehaviour
             horizontalLayoutGroup.childScaleWidth = true;
             horizontalLayoutGroup.spacing = 5;
             obj.transform.SetParent(parent);
-            newBackObj[i] = obj;
+            rowsObject[i] = obj;
         }
 
-        for (int i = 0; i < newBackObj.Length; i++)
+        for (int i = 0; i < rowsObject.Length; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < columns; j++)
             {
-                GameObject itemButton = CreateItemButton(newBackObj[i], j);
+                GameObject itemButton = CreateItemButton(rowsObject[i], j);
                 var button = itemButton.GetComponent<Button>();
 
                 GameObject item = new GameObject(useSprites ? "Image Item" : "Color Item");
@@ -270,7 +272,8 @@ public class UI_Tabs : MonoBehaviour
                 rect.anchorMin = new Vector2(0.2f, 0.1f);
                 rect.anchorMax = new Vector2(0.8f, 0.9f);
 
-                int index = i * 5 + j +(20 * pageIndex);
+                // current row * rows + current column + (rows * columns * current page)
+                int index = (i * rows) + j + (rowsObject.Length * columns * pageIndex);
 
                 var itemButtonImage = itemButton.GetComponent<Image>();
 
@@ -343,7 +346,7 @@ public class UI_Tabs : MonoBehaviour
 
     private GameObject CreateItemButton(GameObject obj, int i)
     {
-        GameObject itemButton = new GameObject("ItemButton (" + i + ")");
+        GameObject itemButton = new GameObject($"ItemButton ({i})");
         var image = itemButton.AddComponent(typeof(Image)) as Image;
         image.sprite = panelsItemBackgroundImage;
         image.type = Image.Type.Sliced;
@@ -406,7 +409,7 @@ public class UI_Tabs : MonoBehaviour
 
     private void UpdatePagingText(int totalPageNumber)
     {
-        paging.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = (currentPageIndex+1) + "/" + totalPageNumber;
+        paging.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = $"{currentPageIndex + 1}/{totalPageNumber}";
     }
 
     private void OpenPage(int pageIndex)
