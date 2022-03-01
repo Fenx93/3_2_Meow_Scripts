@@ -82,8 +82,8 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
-    public void OpenCharacterSelectionScreen()
+    public void TestAddMoney()
     {
-
+        PlayerStatsTracker.AddMoney();
     }
 }

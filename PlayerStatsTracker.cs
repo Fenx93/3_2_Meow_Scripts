@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public static class PlayerStatsTracker
 {
     private static int _currentExp = 0, _currentExpCap = 100, _currentLvl = 1, _currentMoney = 0;
@@ -58,9 +60,21 @@ public static class PlayerStatsTracker
             {
                 FinishMatchUI.current.UpdateMoneyText(_currentMoney);
             }
+            if (RewardsSpinMainMenuUI.current != null)
+            {
+                RewardsSpinMainMenuUI.current.UpdateButtons(EnoughForSpin());
+            }
         }
     }
+
+    public static bool EnoughForSpin() => (CurrentMoney >= 100);
+
     #endregion
+
+    public static void AddMoney()
+    {
+        CurrentMoney += 100;
+    }
 
     public static void SetData(int currentLvl, int currentExp, int currentExpCap, int currentMoney)
     {

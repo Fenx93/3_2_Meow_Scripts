@@ -15,7 +15,7 @@ public class BattlePreparationScreenController : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI actionNameText,
-        energyConsumedText, actionDescriptionText;
+        energyConsumedText, actionCooldownText, actionDescriptionText;
 
     [SerializeField] private Transform classDescriptionPanel;
 
@@ -147,6 +147,10 @@ public class BattlePreparationScreenController : MonoBehaviour
         var action = _actions[actionIndex];
         actionNameText.text = action.ToString();
         energyConsumedText.text = $"{LocalisationSystem.GetLocalisedValue("energy_consumed")}: {action.EnergyConsumed}";
+
+        actionCooldownText.enabled = action.Cooldown != 0;
+        actionCooldownText.text = $"{LocalisationSystem.GetLocalisedValue("action_cooldown")}: {action.Cooldown}";
+
         actionDescriptionText.text = action.Description;
     }
 }

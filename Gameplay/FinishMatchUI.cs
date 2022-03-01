@@ -30,13 +30,19 @@ public class FinishMatchUI : MonoBehaviour
     [SerializeField] private string sceneName;
 
     public static FinishMatchUI current;
-    void Awake()
+    private MatchEndLogicController matchEndLogic;
+    private void Awake()
     {
         current = this;
         addableCoins.SetActive(false);
         addableExp.SetActive(false);
         ShowLevelUP(false);
         PlayerStatsTracker.UpdateUI();
+    }
+
+    private void Start()
+    {
+        matchEndLogic = GetComponent<MatchEndLogicController>();
     }
 
     public void ShowEndGamePanel(bool show)
@@ -46,37 +52,26 @@ public class FinishMatchUI : MonoBehaviour
 
     public void ShowGameEndMessage(string message, int money, int exp)
     {
-        FinishMatchUI.current.ShowEndGamePanel(true);
+        ShowEndGamePanel(true);
         matchResultText.text = message;
 
         gainedMoneyText.enabled = false;
         coinIcon.SetActive(false);
         gainedEXPText.enabled = false;
-        gainMoreButton.SetActive(false);
+        EnableEarnMoreButton(false);
         returnToMenuButton.SetActive(false);
 
         gainedMoneyText.text = "+" + money;
         gainedEXPText.text = "+" + exp + "EXP";
 
-        AddMoney(money);
-        AddExperience(exp);
+        matchEndLogic.AddMoney(money);
+        matchEndLogic.AddExperience(exp);
 
         // Gained stats appear one after the other
         StartCoroutine(nameof(Countdown), 0);
 
     }
 
-    public void AddMoney(int money)
-    {
-        // PlayerStatsTracker.AddMoney(money);
-        StartCoroutine(ShowAddedAnimation( 2f, true, money));
-    }
-
-    public void AddExperience(int experience)
-    {
-        // PlayerStatsTracker.AddExperience(experience);
-        StartCoroutine(ShowAddedAnimation( 2f, false, experience));
-    }
 
     public void ShowLevelUP(bool enabled)
     {
@@ -111,9 +106,14 @@ public class FinishMatchUI : MonoBehaviour
 
     }
 
+    public void EnableEarnMoreButton(bool enabled)
+    {
+        gainMoreButton.SetActive(enabled);
+    }
+
     #region Coroutines
 
-    private IEnumerator ShowAddedAnimation(float duration, bool isMoney, int amount)
+    public IEnumerator ShowAddedAnimation(float duration, bool isMoney, int amount)
     {
         GameObject gObject;
         gObject = isMoney ? addableCoins : addableExp;
@@ -192,7 +192,10 @@ public class FinishMatchUI : MonoBehaviour
                 break;
             case 2:
                 // make getDouble button appear after gain animation
-                gainMoreButton.SetActive(true);
+                if (AdManager.current.AdsAvailable())
+                {
+                    EnableEarnMoreButton(true);
+                }
                 StartCoroutine(Countdown(3, 4f));
                 break;
             case 3:
@@ -206,7 +209,7 @@ public class FinishMatchUI : MonoBehaviour
 
     #endregion
 
-    #region Update Stat Texts
+    #region Update Stats Texts
     public void UpdateLevelText(int level)
     {
         levelText.text = level.ToString();
@@ -230,6 +233,20 @@ public class FinishMatchUI : MonoBehaviour
         expSlider.value = (float)currentExp / (float)expCap;
         var fill = expSlider.GetComponentInChildren<Image>();
         StartCoroutine(CoroutineHelper.SmoothlyChangeColorAndFade(new ImageAdapter(fill), fill.color, Color.cyan, fill.color, 1f, 3f));
+    }
+
+    public void ExitAndShowAds()
+    {
+        var adManager = AdManager.current;
+
+        if (adManager.InterstitialAdReady())
+        {
+            adManager.ShowInterstitialAd();
+        }
+        else
+        {
+            ExitToMainMenu();
+        }
     }
 
     public void ExitToMainMenu()

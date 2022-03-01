@@ -40,8 +40,11 @@ public class RewardsSpin : MonoBehaviour
 
     }
 
-    void Start()
+
+    void OnEnable()
     {
+        print("RewardSpinWas Called!");
+        stopped = false;
         AudioController.current.PlayRewardWheelSpinningSound();
         StartCoroutine(nameof(QualitiesSpinning));
         StartCoroutine(nameof(TypesSpinning));
@@ -87,10 +90,23 @@ public class RewardsSpin : MonoBehaviour
 
                 typeText.text = selectedpart.ToString();
                 item.status = ItemStatus.unlocked;
-                FinishMatchUI.current.ShowUnlockedItemPanel(true);
+
+                AudioController.current.PlayRewardWheelStopSpinningSound();
+
+                if (FinishMatchUI.current)
+                {
+                    FinishMatchUI.current.ShowUnlockedItemPanel(true);
+                    FinishMatchUI.current.ShowRewardsSpin(false);
+                    FinishMatchUI.current.SetUnlockedItemPanel(item, selectedpart);
+                }
+
+                if (RewardsSpinMainMenuUI.current)
+                {
+                    RewardsSpinMainMenuUI.current.ShowUnlockedItemPanel(true);
+                    RewardsSpinMainMenuUI.current.ShowRewardsSpin(false);
+                    RewardsSpinMainMenuUI.current.SetUnlockedItemPanel(item, selectedpart);
+                }
                 AudioController.current.PlayCelebrationSound();
-                FinishMatchUI.current.ShowRewardsSpin(false);
-                FinishMatchUI.current.SetUnlockedItemPanel(item, selectedpart);
             }
         }
     }
