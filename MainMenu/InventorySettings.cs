@@ -20,13 +20,13 @@ public class InventorySettings : MonoBehaviour
 
     private void Awake()
     {
-        //if (current != null)
-        //{
-        //    Destroy(gameObject);
-        //    return;
-        //}
+        if (current != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         current = this;
-        //DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
 
         rand = new System.Random();
         itemQualities = _itemQualities;

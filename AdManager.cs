@@ -10,13 +10,13 @@ public class AdManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        //if (current != null)
-        //{
-        //    Destroy(gameObject);
-        //    return;
-        //}
+        if (current != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         current = this;
-        //DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
         if (!RuntimeManager.IsInitialized())
             RuntimeManager.Init();
     }
