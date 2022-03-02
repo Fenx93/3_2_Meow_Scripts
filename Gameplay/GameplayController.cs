@@ -418,7 +418,7 @@ public class GameplayController : MonoBehaviour
 public enum ActionType { none, fire, reload, dodge,
     slash, parry, block,
     summon, attack, sacrifice,
-    anti_attack, anti_defense, anti_utility, 
+    anti_attack, earn_points, anti_utility, 
     smash, concentrate, enrage,
     rest 
 };

@@ -64,7 +64,14 @@ public class CombatAction
 
     public override string ToString()
     {
-        return LocalisationSystem.GetLocalisedValue(Type.ToString()).ToUpper()/*.Replace('_','-')*/;
+        try
+        {
+            return LocalisationSystem.GetLocalisedValue(Type.ToString()).ToUpper()/*.Replace('_','-')*/;
+        }
+        catch (System.Exception)
+        {
+            return "Localisation missing!";
+        }
     }
 
     internal CombatAction Clone()

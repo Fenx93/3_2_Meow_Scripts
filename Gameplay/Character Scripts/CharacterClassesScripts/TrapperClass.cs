@@ -35,10 +35,11 @@ public class TrapperClass : CharacterClass
                     return true;
                 break;
 
-            case ActionClassification.defensive:
-                if (actionDenier.SelectedAction.Type == ActionType.anti_defense)
-                    return true;
-                break;
+            // Switched to earn points
+            //case ActionClassification.defensive:
+            //    if (actionDenier.SelectedAction.Type == ActionType.earn_points)
+            //        return true;
+            //    break;
 
             case ActionClassification.utility:
                 if (actionDenier.SelectedAction.Type == ActionType.anti_utility)
@@ -55,19 +56,15 @@ public class TrapperClass : CharacterClass
             case ActionType.anti_attack:
                 if (receiver.SelectedAction.Classification == ActionClassification.aggressive)
                 {
-                    //TrapPoints++;
+                    TrapPoints++;
                     //GameplayController.current.delayedActions.Add(receiver.GetDamaged, receiver.Damage);
                     return CombatResolution.attack;
                 }
                 break;
 
-            case ActionType.anti_defense:
-                if (receiver.SelectedAction.Classification == ActionClassification.defensive)
-                {
-                    TrapPoints += 3;
-                    return CombatResolution.attack;
-                }
-                break;
+            case ActionType.earn_points:
+                TrapPoints ++;
+                return CombatResolution.passive;
 
             case ActionType.anti_utility:
                 if (receiver.SelectedAction.Classification == ActionClassification.utility)
