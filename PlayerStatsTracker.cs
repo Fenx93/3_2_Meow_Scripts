@@ -1,4 +1,3 @@
-using UnityEngine;
 
 public static class PlayerStatsTracker
 {
@@ -71,9 +70,17 @@ public static class PlayerStatsTracker
 
     #endregion
 
-    public static void AddMoney()
+    public static PlayerStats GetPlayerStatsObject()
     {
-        CurrentMoney += 100;
+        return new PlayerStats(CurrentExp, CurrentExpCap, CurrentLvl, CurrentMoney);
+    }
+
+    public static void SetData(PlayerStats playerStats)
+    {
+        CurrentExp = playerStats.currentExp;
+        CurrentExpCap = playerStats.currentExpCap;
+        CurrentLvl =  playerStats.currentLvl;
+        CurrentMoney =  playerStats.currentMoney;
     }
 
     public static void SetData(int currentLvl, int currentExp, int currentExpCap, int currentMoney)
@@ -82,6 +89,11 @@ public static class PlayerStatsTracker
         CurrentExpCap = currentExpCap;
         CurrentLvl = currentLvl;
         CurrentMoney = currentMoney;
+    }
+
+    public static void AddMoney()
+    {
+        CurrentMoney += 100;
     }
 
     public static void UpdateUI()
@@ -135,5 +147,19 @@ public static class PlayerStatsTracker
             //get next experience cap
             CurrentExpCap *= 2;
         }
+    }
+}
+
+[System.Serializable]
+public class PlayerStats
+{
+    public int currentExp, currentExpCap, currentLvl, currentMoney;
+
+    public PlayerStats(int currentExp, int currentExpCap, int currentLvl, int currentMoney)
+    {
+        this.currentExp = currentExp;
+        this.currentExpCap = currentExpCap;
+        this.currentLvl = currentLvl;
+        this.currentMoney = currentMoney;
     }
 }
