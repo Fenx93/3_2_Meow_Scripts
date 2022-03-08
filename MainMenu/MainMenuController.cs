@@ -30,6 +30,8 @@ public class MainMenuController : MonoBehaviour
 
     [HideInInspector] public Dictionary<string, GameObject> idsToItems = new Dictionary<string, GameObject>();
 
+    [SerializeField] private bool playMusicByDefault = true;
+
     void Awake()
     {
         current = this;
@@ -38,7 +40,8 @@ public class MainMenuController : MonoBehaviour
     void Start()
     {
         print("Main Menu Controller Start called!");
-        AudioController.current.PlayMusic(mainMenuTheme);
+        if(playMusicByDefault)
+            AudioController.current.PlayMusic(mainMenuTheme);
         BattlePreparationScreenController.current.SetupClassDescriptionItems();
         BattlePreparationScreenController.current.UpdateClassButtons(classes);
         PlayerStatsTracker.SetData(1, 0, 75, 0);
