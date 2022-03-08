@@ -318,7 +318,7 @@ public class UI_Tabs : MonoBehaviour
                                 MainMenuController.current.idsToItems.Add(tabItem.GetID(), itemButton);
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
 
                         }
@@ -357,7 +357,7 @@ public class UI_Tabs : MonoBehaviour
                         }
                         catch(Exception e)
                         {
-
+                            Debug.LogError(e);
                         }
                     }
                 }

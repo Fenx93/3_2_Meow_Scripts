@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,34 +129,22 @@ public class GameplayController : MonoBehaviour
     {
         Enemy enemy = null;
         var selectedClass = passedClass == null?
-            (CharClass)Random.Range(0, System.Enum.GetNames(typeof(CharClass)).Length)
+            (CharClass)UnityEngine.Random.Range(0, Enum.GetNames(typeof(CharClass)).Length)
             : passedClass.Value;
         if (isTraining)
             selectedClass = CharClass.ranger;
 
         CharacterClass charClass = CharacterClassHelper.GetCharacterClass(
             _characterClasses.Where(c => c.CharClass == selectedClass).First());
-        switch (selectedClass)
+        enemy = selectedClass switch
         {
-            case CharClass.warrior:
-                enemy = new WarriorEnemy(charClass, 5, 5);
-                break;
-            case CharClass.ranger:
-                enemy = new RangedEnemy(charClass, 5, 5);
-                break;
-            case CharClass.summoner:
-                enemy = new SummonerEnemy(charClass, 5, 5);
-                break;
-            case CharClass.berserk:
-                enemy = new BerserkEnemy(charClass, 5, 0);
-                break;
-            case CharClass.trapper:
-                enemy = new TrapperEnemy(charClass, 5, 5);
-                break;
-            default:
-                throw new System.Exception("Encountered missing CharClass!");
-        }
-
+            CharClass.warrior => new WarriorEnemy(charClass, 5, 5),
+            CharClass.ranger => new RangedEnemy(charClass, 5, 5),
+            CharClass.summoner => new SummonerEnemy(charClass, 5, 5),
+            CharClass.berserk => new BerserkEnemy(charClass, 5, 0),
+            CharClass.trapper => new TrapperEnemy(charClass, 5, 5),
+            _ => throw new Exception("Encountered missing CharClass!"),
+        };
         if (aIType.HasValue)
             enemy.UpdateAI(aIType.Value);
 
@@ -350,68 +339,49 @@ public class GameplayController : MonoBehaviour
     #region Events
 
     //Ranger
-    public event System.Action<bool, bool> OnAmmoIconSetup;
+    public event Action<bool, bool> OnAmmoIconSetup;
     public void AmmoIconSetup(bool enabled, bool isPlayer)
-    {
-        OnAmmoIconSetup?.Invoke(enabled, isPlayer);
-    }
+        => OnAmmoIconSetup?.Invoke(enabled, isPlayer);
 
-    public event System.Action<bool, bool> OnAmmoUpdate;
+    public event Action<bool, bool> OnAmmoUpdate;
     public void AmmoIconUpdate(bool enabled, bool isPlayer)
-    {
-        OnAmmoUpdate?.Invoke(enabled, isPlayer);
-    }
+        => OnAmmoUpdate?.Invoke(enabled, isPlayer);
 
     //Summoner
-    public event System.Action<bool, bool> OnSummonIconSetup;
+    public event Action<bool, bool> OnSummonIconSetup;
     public void SummonIconSetup(bool enabled, bool isPlayer)
-    {
-        OnSummonIconSetup?.Invoke(enabled, isPlayer);
-    }
+        => OnSummonIconSetup?.Invoke(enabled, isPlayer);
 
-    public event System.Action<int, bool> OnSummonUpdate;
+    public event Action<int, bool> OnSummonUpdate;
     public void SummonIconUpdate(int summonCount, bool isPlayer)
-    {
-        OnSummonUpdate?.Invoke(summonCount, isPlayer);
-    }
+        => OnSummonUpdate?.Invoke(summonCount, isPlayer);
 
     //Trapper
-    public event System.Action<bool, bool> OnTrapIconSetup;
-    public void TrapIconSetup(bool enabled, bool isPlayer)
-    {
-        OnTrapIconSetup?.Invoke(enabled, isPlayer);
-    }
+    public event Action<bool, bool> OnTrapIconSetup;
+    public void TrapIconSetup(bool enabled, bool isPlayer) 
+        => OnTrapIconSetup?.Invoke(enabled, isPlayer);
 
-    public event System.Action<int, bool> OnTrapUpdate;
+    public event Action<int, bool> OnTrapUpdate;
     public void TrapIconUpdate(int summonCount, bool isPlayer)
-    {
-        OnTrapUpdate?.Invoke(summonCount, isPlayer);
-    }
+        => OnTrapUpdate?.Invoke(summonCount, isPlayer);
 
     //Berserk
-    public event System.Action<bool, bool> OnBerserkIconsSetup;
+    public event Action<bool, bool> OnBerserkIconsSetup;
     public void BerserkIconsSetup(bool enabled, bool isPlayer)
-    {
-        OnBerserkIconsSetup?.Invoke(enabled, isPlayer);
-    }
+        => OnBerserkIconsSetup?.Invoke(enabled, isPlayer);
 
-    public event System.Action<int, bool> OnBerserkDamageUpdate;
+    public event Action<int, bool> OnBerserkDamageUpdate;
     public void BerserkDamageUpdate(int damage, bool isPlayer)
-    {
-        OnBerserkDamageUpdate?.Invoke(damage, isPlayer);
-    }
-    public event System.Action<float, bool> OnBerserkConcentrationUpdate;
+        => OnBerserkDamageUpdate?.Invoke(damage, isPlayer);
+
+    public event Action<float, bool> OnBerserkConcentrationUpdate;
     public void BerserkConcentrationUpdate(float concentration, bool isPlayer)
-    {
-        OnBerserkConcentrationUpdate?.Invoke(concentration, isPlayer);
-    }
+        => OnBerserkConcentrationUpdate?.Invoke(concentration, isPlayer);
 
 
-    public event System.Action<string, bool> OnEnemySelectedAction;
+    public event Action<string, bool> OnEnemySelectedAction;
     public void EnemySelectedAction(string actionText)
-    {
-        OnEnemySelectedAction?.Invoke(actionText, false);
-    }
+        => OnEnemySelectedAction?.Invoke(actionText, false);
     #endregion
 }
 
