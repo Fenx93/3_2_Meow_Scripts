@@ -6,8 +6,5 @@ public class SpriteTabItem : TabItem
     public Sprite sprite;
     public Sprite itemIcon;
 
-    public override string GetID()
-    {
-        return sprite.name;
-    }
+    public override string GetID() => sprite.name;
 }

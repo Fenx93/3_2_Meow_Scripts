@@ -2,7 +2,7 @@ using EasyMobile;
 using System;
 using UnityEngine;
 
-public static class SaveGameManager
+public static class SaveGameMediator
 {
 
     // To store the opened saved game.
@@ -35,7 +35,7 @@ public static class SaveGameManager
         }
     }
 
-    public static void WriteSavedGame(/*SavedGame savedGame,*/ byte[] data)
+    public static void WriteSavedGame(byte[] data)
     {
         if (mySavedGame.IsOpen)
         {
@@ -63,7 +63,7 @@ public static class SaveGameManager
         }
     }
 
-    public static byte[] ReadSavedGame(/*SavedGame savedGame*/)
+    public static byte[] ReadSavedGame()
     {
         if (mySavedGame.IsOpen)
         {

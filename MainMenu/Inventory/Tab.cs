@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using static InventorySettings;
 
@@ -8,6 +9,9 @@ public class Tab : ScriptableObject
     public CharacterPart editedCharacterPart;
 
     public TabItem[] items;
+
+    public StorableItem[] GetAllStorableItems()
+        => items.Select(x => new StorableItem(editedCharacterPart, x.GetID(), x.status)).ToArray();
 }
 
 public enum ItemStatus { unlocked, locked }

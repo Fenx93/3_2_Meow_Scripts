@@ -70,7 +70,7 @@ public static class PlayerStatsTracker
 
     #endregion
 
-    public static PlayerStats GetPlayerStatsObject()
+    public static PlayerStats GetPlayerStats()
     {
         return new PlayerStats(CurrentExp, CurrentExpCap, CurrentLvl, CurrentMoney);
     }
@@ -89,11 +89,6 @@ public static class PlayerStatsTracker
         CurrentExpCap = currentExpCap;
         CurrentLvl = currentLvl;
         CurrentMoney = currentMoney;
-    }
-
-    public static void AddMoney()
-    {
-        CurrentMoney += 100;
     }
 
     public static void UpdateUI()
@@ -131,35 +126,23 @@ public static class PlayerStatsTracker
     public static void RemoveMoney(int moneyAmount)
     {
         CurrentMoney -= moneyAmount;
+        SaveGameControlller.Instance.SaveData();
     }
 
     public static void AddExperience(int experienceAmount)
     {
         CurrentExp += experienceAmount;
         CheckNextLevel();
+        SaveGameControlller.Instance.SaveData();
     }
 
     private static void CheckNextLevel()
     {
-        if (CurrentExp >= CurrentExpCap)
+        while (CurrentExp >= CurrentExpCap)
         {
             CurrentLvl++;
             //get next experience cap
             CurrentExpCap *= 2;
         }
-    }
-}
-
-[System.Serializable]
-public class PlayerStats
-{
-    public int currentExp, currentExpCap, currentLvl, currentMoney;
-
-    public PlayerStats(int currentExp, int currentExpCap, int currentLvl, int currentMoney)
-    {
-        this.currentExp = currentExp;
-        this.currentExpCap = currentExpCap;
-        this.currentLvl = currentLvl;
-        this.currentMoney = currentMoney;
     }
 }

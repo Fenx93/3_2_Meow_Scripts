@@ -34,9 +34,7 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
             if (AdManager.current.AdsAvailable() && !enoughMoney)
                 buttonWithAds.SetActive(true);
             else
-            {
                 rewardsSpinTitle.SetActive(false);
-            }
         }
     }
 

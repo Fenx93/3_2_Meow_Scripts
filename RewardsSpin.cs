@@ -33,7 +33,7 @@ public class RewardsSpin : MonoBehaviour
 
         foreach (CharacterPart tab in types)
         {
-            int count = InventorySettings.current.CountItemsInTab(tab);
+            int count = InventorySettings.Instance.CountItemsInTab(tab);
             partCount.Add(tab, count);
             totalCount += count;
         }
@@ -78,7 +78,7 @@ public class RewardsSpin : MonoBehaviour
                 }
             }
 
-            var item = InventorySettings.current.GetInventoryItem(selectedpart, quality);
+            var item = InventorySettings.Instance.GetRandomInventoryItem(selectedpart, quality);
            
             if (item != null /*&& selectedpart != CharacterPart.hat && selectedpart != CharacterPart.clothes*/)
             {
@@ -92,6 +92,7 @@ public class RewardsSpin : MonoBehaviour
                 item.status = ItemStatus.unlocked;
                 MainMenuController.current.ItemUnlocked(item.GetID());
 
+                SaveGameControlller.Instance.SaveData();
                 AudioController.current.PlayRewardWheelStopSpinningSound();
 
                 if (FinishMatchUI.current)

@@ -21,15 +21,15 @@ public class EnemyPresets : MonoBehaviour
         {
             var randomPreset = enemyOutfitsData.enemyDatas[UnityEngine.Random.Range(0, enemyOutfitsData.enemyDatas.Length)];
 
-            var mainColorItem = current.GetInventoryItem(CharacterPart.mainColor, randomPreset.mainColorId);
+            var mainColorItem = Instance.GetInventoryItem(CharacterPart.mainColor, randomPreset.mainColorId);
 
             TabItem mCItem = (mainColorItem != null) ?
                 mainColorItem 
-                : current.GetRandom(CharacterPart.mainColor);
+                : Instance.GetRandom(CharacterPart.mainColor);
 
             EnemyPresetsHolder.mainColor = (mCItem as ColorTabItem).color;
 
-            var secondaryColorItem = current.GetInventoryItem(CharacterPart.secondaryColor, randomPreset.secondaryColorId);
+            var secondaryColorItem = Instance.GetInventoryItem(CharacterPart.secondaryColor, randomPreset.secondaryColorId);
 
             if (secondaryColorItem != null)
             {
@@ -55,7 +55,7 @@ public class EnemyPresets : MonoBehaviour
                 }
             }
 
-            var clothesItem = current.GetInventoryItem(CharacterPart.clothes, randomPreset.clothesId);
+            var clothesItem = Instance.GetInventoryItem(CharacterPart.clothes, randomPreset.clothesId);
             if (clothesItem != null)
             {
                 EnemyPresetsHolder.clothes = (clothesItem as SpriteTabItem).sprite;
@@ -63,7 +63,7 @@ public class EnemyPresets : MonoBehaviour
             else if (!string.IsNullOrEmpty(randomPreset.clothesId))
                 Debug.LogError("Incorrect : " + randomPreset.clothesId);
 
-            var hatItem = current.GetInventoryItem(CharacterPart.hat, randomPreset.hatId);
+            var hatItem = Instance.GetInventoryItem(CharacterPart.hat, randomPreset.hatId);
             if (hatItem != null)
             {
                 EnemyPresetsHolder.hat = (hatItem as SpriteTabItem).sprite;

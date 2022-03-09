@@ -251,6 +251,7 @@ public class FinishMatchUI : MonoBehaviour
 
     public void ExitToMainMenu()
     {
+        SaveGameControlller.Instance.SaveData();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
     #endregion

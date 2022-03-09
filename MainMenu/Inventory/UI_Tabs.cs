@@ -50,10 +50,10 @@ public class UI_Tabs : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < tabs.Length; i++)
+        for (int i = 0; i < Tabs.Length; i++)
         {
-            AddPanel(tabs[i]);
-            AddTab(tabs[i].tabName, i);
+            AddPanel(Tabs[i]);
+            AddTab(Tabs[i].tabName, i);
         }
         currentButton.onClick.Invoke();
     }
@@ -174,31 +174,31 @@ public class UI_Tabs : MonoBehaviour
             }
         }
 
-        int n = 0;
-        if (MainMenuController.current != null)
-        {
-            // TO-DO: replace these hardcoded values
-            switch (panel.part)
-            {
-                case CharacterPart.mainColor:
-                    n = MainMenuController.current.mainColorId;
-                    break;
-                case CharacterPart.secondaryColor:
-                    n = MainMenuController.current.secondaryColorId;
-                    break;
-                case CharacterPart.hat:
-                    n = MainMenuController.current.hatId;
-                    break;
-                case CharacterPart.clothes:
-                    n = MainMenuController.current.clothesId;
-                    break;
-                default:
-                    break;
-            }
-        }
+        //int n = 0;
+        //if (MainMenuController.current != null)
+        //{
+        //    // TO-DO: replace these hardcoded values
+        //    switch (panel.part)
+        //    {
+        //        case CharacterPart.mainColor:
+        //            n = MainMenuController.current.mainColorId;
+        //            break;
+        //        case CharacterPart.secondaryColor:
+        //            n = MainMenuController.current.secondaryColorId;
+        //            break;
+        //        case CharacterPart.hat:
+        //            n = MainMenuController.current.hatId;
+        //            break;
+        //        case CharacterPart.clothes:
+        //            n = MainMenuController.current.clothesId;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
 
-        //go through n of items, then select the n-th item
-        currentPanel.GetComponentsInChildren<Button>()[n].Select();
+        ////go through n of items, then select the n-th item
+        //currentPanel.GetComponentsInChildren<Button>()[n].Select();
     }
 
     // useSprites sets either items or sprites
@@ -310,7 +310,7 @@ public class UI_Tabs : MonoBehaviour
 
                             button.interactable = false;
                         }
-                        button.onClick.AddListener(() => ItemSelected(tabItem.sprite, tab.editedCharacterPart, index));
+                        button.onClick.AddListener(() => ItemSelected(tabItem.sprite, tab.editedCharacterPart, tabItem.GetID()));
                         try
                         {
                             if (tabItem.GetID() != "empty")
@@ -347,7 +347,7 @@ public class UI_Tabs : MonoBehaviour
 
                             button.interactable = false;
                         }
-                        button.onClick.AddListener(() => ItemSelected(tabItem.color, tab.editedCharacterPart, index));
+                        button.onClick.AddListener(() => ItemSelected(tabItem.color, tab.editedCharacterPart, tabItem.GetID()));
                         try
                         {
                             if (tabItem.GetID() != "empty")
@@ -393,40 +393,38 @@ public class UI_Tabs : MonoBehaviour
         return itemButton;
     }
 
-    private void ItemSelected(Color color, CharacterPart part, int index)
+    private void ItemSelected(Color color, CharacterPart part, string id)
     {
         PlayItemClickSound();
         CharacterCustomizer.current.avatars[0].SetColor(color, part);
         CharacterCustomizer.current.avatars[1].SetColor(color, part);
+        MainMenuController.current.selectedItems[part] = id;
         switch (part)
         {
             case CharacterPart.mainColor:
                 CharacterStore.mainColor = color;
-                MainMenuController.current.mainColorId = index;
                 break;
             case CharacterPart.secondaryColor:
                 CharacterStore.secondaryColor = color;
-                MainMenuController.current.secondaryColorId = index;
                 break;
             default:
                 break;
         }
     }
 
-    private void ItemSelected(Sprite sprite, CharacterPart part, int index)
+    private void ItemSelected(Sprite sprite, CharacterPart part, string id)
     {
         PlayItemClickSound();
         CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
         CharacterCustomizer.current.avatars[1].SetSprite(sprite, part);
+        MainMenuController.current.selectedItems[part] = id;
         switch (part)
         {
             case CharacterPart.hat:
                 CharacterStore.hat = sprite;
-                MainMenuController.current.hatId = index;
                 break;
             case CharacterPart.clothes:
                 CharacterStore.clothes = sprite;
-                MainMenuController.current.clothesId = index;
                 break;
             default:
                 break;

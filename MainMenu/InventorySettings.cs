@@ -11,43 +11,43 @@ public class InventorySettings : MonoBehaviour
     [SerializeField] private MyDictionary2 _itemQualities;
     public static MyDictionary2 itemQualities;
 
-    [SerializeField] private Tab[] _tabs;
-    public static Tab[] tabs;
+    [SerializeField] private Tab[] tabs;
+    public static Tab[] Tabs;
 
-    public static InventorySettings current;
+    public static InventorySettings Instance;
 
     private System.Random rand;
 
     private void Awake()
     {
-        if (current != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
-        current = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
 
         rand = new System.Random();
         itemQualities = _itemQualities;
-        tabs = _tabs;
+        if (Tabs == null)
+            Tabs = tabs;
+    }
+
+    public void LoadItemUnlocks(StorableItem[] storableTabs)
+    {
+        storableTabs.Select(x => GetInventoryItem(x.part, x.id).status = x.status);
     }
 
     public int CountItemsInTab(CharacterPart part)
-    {
-        Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
-        return selectedTab.items.Length;
-    }
+        => GetTabByPart(part).items.Length;
 
     public void UnlockItem(TabItem item, CharacterPart part)
-    {
-        Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
-        var tabItem = selectedTab.items.Where(x => x.quality == item.quality);
-    }
+        => GetTabByPart(part).items.Where(x => x.quality == item.quality);
 
-    public TabItem GetInventoryItem(CharacterPart part, ItemQuality quality)
+    public TabItem GetRandomInventoryItem(CharacterPart part, ItemQuality quality)
     {
-        Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
+        Tab selectedTab = GetTabByPart(part);
         var items = selectedTab.items.Where(x => x.quality == quality);
         if (items.Count() > 0)
         {
@@ -58,13 +58,14 @@ public class InventorySettings : MonoBehaviour
         return null;
     }
     public TabItem GetInventoryItem(CharacterPart part, string id)
-    {
-        Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
-        return selectedTab.items.Where(x => x.GetID() == id).FirstOrDefault();
-    }
+        => GetTabByPart(part).items.Where(x => x.GetID() == id).FirstOrDefault();
+
     public TabItem GetRandom(CharacterPart part)
     {
-        Tab selectedTab = tabs.Where(x => x.editedCharacterPart == part).First();
+        Tab selectedTab = GetTabByPart(part);
         return selectedTab.items[rand.Next(selectedTab.items.Length)];
     }
+
+    private Tab GetTabByPart(CharacterPart part) 
+        => Tabs.Where(x => x.editedCharacterPart == part).First();
 }

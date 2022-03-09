@@ -295,6 +295,7 @@ public class GameplayController : MonoBehaviour
 
     public void GoBackToMainMenu()
     {
+        SaveGameControlller.Instance.SaveData();
         SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
     }
 

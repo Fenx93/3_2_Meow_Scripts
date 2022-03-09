@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static InventorySettings;
 
 public enum GameModes
 {
@@ -24,7 +25,8 @@ public class MainMenuController : MonoBehaviour
 
     public static MainMenuController current;
 
-    [HideInInspector] public int mainColorId = 0, secondaryColorId = 0, hatId = 0, earsId = 0, clothesId = 0, mouthId = 0;
+    //[HideInInspector] public int mainColorId = 0, secondaryColorId = 0, hatId = 0, earsId = 0, clothesId = 0, mouthId = 0;
+    [HideInInspector] public Dictionary<CharacterPart, string> selectedItems = new Dictionary<CharacterPart, string>();
 
     [HideInInspector] public GameModes selectedGameMode;
 
@@ -48,6 +50,19 @@ public class MainMenuController : MonoBehaviour
         PlayerStatsTracker.UpdateUI();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Save data");
+            SaveGameControlller.Instance.SaveData();
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("Load data");
+            SaveGameControlller.Instance.LoadData();
+        }
+    }
     public void SelectClass(int classInteger)
     {
         ScriptableCharacterClass selectedClass = classes[classInteger];
@@ -70,6 +85,7 @@ public class MainMenuController : MonoBehaviour
     {
         PlayerPrefs.SetInt("IsTraining", 1);
         PlayerPrefs.SetString("SelectedClass", selectedClassID);
+        SaveGameControlller.Instance.SaveData();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
@@ -80,7 +96,7 @@ public class MainMenuController : MonoBehaviour
             //run game
             PlayerPrefs.SetInt("IsTraining", 0);
             PlayerPrefs.SetString("SelectedClass", selectedClassID);
-
+            SaveGameControlller.Instance.SaveData();
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
         else
@@ -92,7 +108,7 @@ public class MainMenuController : MonoBehaviour
 
     public void TestAddMoney()
     {
-        PlayerStatsTracker.AddMoney();
+        PlayerStatsTracker.AddMoney(100);
     }
 
     public void ItemUnlocked(string id)
