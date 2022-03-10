@@ -40,13 +40,7 @@ public class SaveGameControlller : MonoBehaviour
         try
         {
             Debug.Log("Trying to retrieve data!");
-            var returnedData = testLoadData;//SaveGameMediator.ReadSavedGame();
-            MainSave mainSave = FromByteArray<MainSave>(returnedData);
-
-            PlayerStatsTracker.SetData(mainSave.savedPlayerStats);
-            SettingsMenu.Instance.LoadSettings(mainSave.saveSettings);
-
-            InventorySettings.Instance.LoadItemUnlocks(mainSave.allitems);
+            SaveGameMediator.ReadSavedGame();
         }
         catch (System.Exception e)
         {
@@ -79,7 +73,7 @@ public class SaveGameControlller : MonoBehaviour
 
 
 
-    private byte[] ToByteArray<T>(T obj)
+    private static byte[] ToByteArray<T>(T obj)
     {
         if (obj == null)
             return null;
@@ -88,23 +82,9 @@ public class SaveGameControlller : MonoBehaviour
         bf.Serialize(ms, obj);
         return ms.ToArray();
     }
-
-    private T FromByteArray<T>(byte[] data)
-    {
-        if (data == null)
-            return default;
-        BinaryFormatter bf = new BinaryFormatter();
-        using MemoryStream ms = new MemoryStream(data);
-        object obj = bf.Deserialize(ms);
-        return (T)obj;
-    }
 }
+#region Serializable Save Objects
 
-
-//Things to store - player stats : currentExp, currentExpCap, currentLvl, currentMoney;
-// Settings: selected language, soundVolume, musicVolume
-// Selected items: color, secondaryColor, hat, clothes
-// Unlocked items ids
 [System.Serializable]
 public class MainSave
 {
@@ -163,3 +143,5 @@ public struct StorableItem {
         this.status = status;
     }
 }
+
+#endregion

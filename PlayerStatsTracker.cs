@@ -122,6 +122,7 @@ public static class PlayerStatsTracker
     public static void AddMoney(int moneyAmount)
     {
         CurrentMoney += moneyAmount;
+        SaveGameControlller.Instance.SaveData();
     }
     public static void RemoveMoney(int moneyAmount)
     {

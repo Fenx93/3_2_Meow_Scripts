@@ -1,5 +1,6 @@
 using EasyMobile;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public static class SaveGameMediator
@@ -51,7 +52,7 @@ public static class SaveGameMediator
                     }
                     else
                     {
-                        Debug.Log($"Writing saved game data failed with error: {error}");
+                        Debug.LogError($"Writing saved game data failed with error: {error}");
                     }
                 }
             );
@@ -59,7 +60,7 @@ public static class SaveGameMediator
         else
         {
             // The saved game is not open. You can optionally open it here and repeat the process.
-            Debug.Log("You must open the saved game before writing to it.");
+            Debug.LogWarning("You must open the saved game before writing to it.");
         }
     }
 
@@ -80,16 +81,20 @@ public static class SaveGameMediator
                         if (data.Length > 0)
                         {
                             // Data processing
-                            returnData = data;
+                            MainSave mainSave = FromByteArray<MainSave>(data);
+                            PlayerStatsTracker.SetData(mainSave.savedPlayerStats);
+                            SettingsMenu.Instance.LoadSettings(mainSave.saveSettings);
+
+                            InventorySettings.Instance.LoadItemUnlocks(mainSave.allitems);
                         }
                         else
                         {
-                            Debug.Log("The saved game has no data!");
+                            Debug.LogWarning("The saved game has no data!");
                         }
                     }
                     else
                     {
-                        Debug.Log("Reading saved game data failed with error: " + error);
+                        Debug.LogError("Reading saved game data failed with error: " + error);
                     }
                 }
             );
@@ -98,8 +103,19 @@ public static class SaveGameMediator
         else
         {
             // The saved game is not open. You can optionally open it here and repeat the process.
-            Debug.Log("You must open the saved game before reading its data.");
+            Debug.LogWarning("You must open the saved game before reading its data.");
         }
         return null;
+    }
+
+
+    public static T FromByteArray<T>(byte[] data)
+    {
+        if (data == null)
+            return default;
+        BinaryFormatter bf = new BinaryFormatter();
+        using var ms = new System.IO.MemoryStream(data);
+        object obj = bf.Deserialize(ms);
+        return (T)obj;
     }
 }
