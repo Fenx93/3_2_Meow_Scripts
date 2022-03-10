@@ -10,6 +10,8 @@ public class ScriptableCharacterClass : ScriptableObject
     [SerializeField] private Sprite weaponSprite;
     [SerializeField] private Sprite classIcon;
     [SerializeField] private int unlocksAtLevel = 1;
+    [SerializeField] private int unlocksForEnemyAtLevel = 1;
+
     [Header("Descriptions")]
     public string classDescription = null;
     public Sprite classSpecificIcon = null;
@@ -19,7 +21,7 @@ public class ScriptableCharacterClass : ScriptableObject
 
     private CombatAction[] _actions;
 
-    public CharClass CharClass { get => charClass; }
+    public CharClass CharClass => charClass;
     public CombatAction[] Actions { 
         get
         {
@@ -34,9 +36,10 @@ public class ScriptableCharacterClass : ScriptableObject
             return _actions;
         }
     }
-    public string ClassName { get => LocalisationSystem.GetLocalisedValue(CharClass.ToString()); }
-    public int BaseDamage { get => baseDamage; }
-    public Sprite WeaponSprite { get => weaponSprite; }
-    public Sprite ClassIcon { get => classIcon; }
-    public int UnlocksAtLevel { get => unlocksAtLevel; }
+    public string ClassName => LocalisationSystem.GetLocalisedValue(CharClass.ToString());
+    public int BaseDamage => baseDamage;
+    public Sprite WeaponSprite => weaponSprite;
+    public Sprite ClassIcon => classIcon;
+    public int UnlocksAtLevel => unlocksAtLevel;
+    public int UnlocksForEnemyAtLevel => unlocksForEnemyAtLevel;
 }

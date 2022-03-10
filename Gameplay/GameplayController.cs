@@ -128,12 +128,7 @@ public class GameplayController : MonoBehaviour
     private Enemy GetRandomEnemyClass(CharClass? passedClass = null, AIType? aIType = null)
     {
         Enemy enemy = null;
-        var selectedClass = passedClass == null?
-            (CharClass)UnityEngine.Random.Range(0, Enum.GetNames(typeof(CharClass)).Length)
-            : passedClass.Value;
-        if (isTraining)
-            selectedClass = CharClass.ranger;
-
+        var selectedClass = GetAvailableClass(passedClass);
         CharacterClass charClass = CharacterClassHelper.GetCharacterClass(
             _characterClasses.Where(c => c.CharClass == selectedClass).First());
         enemy = selectedClass switch
@@ -151,6 +146,21 @@ public class GameplayController : MonoBehaviour
         CharacterCustomizer.current.avatars[1].SetWeapon(enemy.SelectedCharacterClass.WeaponSprite);
         SetupEnemyLooks();
         return enemy;
+    }
+
+    private CharClass GetAvailableClass(CharClass? passedClass = null)
+    {
+        if (isTraining)
+            return CharClass.ranger;
+
+        if (passedClass.HasValue)
+            return passedClass.Value;
+
+        var availableClasses = _characterClasses
+            .Where(x => x.UnlocksForEnemyAtLevel <= PlayerStatsTracker.CurrentLvl)
+            .Select(x => x.CharClass).ToArray();
+
+        return availableClasses[UnityEngine.Random.Range(0, availableClasses.Count())];
     }
 
     private void SetupEnemyLooks()
