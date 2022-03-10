@@ -91,6 +91,7 @@ rest_description, Restore action points, Восстанавливаются оч
 clothes, Clothes, Одежда, Kleidung
 hats, Hats, Шапки, Hüte
 primary color, Primary Color, Основной Цвет, Hauptfarbe
+maincolor, Main Color, Основной Цвет, Hauptfarbe
 secondary color, Secondary Color, Вторичный Цвет, Sekundärfarbe
 secondarycolor, Secondary Color, Вторичный Цвет, Sekundärfarbe
 hat, Hat, Шапка, Deckel
@@ -116,3 +117,7 @@ berserk_concentration_icon_description, Enemy hit chance, Шанс попада�
 class_info, Class\nInfo, Класс, 
 actions_info, Actions\nInfo, Действия, 
 action_cooldown, Action Cooldown, Перезарядка Действия, 
+legendary, Legendary, Легендарный,
+epic, Epic, Эпичный,
+rare, Rare, Редкий,
+common, Common, Обычный,

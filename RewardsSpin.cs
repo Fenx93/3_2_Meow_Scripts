@@ -28,7 +28,7 @@ public class RewardsSpin : MonoBehaviour
         }
 
         partCount = new Dictionary<CharacterPart, int>();
-        List<CharacterPart> types = new List<CharacterPart>(Enum.GetValues(typeof(CharacterPart)).Cast<CharacterPart>());
+        var types = new List<CharacterPart>(Enum.GetValues(typeof(CharacterPart)).Cast<CharacterPart>());
         types.Remove(CharacterPart.eyes);
 
         foreach (CharacterPart tab in types)
@@ -119,7 +119,7 @@ public class RewardsSpin : MonoBehaviour
         {
             foreach (var quality in _itemQualities)
             {
-                qualityText.text = quality.Key.ToString();
+                qualityText.text = LocalisationSystem.GetLocalisedValue(quality.Key.ToString());
                 qualityText.colorGradient = quality.Value;
                 yield return new WaitForSeconds(0.08f);
             }
@@ -132,8 +132,11 @@ public class RewardsSpin : MonoBehaviour
         {
             foreach (var part in Enum.GetValues(typeof(CharacterPart)))
             {
-                typeText.text = part.ToString();
-                yield return new WaitForSeconds(0.08f);
+                if ((CharacterPart)part != CharacterPart.eyes)
+                {
+                    typeText.text = LocalisationSystem.GetLocalisedValue(part.ToString().ToLower());
+                    yield return new WaitForSeconds(0.08f);
+                }
             }
         }
     }
