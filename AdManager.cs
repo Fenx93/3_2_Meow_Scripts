@@ -63,7 +63,7 @@ public class AdManager : MonoBehaviour
     public bool InterstitialAdReady()
     {
         var result = Advertising.IsInterstitialAdReady();
-        print($"Interstitial Ad is Ready{result}");
+        Debug.Log($"Interstitial Ad is Ready{result}");
         return result;
     }
 
@@ -116,8 +116,4 @@ public class AdManager : MonoBehaviour
     }
 }
 
-public enum AdType
-{
-    freeSpin,
-    earnMore
-}
+public enum AdType { freeSpin, earnMore }

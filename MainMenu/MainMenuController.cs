@@ -113,26 +113,29 @@ public class MainMenuController : MonoBehaviour
 
     public void ItemUnlocked(string id)
     {
-        var itemButton = idsToItems[id];
-        if (itemButton != null)
+        if (idsToItems.Any() && idsToItems.ContainsKey(id))
         {
-            var button = itemButton.GetComponent<Button>();
-            button.interactable = true;
-
-            var image = itemButton.GetComponentsInChildren<Image>().Last();
-            if (image != null)
+            var itemButton = idsToItems[id];
+            if (itemButton != null)
             {
-                var color = image.color;
-                color.a = 1f;
-                image.color = color;
-            }
+                var button = itemButton.GetComponent<Button>();
+                button.interactable = true;
 
-            var itemButtonImage = itemButton.GetComponent<Image>();
-            if (itemButtonImage != null)
-            {
-                var tempCol = itemButtonImage.color;
-                tempCol.a = 1f;
-                itemButtonImage.color = tempCol;
+                var image = itemButton.GetComponentsInChildren<Image>().Last();
+                if (image != null)
+                {
+                    var color = image.color;
+                    color.a = 1f;
+                    image.color = color;
+                }
+
+                var itemButtonImage = itemButton.GetComponent<Image>();
+                if (itemButtonImage != null)
+                {
+                    var tempCol = itemButtonImage.color;
+                    tempCol.a = 1f;
+                    itemButtonImage.color = tempCol;
+                }
             }
         }
         
