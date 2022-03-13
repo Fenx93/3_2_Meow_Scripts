@@ -1,7 +1,8 @@
 
 public static class PlayerStatsTracker
 {
-    private static int _currentExp = 0, _currentExpCap = 100, _currentLvl = 1, _currentMoney = 0;
+    private static int _currentExp = 0, _currentMoney = 0, 
+        _currentExpCap = 100, _currentLvl = 1;
 
     #region Public Properties
     public static int CurrentExp { 
@@ -66,14 +67,15 @@ public static class PlayerStatsTracker
         }
     }
 
+    public static bool AdsEnabled()
+        => !PurchasesController.AdsDisabled();
+
     public static bool EnoughForSpin() => (CurrentMoney >= 100);
 
     #endregion
 
     public static PlayerStats GetPlayerStats()
-    {
-        return new PlayerStats(CurrentExp, CurrentExpCap, CurrentLvl, CurrentMoney);
-    }
+        => new PlayerStats(CurrentExp, CurrentExpCap, CurrentLvl, CurrentMoney);
 
     public static void SetData(PlayerStats playerStats)
     {
@@ -107,18 +109,6 @@ public static class PlayerStatsTracker
         }
     }
 
-    private static void SetExpText()
-    {
-        if (MainMenuUI.current != null)
-        {
-            MainMenuUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
-        }
-        if (FinishMatchUI.current != null)
-        {
-            FinishMatchUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
-        }
-    }
-
     public static void AddMoney(int moneyAmount)
     {
         CurrentMoney += moneyAmount;
@@ -135,6 +125,18 @@ public static class PlayerStatsTracker
         CurrentExp += experienceAmount;
         CheckNextLevel();
         SaveGameControlller.Instance.SaveData();
+    }
+
+    private static void SetExpText()
+    {
+        if (MainMenuUI.current != null)
+        {
+            MainMenuUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
+        }
+        if (FinishMatchUI.current != null)
+        {
+            FinishMatchUI.current.UpdateExpText(CurrentExp, CurrentExpCap);
+        }
     }
 
     private static void CheckNextLevel()
