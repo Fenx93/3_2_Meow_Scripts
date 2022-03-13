@@ -239,7 +239,7 @@ public class FinishMatchUI : MonoBehaviour
     {
         var adManager = AdManager.current;
 
-        if (adManager.InterstitialAdReady())
+        if (PlayerStatsTracker.AdsEnabled() && adManager.InterstitialAdReady())
         {
             adManager.ShowInterstitialAd();
         }
