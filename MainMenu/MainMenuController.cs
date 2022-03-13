@@ -25,13 +25,9 @@ public class MainMenuController : MonoBehaviour
 
     public static MainMenuController current;
 
-    //[HideInInspector] public int mainColorId = 0, secondaryColorId = 0, hatId = 0, earsId = 0, clothesId = 0, mouthId = 0;
     [HideInInspector] public Dictionary<CharacterPart, string> selectedItems = new Dictionary<CharacterPart, string>();
-
     [HideInInspector] public GameModes selectedGameMode;
-
     [HideInInspector] public Dictionary<string, GameObject> idsToItems = new Dictionary<string, GameObject>();
-
     [SerializeField] private bool playMusicByDefault = true;
 
     void Awake()
@@ -47,22 +43,10 @@ public class MainMenuController : MonoBehaviour
         BattlePreparationScreenController.current.SetupClassDescriptionItems();
         BattlePreparationScreenController.current.UpdateClassButtons(classes);
         PlayerStatsTracker.SetData(1, 0, 75, 0);
+        SaveGameControlller.Instance.LoadData();
         PlayerStatsTracker.UpdateUI();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Save data");
-            SaveGameControlller.Instance.SaveData();
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            Debug.Log("Load data");
-            SaveGameControlller.Instance.LoadData();
-        }
-    }
     public void SelectClass(int classInteger)
     {
         ScriptableCharacterClass selectedClass = classes[classInteger];
