@@ -115,6 +115,8 @@ public abstract class Character
         }
         return canAttack;
     }
+    public virtual bool CanPerformAnyAction()
+        => Actions.Select(x => x.EnergyConsumed <= Energy).Any();
 
     protected CombatAction CheckActionForEnergy(CombatAction combatAction)
     {
