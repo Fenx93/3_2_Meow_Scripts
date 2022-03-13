@@ -181,7 +181,7 @@ public class UI_Tabs : MonoBehaviour
         //    switch (panel.part)
         //    {
         //        case CharacterPart.mainColor:
-        //            n = MainMenuController.current.mainColorId;
+        //            n = MainMenuController.current.idsToItems;
         //            break;
         //        case CharacterPart.secondaryColor:
         //            n = MainMenuController.current.secondaryColorId;
@@ -311,16 +311,10 @@ public class UI_Tabs : MonoBehaviour
                             button.interactable = false;
                         }
                         button.onClick.AddListener(() => ItemSelected(tabItem.sprite, tab.editedCharacterPart, tabItem.GetID()));
-                        try
+                        
+                        if (tabItem.GetID() != "empty")
                         {
-                            if (tabItem.GetID() != "empty")
-                            {
-                                MainMenuController.current.idsToItems.Add(tabItem.GetID(), itemButton);
-                            }
-                        }
-                        catch (Exception)
-                        {
-
+                            MainMenuController.current.idsToItems.Add(tabItem.GetID(), itemButton);
                         }
                     }
                 }
@@ -348,16 +342,9 @@ public class UI_Tabs : MonoBehaviour
                             button.interactable = false;
                         }
                         button.onClick.AddListener(() => ItemSelected(tabItem.color, tab.editedCharacterPart, tabItem.GetID()));
-                        try
+                        if (tabItem.GetID() != "empty")
                         {
-                            if (tabItem.GetID() != "empty")
-                            {
-                                MainMenuController.current.idsToItems.Add(tabItem.GetID(), itemButton);
-                            }
-                        }
-                        catch(Exception e)
-                        {
-                            Debug.LogError(e);
+                            MainMenuController.current.idsToItems.Add(tabItem.GetID(), itemButton);
                         }
                     }
                 }
