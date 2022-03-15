@@ -44,8 +44,10 @@ public class SettingsMenu : MonoBehaviour
             case SystemLanguage.Russian:
                 SetLanguage((int)Language.Russian);
                 break;
-            case SystemLanguage.Italian:
             case SystemLanguage.Lithuanian:
+                SetLanguage((int)Language.Lithuanian);
+                break;
+            case SystemLanguage.Italian:
             case SystemLanguage.Polish:
             case SystemLanguage.Portuguese:
             case SystemLanguage.Spanish:

@@ -1,123 +1,124 @@
-key,en,ru,de
-single_Fight, Single Player, Один игрок, Einzelspieler
-training, Training, Тренировка, Training
-towers, Towers, Башни, Türme
-available_soon, Available Soon!, Скоро!, Bald verfügbar!
-multiplayer, Multiplayer, Мультиплеер, Multiplayer
-to_battle, To Battle!, В Бой!, Zum Kampf!
-character_class_locked, Character class locked!, Класс персонажа закрыт!, Charakter-Klasse gesperrt!
-energy_consumed, Energy Consumed, Необходимо Энергии, Verbrauchte Energie
-sfx_volume, SFX Volume, Громкость Эффектов, Effektlautstärke
-language, Language, Язык, Sprache
-music_volume, Music Volume, Громкость Музыки, Musiklautstärke
-disable_ads, Disable Ads, Отключить рекламу, Werbung deaktivieren
-earn_more, Earn More, Получить ещё, Mehr verdienen
-return, Main Menu, Главное меню, Haupt-Menü
-unlocked_items, Unlocked Items:, Открытые Предметы:, Entsperrte Gegenstände:
-free_spin_received, Free Spin Received!, Получен бесплатный спин!, Gratis-Spin erhalten!
-spin_for_reward, Spin for Reward, Получить награду!, Spin für den Preis!
-stop_reward_spin, Stop, Стоп, Stopp
-new_item_unlocked, New Item Unlocked:, Открыт Новый Предмет:, Neuer Gegenstand entsperrt:
-new_item_unlocked_response, Awesome!, Чудесно!, Toll!
-match_result_victory, Victory!, Победа!, Sieg!
-match_result_defeat, Defeat!, Поражение!, Besiegt!
-tutorial_header_welcome, Welcome!, Добро\nпожаловать!, Willkommen!
-tutorial_text_welcome, This quick tutorial will teach you everything you need to know!, Этот короткий туториал поможет понять азы!," In diesem Tutorial lernst du alles,  was du wissen brauchst!"
-tutorial_header_winning, Winning, Победа, Gewinnen
-tutorial_text_winning," The player who removes enemy <color=#E7552C>health points</color> first,  or achieves <color=#00FF16>specific class conditions</color> ,  <color=#00FF16>wins</color>!","Игрок, который первым уберёт <color=#E7552C>все очки здоровья</color> противника, или выполнит <color=#00FF16>специальное классовое задание</color> - <color=#00FF16>побеждает</color>!","Der Spieler, der zuerst die Lebenspunkte des Gegners zerstört, gewinnt!,"
-tutorial_header_turns, Turns, Ходы, Runden
-tutorial_text_turns_overall," Game runs in turns:\n• players <color=#00FF16>select their actions</color>\n• <color=#E7552C>actions clash</color>\n• if no one won,  <color=#FFB745>game continues</color>!", Игра состоит из пары фаз:\n• Игроки <color=#00FF16>выбирают свои действия</color>\n• <color=#E7552C>Действия противопостовляются</color>\n• Ходы <color=#FFB745>повторяются до победы</color> одного из игроков," Das Spiel läuft in Runden ab:\n• Die Spieler wählen ihre Aktionen\n• Aktionen treffen aufeinander\n• Die Runden wiederholen sich,  bis ein Spieler gewinnt"
-tutorial_header_turns_actionSelect, Turns - Action Select, Ходы - Выбор действий, 
-tutorial_text_turns_actionSelect, Players have 3 seconds to select their actions.\n\nThey may want to skip action selection to <color=#00FF16>save their energy</color> or to <color=#00FF16>outsmart</color> their enemy!," У игроков имеются 3 секунды для выбора действия.\n\nВозможен пропуск выбора хода - например,  <color=#00FF16>сохранить энергию</color> или <color=#00FF16>обмануть противника</color>!",
-tutorial_header_turns_actionClash, Turns - Actions Clash, Ходы - Противопоставление действий, 
-tutorial_text_turns_actionClash1, After countdown goes to <color=#00FF16>Meow!</color> actions clash :, Когда обратный отчёт доходит до <color=#00FF16>Мяу!</color> действия противопоставляются :, 
-tutorial_text_turns_actionClash2, <color=#E7552C>• aggressive</color> actions deal damage\n<color=#FFB745>• defensive</color> actions block damage\n<color=#5CC5EF>• utility</color> actions perform special actions, <color=#E7552C>• аггрессивные</color> действия наносят урон\n<color=#FFB745>• защитные</color> действия блокируют урон\n<color=#5CC5EF>• особые</color> действия уникальны и выполняют разные функции, 
-tutorial_header_actions, Actions, Действия, Aktionen
-tutorial_text_actions, Players select actions by clicking buttons at the bottom.\nAvailable actions <color=#00FF16>depend on the chosen class</color>, Игроки выбирают действия нажимая на кнопки внизу.\nДоступные действия <color=#00FF16>зависят от выбранного класса</color> персонажа, Die Spieler wählen Aktionen durch Klicken auf die Knöpfe am unteren Rand.\nVerfügbare Aktionen sind von der gewählten Klasse abhängig
-tutorial_header_actions2, Actions, Действия, Aktionen
-tutorial_text_actions2, Some actions might be unavailalbe at first - for example gunslinger has to <color=#5CC5EF>reload</color> his gun before he can shoot," Не все действия доступны сразу - например,  стрелку необходимо <color=#5CC5EF>перезарядить</color> оружие перед выстрелом",
-tutorial_header_energy, Energy, Энергия, Energie
-tutorial_text_energy, Most actions require <color=#00FF16>energy</color> - you can restore it by <color=#5CC5EF>resting</color>.\nDon't forget that your enemy has to <color=#5CC5EF>rest</color> as well!," Большинство действий расходуют  <color=#00FF16>энергию</color> - её можно востановить <color=#5CC5EF>отдохнув</color>.\nНе забывай,  что твоему противнику также необходимо <color=#5CC5EF>отдыхать</color>!"," Die meisten Aktionen benötigen Energie - du kannst sie durch Ruhen auffüllen.\nVergiss nicht,  dass dein Feind auch ruhen muss!"
-tutorial_header_pause, Pause, Пауза, Pause
-tutorial_text_pause, Even the fiercest warriors need to take a break. Use the <color=#00FF16>pause button</color> over here!, Даже самые суровые воины нуждаются в отдыхе. Воспользуйся <color=#00FF16>кнопкой паузы</color>!, Auch die härtesten Kämpfer brauchen mal eine Pause. Benutze die Pausentaste!
-tutorial_text_pause_2, Here you can also change <color=#00FF16>settings</color> or <color=#00FF16>analyse your/enemy's actions</color>!, Тут также можно изменить <color=#00FF16>настройки</color> и <color=#00FF16>проанализировать действия</color> врага или своего героя!, Hier kannst du auch Einstellungen ändern oder deine/des Gegners Aktionen analysieren!
-tutorial_header_practice_time, Practice Time, Время практики, Zeit zum Üben
-tutorial_text_practice_time, Try to defeat this enemy. Good luck and <color=#00FF16>make sure to have fun</color>!, Попробуй одолеть этого врага. <color=#00FF16>Счастливой игры</color>!," Versuche,  diesen Feind zu besiegen. Viel Glück und Spaß dabei!"
-tutorial_next_text, Next!, Далее!, Weiter!
-meow, meow!, мяу!, miau!
-unlocks_at_level, Unlocks at level, Необходим уровень, Erforderlicher Level
-,,,
-warrior, Warrior, Воин, Krieger
-ranger, Gunslinger, Стрелок, Schütze
-summoner, Summoner, Призыватель, Beschwörer
-trapper, Trapper, Охотник, Jäger
-berserk, Berserk, Берсерк, Berserker
-,,,
-none, None, Ничего, Keine
-none_description, None, Ничего, Keine
-fire, Fire, Выстрел, Schuss
-fire_description," If you have ammo,  attack the enemy with a shot dealing 2 damage"," Если есть патроны,  атакуй врага выстрелом наносящим 2 ед. Урона"," Falls du Munition hast,  attackiere den Feind mit einem Schuss,  der 2 Schaden macht"
-reload, Reload, Перезарядка, Nachladen
-reload_description, Prepare fire attack, Перезарядка оружия, Nachladen der Waffe
-dodge, Dodge, Уворот, Ausweichen
-dodge_description, Evade attacks, Уворот от атаки врага, Einer Attacke ausweichen
-slash, Slash, Удар, Hieb
-slash_description, Deal 1 damage with a slash of your sword, Нанести врагу 1 ед. урона мечом, Mach 1 Schaden mit einem Hieb deines Schwerts
-parry, Parry, Парирование, Parieren
-parry_description," If enemy attacks this turn,  he will be damaged instead"," В случае атаки врага,  урон наносится ему"," Wenn der Gegner attackiert,  wird er stattdessen beschädigt"
-block, Block, Блок, Blockieren
-block_description, Block incoming enemy attack, Блокировка атаки врага, Feindliche Attacke blockieren
-summon, Summon, Призыв, Beschwören
-summon_description, Doubles amount of existing minions, Удваивает число призванных миньонов, Verdoppelt die Anzahl der bestehenden Diener
-attack, Attack, Aттака, Attacke
-attack_description, Deals 1 damage. The damage is multiplied by the number of minions, Нанесение 1 ед. урона. Урон умножается на число миньонов,
-sacrifice, Sacrifice, Жертва, Opfer
-sacrifice_description, Sacrifices one minion and restores 2 HP, Погибает один миньон и восстанавливаются 2 ед. здоровья, Opfert einen Diener und stellt 2 Lebenspunkte wieder her
-anti_attack, Anti-Attack, Анти-Аттака, Anti-Attacke
-anti_attack_description, The enemy's attack is cancelled, Отменяется вражеская атака, Die Attacke des Gegners wird annulliert
-earn_points, Earn Points, Получить очки, Anti-Abwehr
-earn_points_description, Simply gain 1 victory point, Получить 1 победное очко, Die Abwehraktion des Gegners wird annulliert
-anti_utility, Anti-Utility, Анти-Навык, Anti-Hilfsaktion
-anti_utility_description, The utility skill is cancelled and 2 points are scored, Отменяется вспомогательный навык врага и получаются 2 очка, Die Hilfsaktion des Gegners wird annulliert
-smash, Smash, Крушение, Zerschlagen
-smash_description, Deal current damage to a random character, Текущий урон наносится случайному персонажу, Einem zufälligen Charakter aktuellen Schaden zufügen
-concentrate, Concentrate, Концентрация, Konzentrieren
-concentrate_description, Increases enemy hit chance by 25%, Увеличить шанс попадания по врагу на 25%, Erhöht die Trefferchance gegen Feinde um 25%
-enrage, Enrage, Ярость, Rage
-enrage_description, Doubles current damage, Удвоение текущего урона, Verdoppelt den aktuellen Schaden
-rest, Rest, Отдых, Ruhen
-rest_description, Restore action points, Восстанавливаются очки действий, Aktionspunkte wiederherstellen
-,,,
-clothes, Clothes, Одежда, Kleidung
-hats, Hats, Шапки, Hüte
-primary color, Primary Color, Основной Цвет, Hauptfarbe
-maincolor, Main Color, Основной Цвет, Hauptfarbe
-secondary color, Secondary Color, Вторичный Цвет, Sekundärfarbe
-secondarycolor, Secondary Color, Вторичный Цвет, Sekundärfarbe
-hat, Hat, Шапка, Deckel
-,,,
-new_color_unlocked, New Color Unlocked!, Открыт Новый Цвет!, 
-,,,
-,,,
-warrior_description," Chosen Unpet that was propheced to consume great amounts of valerian and bring back the Great Plod-plod.\n\nPreviously was dodge rolling endlessly,  but after long adventuring years he fully mastered art of swordmanship.\n\n Besides attacking and blocking it makes parrying easy!"," Избранный неглаженный,  цель которого - напитаться валерианом и вернуть в этот мир великий ТЫГЫДЫК.\n\n Раннее излюбленной тактикой были бесконечные увороты,  но за долгие годы странствий он идеально овладел мечом.\n\n Он помогает не только наносить удары и блокировать выпады врага,  но и мастерски парировать их назад!",
-,,,
-ranger_description, Brave adventurer that ventured to these dangerous lands. \n\n No enemy is too dangerous to him while he has his one-shot gun. Except for pickles.," Отважный искатель приключений,  поиск которых привел его в эти земли.\n\n Пока у него есть его верный однозарядный пистолет,  никакой враг ему не страшен. Кроме огурцов…",
-ranger_ammo_icon_description, Loaded gun status, Статус заряженности оружия, 
-,,,
-summoner_description, This alchemist became a summoner after an unsuccessfull experiment that turned his brother into a flock of mice.\n\n Despite the great power acquired he seeks to bring his brother back and no price is too big to pay.," Во время одного из экспериментов этот алхимик стал призывателем - почти потерял своего брата-но успел переселить его душу в стаю мышей.\n\n Не смотря на обретенную мощь,  он всеми силами стремится вернуть брату прежний облик.",
-summoner_sumons_icon_description, Number of summons - used to deal more damage or be sacrificed to restore/gain health," Количетво призванных минионов - каждый увеличивает наносимый крон и ими можно пожертвовать,  чтоб восстановиить здоровье",
-,,,
-trapper_description, This mastermind deceiver simply enjoy his every smart move.\n\n His only target is to throw off his opponent... from whatever!," Этот мастерский манипулятор просто наслаждается каждой своей хитроумной победой.\n\n Он ищет достойного противника,  дабы скинуть его с...чего бы то ни было!",
-trapper_victory_points_icon_description, Number of gained victory points. 10 points are required to win, Набранное количество очков победы. Для победы нужно 10 очков, 
-,,,
-berserk_description," Past of this warrior is a great mystery.\n\n Some say that behind the mask of calmness lies fury that previously didn't let gods sleep,  thus annihilating them!"," Прошлое этого воителя покрыто пеленой,  но ходят слухи,  что он - бледная тень прежнего себя.\n\n Поговаривают,  что за личиной спокойствия все еще бушует та ярость,  которая не давая богам спать,  уничтожила их!",
-berserk_damage_icon_description, Number of damage that will be dealt, Количество наносимого урона, 
-berserk_concentration_icon_description, Enemy hit chance, Шанс попадания по врагу, 
-,,,
-class_info, Class\nInfo, Класс, 
-actions_info, Actions\nInfo, Действия, 
-action_cooldown, Action Cooldown, Перезарядка Действия, 
-legendary, Legendary, Легендарный,
-epic, Epic, Эпичный,
-rare, Rare, Редкий,
-common, Common, Обычный,
+key,en,lt,de,ru
+single_Fight, Single Player,Vieno žaidėjo žaidimas, Einzelspieler, Один игрок
+training, Training,Treniruotė, Training, Тренировка
+towers, Towers,Bokštai, T?rme, Башни
+available_soon, Available Soon!,Greitai bus prieinama!, Bald verf?gbar!, Скоро!
+multiplayer, Multiplayer,Multipleeris, Multiplayer, Мультиплеер
+to_battle, To Battle!,Į mūšį!, Zum Kampf!, В Бой!
+character_class_locked, Character class locked!,Herojaus klasė užrakinta!, Charakter-Klasse gesperrt!, Класс персонажа закрыт!
+energy_consumed, Energy Consumed,Sunaudojama energija, Verbrauchte Energie, Необходимо Энергии
+sfx_volume, SFX Volume,SFX garsas, Effektlautst?rke, Громкость Эффектов
+language, Language,Kalba, Sprache, Язык
+music_volume, Music Volume,Muzikos garsas, Musiklautst?rke, Громкость Музыки
+disable_ads, Disable Ads,Išjungti reklama, Werbung deaktivieren, Отключить рекламу
+earn_more, Earn More,Gauti daugiau, Mehr verdienen, Получить ещё
+return, Main Menu,Į pagrindinį menių, Haupt-Men?, Главное меню
+unlocked_items, Unlocked Items:,Atrakinti daiktai:, Entsperrte Gegenst?nde:, Открытые Предметы:
+free_spin_received, Free Spin Received!,Gautas nemokamas sukimas!, Gratis-Spin erhalten!, Получен бесплатный спин!
+spin_for_reward, Spin for Reward,Sukti dovanas!, Spin f?r den Preis!, Получить награду!
+stop_reward_spin, Stop,Stabdyti, Stopp, Стоп
+new_item_unlocked, New Item Unlocked:,Naujas daiktas atrakintas:, Neuer Gegenstand entsperrt:, Открыт Новый Предмет:
+new_item_unlocked_response, Awesome!,Nuostabu!, Toll!, Чудесно!
+match_result_victory, Victory!,Pergalė!, Sieg!, Победа!
+match_result_defeat, Defeat!,Pralaimejimas, Besiegt!, Поражение!
+tutorial_header_welcome, Welcome!,Sveiki!, Willkommen!, Добро\nпожаловать!
+tutorial_text_welcome, This quick tutorial will teach you everything you need to know!,Šis trumpas tutorialas padės suprasti pagrindus!," In diesem Tutorial lernst du alles,  was du wissen brauchst!", Этот короткий туториал поможет понять азы!
+tutorial_header_winning, Winning,Pergalė, Gewinnen, Победа
+tutorial_text_winning," The player who removes enemy <color=#E7552C>health points</color> first,  or achieves <color=#00FF16>specific class conditions</color> ,  <color=#00FF16>wins</color>!","Žaidėjas, kuris pirmasis pašalina <color=#E7552C>visus priešo sveikatos taškus</color> arba įvykdo <color=#00FF16>specialią klasės misiją</color> – <color=#00FF16>laimi</color>!","Der Spieler, der zuerst die Lebenspunkte des Gegners zerst?rt, gewinnt!,","Игрок, который первым уберёт <color=#E7552C>все очки здоровья</color> противника, или выполнит <color=#00FF16>специальное классовое задание</color> - <color=#00FF16>побеждает</color>!"
+tutorial_header_turns, Turns,Ėjimai, Runden, Ходы
+tutorial_text_turns_overall," Game runs in turns:\n* players <color=#00FF16>select their actions</color>\n* <color=#E7552C>actions clash</color>\n* if no one won,  <color=#FFB745>game continues</color>!",Žaidimas susideda iš kelių etapų:\n• Žaidėjai <color=#00FF16>pasirenka savo veiksmus</color>\n• <color=#E7552C>Veiksmai susidūria</color>\n• Ėjimai <color=# FFB745>kartojami iki vieno iš žaidėjų pergalės</color>," Das Spiel l?uft in Runden ab:\n* Die Spieler w?hlen ihre Aktionen\n* Aktionen treffen aufeinander\n* Die Runden wiederholen sich,  bis ein Spieler gewinnt", Игра состоит из пары фаз:\n* Игроки <color=#00FF16>выбирают свои действия</color>\n* <color=#E7552C>Действия противопостовляются</color>\n* Ходы <color=#FFB745>повторяются до победы</color> одного из игроков
+tutorial_header_turns_actionSelect, Turns - Action Select,Ėjimai – Veiksmo pasirinkimas,Runden - Aktionsauswahl, Ходы - Выбор действий
+tutorial_header_turns_actionClash, Turns - Actions Clash,Ėjimai – Veiksmų susidūrimas, Runden - Aktionen treffen aufeinander, Ходы - Противопоставление действий
+tutorial_text_turns_actionClash1, After countdown goes to <color=#00FF16>Meow!</color> actions clash :,"Kai atgalinis skaičiavimas pasiekia <color=#00FF16>Miau!</color>, veiksmai susidūria :"," Nach Countdown bis ""Miau!"", treffen Aktionen aufeinander", Когда обратный отчёт доходит до <color=#00FF16>Мяу!</color> действия противопоставляются :
+tutorial_text_turns_actionClash2,<color=#E7552C>• aggressive</color> actions deal damage\n<color=#FFB745>• defensive</color> actions block damage\n<color=#5CC5EF>• special</color> actions bear various functions,<color=#E7552C>• agresyvūs</color> veiksmai daro žalą\n<color=#FFB745>• gynybiniai</color> veiksmai blokuoja žalą\n<color=#5CC5EF>• specialūs</color> veiksmai yra unikalūs ir atlieka įvairias funkcijas, * aggressive Aktionen machen Schaden\n* defensive Aktionen blockieren Schaden\n* spezielle Aktionen tragen verschiedene Funktionen,<color=#E7552C>• аггрессивные</color> действия наносят урон\n<color=#FFB745>• защитные</color> действия блокируют урон\n<color=#5CC5EF>• особые</color> действия уникальны и выполняют разные функции
+tutorial_text_turns_actionSelect, Players have 3 seconds to select their actions.\n\nThey may want to skip action selection to <color=#00FF16>save their energy</color> or to <color=#00FF16>outsmart</color> their enemy!,"Žaidėjai turi 3 sekundes veiksmui pasirinkti .\n\nGalima praleisti ėjimo pasirinkimą, pvz., <color=#00FF16>sutaupyti energiją</color> arba <color=#00FF16>apgauti priešininką</color> !","Die Spieler haben 3 Sekunden Zeit f?r die Aktionsauswahl. Sie k?nnen die Auswahl ?berspringen, um <Energie zu sparen> oder den Gegner <zu ?berlisten>!"," У игроков имеются 3 секунды для выбора действия.\n\nВозможен пропуск выбора хода - например,  <color=#00FF16>сохранить энергию</color> или <color=#00FF16>обмануть противника</color>!"
+tutorial_header_actions, Actions,Veiksmai, Aktionen, Действия
+tutorial_text_actions, Players select actions by clicking buttons at the bottom.\nAvailable actions <color=#00FF16>depend on the chosen class</color>,Žaidėjai pasirenka veiksmus spustelėdami mygtukus apačioje.\nGalimi veiksmai <color=#00FF16>priklauso nuo pasirinktos herojaus klasės</color>, Die Spieler w?hlen Aktionen durch Klicken auf die Kn?pfe am unteren Rand.\nVerf?gbare Aktionen sind von der gew?hlten Klasse abh?ngig, Игроки выбирают действия нажимая на кнопки внизу.\nДоступные действия <color=#00FF16>зависят от выбранного класса</color> персонажа
+tutorial_header_actions2, Actions,Veiksmai, Aktionen, Действия
+tutorial_text_actions2," Some actions might be unavailable at first - for example, the gunslinger has to <color=#5CC5EF>reload</color> his gun before he can shoot","Ne visi veiksmai pasiekiami iš karto – pavyzdžiui, šaulys turi <color=#5CC5EF> Pertaisyti ginklą</color> prieš šaudydamas"," Einige Aktionen k?nnen zun?chst nicht verf?gbar sein - zum Beispiel muss der Sch?tze seine Waffe <nachladen>, bevor er schie?en kann"," Не все действия доступны сразу - например,  стрелку необходимо <color=#5CC5EF>перезарядить</color> оружие перед выстрелом"
+tutorial_header_energy, Energy,Energija, Energie, Энергия
+tutorial_text_energy, Most actions require <color=#00FF16>energy</color> - you can restore it by <color=#5CC5EF>resting</color>.\nDon't forget that your enemy has to <color=#5CC5EF>rest</color> as well!,"Dauguma veiksmų eikvoja <color=#00FF16>energiją</color> – galite ją atkurti <color=#5CC5EF>pailsėję</color>.\nNepamirškite, kad jūsų priešininkas taip pat turi <color=#5CC5EF>pailsėti </color> !"," Die meisten Aktionen ben?tigen Energie - du kannst sie durch Ruhen auff?llen.\nVergiss nicht,  dass dein Feind auch ruhen muss!"," Большинство действий расходуют  <color=#00FF16>энергию</color> - её можно востановить <color=#5CC5EF>отдохнув</color>.\nНе забывай,  что твоему противнику также необходимо <color=#5CC5EF>отдыхать</color>!"
+tutorial_header_pause, Pause,Pauzė, Pause, Пауза
+tutorial_text_pause, Even the fiercest warriors need to take a break. Use the <color=#00FF16>pause button</color> over here!,Net ir aršiausiams kovotojams reikia poilsio. Naudokite <color=#00FF16>pauzės mygtuką</color>!, Auch die h?rtesten K?mpfer brauchen mal eine Pause. Benutze die Pausentaste!, Даже самые суровые воины нуждаются в отдыхе. Воспользуйся <color=#00FF16>кнопкой паузы</color>!
+tutorial_text_pause_2, Here you can also change <color=#00FF16>settings</color> or <color=#00FF16>analyse your/enemy's actions</color>!,Čia taip pat galite pakeisti <color=#00FF16>nustatymus</color> ir <color=#00FF16>analizuoti priešo ar savo herojaus veiksmus</color>!, Hier kannst du auch Einstellungen ?ndern oder deine/des Gegners Aktionen analysieren!, Тут также можно изменить <color=#00FF16>настройки</color> и <color=#00FF16>проанализировать действия</color> врага или своего героя!
+tutorial_header_practice_time, Practice Time,Praktikos laikas, Zeit zum ?ben, Время практики
+tutorial_text_practice_time, Try to defeat this enemy. Good luck and <color=#00FF16>make sure to have fun</color>!,Pabandykite nugalėti šį priešą. <color=#00FF16>Laimingo žaidimo</color>!," Versuche,  diesen Feind zu besiegen. Viel Gl?ck und Spa? dabei!", Попробуй одолеть этого врага. <color=#00FF16>Счастливой игры</color>!
+tutorial_next_text, Next!,Toliau!, Weiter!, Далее!
+meow, meow!,miau!, miau!, мяу!
+unlocks_at_level, Unlocks at level,Reikalingas lygis, Erforderlicher Level, Необходим уровень
+,,,,
+warrior, Warrior,Kovotojas, Krieger, Воин
+ranger, Gunslinger,Ginklininkas, Sch?tze, Стрелок
+summoner, Summoner,Šaukys, Beschw?rer, Призыватель
+trapper, Trapper,Medžiotojas, J?ger, Охотник
+berserk, Berserk,Berserkas, Berserker, Берсерк
+,,,,
+none, None,Nieko, Keine, Ничего
+none_description, None,Nieko, Keine, Ничего
+fire, Fire,Šūvis, Schuss, Выстрел
+fire_description," If you have ammo,  attack the enemy with a shot dealing 2 damage","Turint amuniciją, šaunama į priešą ir jam atimami 2 žalos taškai"," Falls du Munition hast,  attackiere den Feind mit einem Schuss,  der 2 Schaden macht"," Если есть патроны,  атакуй врага выстрелом наносящим 2 ед. Урона"
+reload, Reload,Pertaisymas, Nachladen, Перезарядка
+reload_description, Prepare fire attack,Parengiamas ginklas kitam šūviui, Nachladen der Waffe, Перезарядка оружия
+dodge, Dodge,Išsisukimas, Ausweichen, Уворот
+dodge_description, Evade attacks,Priešo atakos išvengimas, Einer Attacke ausweichen, Уворот от атаки врага
+slash, Slash,Kirtimas, Hieb, Удар
+slash_description, Deal 1 damage with a slash of your sword,Priešas kertamas kardu ir jam atimamas 1 žalos tašką, Mach 1 Schaden mit einem Hieb deines Schwerts, Нанести врагу 1 ед. урона мечом
+parry, Parry,Atremimas, Parieren, Парирование
+parry_description," If enemy attacks this turn,  he will be damaged instead","Puolant priešui, jo žala padaroma jam"," Wenn der Gegner attackiert,  wird er stattdessen besch?digt"," В случае атаки врага,  урон наносится ему"
+block, Block,Blokavimas, Blockieren, Блок
+block_description, Block incoming enemy attack,Blokuojamas priešo puolimas, Feindliche Attacke blockieren, Блокировка атаки врага
+summon, Summon,Iškvietimas, Beschw?ren, Призыв
+summon_description, Doubles amount of existing minions,Pakalikai dvigubinasi, Verdoppelt die Anzahl der bestehenden Diener, Удваивает число призванных миньонов
+attack, Attack,Puolimas, Attacke, Aттака
+attack_description, Deals 1 damage. The damage is multiplied by the number of minions,Padaro 1 žalą. Žala padidinama pakalikų skaičiumi,Macht 1 Schaden. Der Schaden wird mit der Zahl der Diener multipliziert., Нанесение 1 ед. урона. Урон умножается на число миньонов
+sacrifice, Sacrifice,Auka, Opfer, Жертва
+sacrifice_description, Sacrifices one minion and restores 2 HP,"Paaukojus vieną pakaliką, išgydomi 2 žalos taškai", Opfert einen Diener und stellt 2 Lebenspunkte wieder her, Погибает один миньон и восстанавливаются 2 ед. здоровья
+anti_attack, Anti-Attack,Anti-Ataka, Anti-Attacke, Анти-Аттака
+anti_attack_description, The enemy's attack is cancelled,Priešo puolimas atšaukiamas, Die Attacke des Gegners wird annulliert, Отменяется вражеская атака
+anti_utility, Anti-Utility,Anti-Veiksmas, Anti-Hilfsaktion, Анти-Навык
+anti_utility_description, The utility skill is cancelled and 2 points are scored,Priešo veikmas atšaukiamas. Pelnami 2 pergalės taškai, Die Hilfsaktion des Gegners wird annulliert, Отменяется вспомогательный навык врага и получаются 2 очка
+smash, Smash,Sudaužyti, Zerschlagen, Крушение
+smash_description, Deal current damage to a random character,Padarykite dabartinę žalą atsitiktiniam veikėjui, Einem zuf?lligen Charakter aktuellen Schaden zuf?gen, Текущий урон наносится случайному персонажу
+concentrate, Concentrate,Koncentracija, Konzentrieren, Концентрация
+concentrate_description, Increases enemy hit chance by 25%,25% padidina priešo smūgio tikimybę, Erh?ht die Trefferchance gegen Feinde um 25%, Увеличить шанс попадания по врагу на 25%
+enrage, Enrage,Įniršimas, Rage, Ярость
+enrage_description, Doubles current damage,Padvigubina dabartinę žalą, Verdoppelt den aktuellen Schaden, Удвоение текущего урона
+rest, Rest,Poilsis, Ruhen, Отдых
+rest_description, Restore action points,Sugražina veiksmų taškus, Aktionspunkte wiederherstellen, Восстанавливаются очки действий
+,,,,
+clothes, Clothes,Drabužiai, Kleidung, Одежда
+hats, Hats,Skrybėlės, H?te, Шапки
+primary color, Primary Color,Pagrindinė Spalva, Hauptfarbe, Основной Цвет
+maincolor, Primary Color,Pagrindinė Spalva, Hauptfarbe, Основной Цвет
+secondary color, Secondary Color,Antrinė Spalva, Sekund?rfarbe, Вторичный Цвет
+secondarycolor, Secondary Color,Antrinė Spalva, Sekund?rfarbe, Вторичный Цвет
+hat, Hat,Skrybėlė,Hut, Шапка
+,,,,
+new_color_unlocked, New Color Unlocked!,Nauja splava atidaryta!,  Neue Farbe er?ffnet!, Открыт Новый Цвет!
+,,,,
+,,,,
+warrior_description," The chosen Unpet that was prophecised to consume great amounts of valerian and bring back the Great Clip-Clop.\n\nPreviously was dodge-rolling endlessly,  but after long years of adventuring he fully mastered the art of swordsmanship.\n\n Apart from attacking and blocking, he can also skillfully parry enemy attacks!","Išrinktasis ... kuriam buvo išpranašauta išlakti valerijonijaus ir gražinti šiam pasauliui Didyjį ... .\n\n Seniau jo mėgstamiausia taktika buvo o taktika buvo begalinis išsisukinėjimas, tačiau per klajonių metus jis puikiai įvaldė kardą.\n\n Tai padeda ne tik smogti ir blokuoti priešo atakas, bet ir meistriškai jas atmušti!"," Der auserw?hlte Ungestreichelt, der viel Baldrian trinken will, um den Gro?en Klipp-Klapp zur?ckzubringen.\n\nFr?her wich er Attacken endlos aus, aber nach langen Jahren des Abenteuers meisterte er die Schwertkunst perfekt.\n\nEr kann nicht nur attackieren und blocken, sondern auch gegnerische Attacken parieren!"," Избранный неглаженный,  цель которого - напитаться валерианом и вернуть в этот мир великий ТЫГЫДЫК.\n\n Раннее излюбленной тактикой были бесконечные увороты,  но за долгие годы странствий он идеально овладел мечом.\n\n Он помогает не только наносить удары и блокировать выпады врага,  но и мастерски парировать их назад!"
+,,,,
+ranger_description, Brave adventurer that ventured to these dangerous lands. \n\n No enemy is too dangerous to him while he has his one-shot gun. Except for pickles.,"Drąsus nuotykių ieškotojas, kurio paieškos atvedė jį į šiuos kraštus.\n\n Kol jis turi savo patikimą vienašūvį pistoletą, joks priešas jam nebaisus. Išskyrus agurkus...",," Отважный искатель приключений,  поиск которых привел его в эти земли.\n\n Пока у него есть его верный однозарядный пистолет,  никакой враг ему не страшен. Кроме огурцов…"
+ranger_ammo_icon_description, Loaded gun status,Užtaisyto ginklo būsena, , Статус заряженности оружия
+,,,,
+summoner_description, This alchemist became a summoner after an unsuccessfull experiment that turned his brother into a flock of mice.\n\n Despite the great power acquired he seeks to bring his brother back and no price is too big to pay.,"Šis alchemikas tapo šaukiu po nesėkmingo eksperimento, kuris jo brolį pavertė pelių pulku.\n\n Nepaisant įgytos didžiulės galios, jis siekia sugrąžinti brolį ir jokia kaina nėra per didelė.",," Во время одного из экспериментов этот алхимик стал призывателем - почти потерял своего брата-но успел переселить его душу в стаю мышей.\n\n Не смотря на обретенную мощь,  он всеми силами стремится вернуть брату прежний облик."
+summoner_sumons_icon_description, Number of summons - used to deal more damage or be sacrificed to restore/gain health,Iškvietimų skaičius – naudojamas norint padaryti daugiau žalos arba būti paaukotam siekiant atkurti/įgyti sveikatą,," Количетво призванных минионов - каждый увеличивает наносимый крон и ими можно пожертвовать,  чтоб восстановиить здоровье"
+,,,,
+trapper_description, This mastermind deceiver simply enjoys his every smart move.\n\n His only target is to throw off his opponent... from whatever!,Šis meistriškas manipuliatorius tiesiog mėgaujasi kiekviena savo gudria pergale.\n\n Vienintelis jo tikslas yra numesti priešininką... nuo bet ko!,," Этот мастерский манипулятор просто наслаждается каждой своей хитроумной победой.\n\n Он ищет достойного противника,  дабы сбросить его с...чего бы то ни было!"
+trapper_victory_points_icon_description, Number of gained victory points. 10 points are required to win,Surinktų pergalės taškų skaičius. Norint laimėti reikia surinkti 10 taškų, , Набранное количество очков победы. Для победы нужно 10 очков
+,,,,
+berserk_description," Past of this warrior is a great mystery.\n\n Some say that behind the mask of calmness lies fury that previously didn't let gods sleep,  thus annihilating them!","Šio kario praeitis yra didžiulė paslaptis.\n\n Kai kas sako, kad už ramybės kaukės slypi įniršis, kuris anksčiau neleisdavo dievams užmigti, taip juos sunaikindamas!",," Прошлое этого воителя покрыто пеленой,  но ходят слухи,  что он - бледная тень прежнего себя.\n\n Поговаривают,  что за личиной спокойствия все еще бушует та ярость,  которая не давая богам спать,  уничтожила их!"
+berserk_damage_icon_description, Number of damage that will be dealt,"Žalos, kuri bus padaryta, skaičius", , Количество наносимого урона
+berserk_concentration_icon_description, Enemy hit chance,Tikimybė pataikyti į priešą, , Шанс попадания по врагу
+,,,,
+class_info, Class\nInfo,Klasės\nInformacija, , Класс
+actions_info, Actions\nInfo,Veiksmų\nInformacija, , Действия
+action_cooldown,Action Cooldown,,Abklingzeit,Время перезарядки
+legendary,Legendary,Legendinis,Legend?r,Легендарный
+epic,Epic,Epinis,Episch,Эпичный
+rare,Rare,Retas,Selten,Редкий
+common,Common,Dažnas,Gemeinsam,Обычный
+,,,,
+settings,Settings,Nustatymai,Einstellungen,Настройки
+credits,Credits,Autoriai,Mitwirkende,Авторы
