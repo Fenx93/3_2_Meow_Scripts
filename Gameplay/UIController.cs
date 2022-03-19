@@ -14,8 +14,12 @@ public class UIController : MonoBehaviour
     private TextMeshProUGUI _playerAction, _playerEnergy, _enemyAction, _enemyEnergy;
     private Slider _playerEnergySlider, _enemyEnergySlider;
 
+    [SerializeField] private Image pauseIcon;
+
     private Image[] _playerHeartHPImages, _enemyHeartHPImages;
     private Image _playerAmmoImage, _enemyAmmoImage;
+
+    private Sprite pauseSprite, playSprite;
 
     #region Summoner UI fields
     private GameObject _playerSummonObject, _enemySummonObject;
@@ -88,6 +92,8 @@ public class UIController : MonoBehaviour
 
         GameplayController.current.OnEnemySelectedAction += UpdateSelectedActionText;
 
+        pauseSprite = Resources.Load<Sprite>("pause_icon");
+        playSprite = Resources.Load<Sprite>("play_icon");
         DisplayTimer(true);
     }
 
@@ -140,9 +146,10 @@ public class UIController : MonoBehaviour
     {
         settingsIcon.SetActive(show);
         if (!show)
-        {
             ShowActionDescriptionPanel(false);
-        }
+
+        pauseIcon.sprite = show ?
+            playSprite : pauseSprite;
     }
     public void ShowSettingsMenu()
     {
