@@ -44,7 +44,7 @@ public class SaveGameControlller : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Error:{e}");
+            Debug.LogError($"Load Data Error:{e}");
         }
     }
 
@@ -66,7 +66,7 @@ public class SaveGameControlller : MonoBehaviour
         }
         catch(System.Exception e)
         {
-            Debug.LogError($"Error:{e}");
+            Debug.LogError($"Save Data Error:{e}");
         }
 
     }

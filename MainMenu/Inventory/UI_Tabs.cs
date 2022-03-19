@@ -24,6 +24,7 @@ public class UI_Tabs : MonoBehaviour
 
     [SerializeField] private int rows = 4;
     [SerializeField] private int columns = 5;
+    [SerializeField] private bool unlockAllItems = false;
     private readonly List<InventoryTab> tabPanels = new List<InventoryTab>();
 
     private GameObject currentPanel, currentPage;
@@ -298,7 +299,7 @@ public class UI_Tabs : MonoBehaviour
 
                         isEmpty = false;
 
-                        if (tabItem.status == ItemStatus.locked)
+                        if (!unlockAllItems && tabItem.status == ItemStatus.locked)
                         {
                             var color = image.color;
                             color.a = 0.25f;
@@ -329,7 +330,7 @@ public class UI_Tabs : MonoBehaviour
                         itemButtonImage.color = InventorySettings.itemQualities[tabItem.quality];
 
                         isEmpty = false;
-                        if (tabItem.status == ItemStatus.locked)
+                        if (!unlockAllItems && tabItem.status == ItemStatus.locked)
                         {
                             var color = image.color;
                             color.a = 0.25f;

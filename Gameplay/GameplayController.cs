@@ -29,6 +29,7 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private bool enablePostProcessing;
     [SerializeField] private GameObject postProcessing;
+    [SerializeField] private bool allEnemiesAvailable = false;
 
     public bool startByDefault, isTraining;
     [SerializeField] private GameObject trainingObject;
@@ -156,9 +157,14 @@ public class GameplayController : MonoBehaviour
         if (passedClass.HasValue)
             return passedClass.Value;
 
-        var availableClasses = _characterClasses
-            .Where(x => x.UnlocksForEnemyAtLevel <= PlayerStatsTracker.CurrentLvl)
-            .Select(x => x.CharClass).ToArray();
+        CharClass[] availableClasses = _characterClasses.Select(x => x.CharClass).ToArray();
+
+        if (!allEnemiesAvailable)
+        {
+            availableClasses = _characterClasses
+                .Where(x => x.UnlocksForEnemyAtLevel <= PlayerStatsTracker.CurrentLvl)
+                .Select(x => x.CharClass).ToArray();
+        }
 
         return availableClasses[UnityEngine.Random.Range(0, availableClasses.Count())];
     }
