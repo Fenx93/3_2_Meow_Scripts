@@ -92,7 +92,7 @@ public class RewardsSpin : MonoBehaviour
                 item.status = ItemStatus.unlocked;
                 MainMenuController.current.ItemUnlocked(item.GetID());
 
-                SaveGameControlller.Instance.SaveData();
+                SaveGameController.Instance.SaveData();
                 AudioController.current.PlayRewardWheelStopSpinningSound();
 
                 if (FinishMatchUI.current)

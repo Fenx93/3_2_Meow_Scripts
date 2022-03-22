@@ -112,19 +112,19 @@ public static class PlayerStatsTracker
     public static void AddMoney(int moneyAmount)
     {
         CurrentMoney += moneyAmount;
-        SaveGameControlller.Instance.SaveData();
+        SaveGameController.Instance.SaveData();
     }
     public static void RemoveMoney(int moneyAmount)
     {
         CurrentMoney -= moneyAmount;
-        SaveGameControlller.Instance.SaveData();
+        SaveGameController.Instance.SaveData();
     }
 
     public static void AddExperience(int experienceAmount)
     {
         CurrentExp += experienceAmount;
         CheckNextLevel();
-        SaveGameControlller.Instance.SaveData();
+        SaveGameController.Instance.SaveData();
     }
 
     private static void SetExpText()

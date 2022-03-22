@@ -1,13 +1,17 @@
 using EasyMobile;
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class SaveGameControlller : MonoBehaviour
+public class SaveGameController : MonoBehaviour
 {
-    public static SaveGameControlller Instance;
-    private byte[] testLoadData;
+    public static SaveGameController Instance;
+
+    public bool SavedGameExists
+        => SaveGameMediator.mySavedGame != null;
+
     private void Awake()
     {
         if (Instance != null)
@@ -20,18 +24,23 @@ public class SaveGameControlller : MonoBehaviour
 
         GameServices.UserLoginSucceeded += OpenData;
         GameServices.UserLoginFailed += DisplayLoginError;
-        SaveGameMediator.OnLoadDataUpdate += LoadData;
+        //SaveGameMediator.OnLoadDataUpdate += LoadData; - Do not load on setup with a loading screen
     }
 
     public void OpenData()
     {
-        //ManualSaveGameManager.OpenSavedGame("randomName");
-        SaveGameMediator.OpenSavedGame();
+        try
+        {
+            SaveGameMediator.OpenSavedGame();
+        }
+        catch (Exception)
+        {
+            NativeUI.Alert("Saved Data load failed!", "Can't load saved data.");
+        }
     }
 
     public void DisplayLoginError()
     {
-        //ManualSaveGameManager.OpenSavedGame("randomName");
         NativeUI.Alert("PlayStore Login failed!", "Can't load saved data.");
     }
 
@@ -42,7 +51,7 @@ public class SaveGameControlller : MonoBehaviour
             Debug.Log("Trying to retrieve data!");
             SaveGameMediator.ReadSavedGame();
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogError($"Load Data Error:{e}");
         }
@@ -61,7 +70,6 @@ public class SaveGameControlller : MonoBehaviour
 
             MainSave mainSave = new MainSave(playerStats, settings, storableItems, allItems);
             var data = ToByteArray(mainSave);
-            testLoadData = data;
             SaveGameMediator.WriteSavedGame(data);
         }
         catch(System.Exception e)
