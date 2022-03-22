@@ -17,8 +17,6 @@ public class AdManager : MonoBehaviour
         }
         current = this;
         DontDestroyOnLoad(gameObject);
-        if (!RuntimeManager.IsInitialized())
-            RuntimeManager.Init();
     }
 
     #region Events
@@ -42,13 +40,14 @@ public class AdManager : MonoBehaviour
 
     public bool AdsAvailable()
     {
-        if (Advertising.IsRewardedAdReady())
-            return true;
-        else
-        {
-            StartCoroutine(nameof(RetryToGetAds));
-            return false;
-        }
+        return Advertising.IsRewardedAdReady();
+        //if (Advertising.IsRewardedAdReady())
+        //    return true;
+        //else
+        //{
+        //    StartCoroutine(nameof(RetryToGetAds));
+        //    return false;
+        //}
     }
 
     public void ShowRewardedAd(AdType adType)

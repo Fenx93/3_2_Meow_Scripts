@@ -7,7 +7,7 @@ public static class SaveGameMediator
 {
 
     // To store the opened saved game.
-    private static SavedGame mySavedGame;
+    public static SavedGame mySavedGame;
 
     public static event Action OnLoadDataUpdate;
 
@@ -26,9 +26,9 @@ public static class SaveGameMediator
         if (string.IsNullOrEmpty(error))
         {
             Debug.Log("Saved game opened successfully!");
-            mySavedGame = savedGame;        // keep a reference for later operations
+            // keep a reference for later operations
+            mySavedGame = savedGame;        
             OnLoadDataUpdate?.Invoke();
-            //fire an event to notify SaveGameParser that it can load data
         }
         else
         {
@@ -107,7 +107,6 @@ public static class SaveGameMediator
         }
         return null;
     }
-
 
     public static T FromByteArray<T>(byte[] data)
     {
