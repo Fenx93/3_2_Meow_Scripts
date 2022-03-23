@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    [SerializeField] private AudioSource musicSource, sfxSource, extraSfxSource, extraSfxSource2;
+    [SerializeField] private AudioSource musicSource, sfxSource, loopedSfxSource;
     [SerializeField] private AudioClip buttonClickSound,
         countdownBeepSound, meowSound,
         hitSound, actionNeglectedSound,
         rewardWheelSpinningSound, rewardWheelSpinningStopSound,
         winningSound, losingSound, celebrationSound;
 
-    private AudioSource loopedAudioSource = null;
     public static AudioController current;
     void Awake()
     {
@@ -24,29 +23,14 @@ public class AudioController : MonoBehaviour
 
     public void PlaySFX(AudioClip clip, bool playWithLoop = false)
     {
-        if (!sfxSource.isPlaying)
+        if (!playWithLoop)
         {
-            sfxSource.clip = clip;
-            sfxSource.loop = playWithLoop;
-            if (playWithLoop)
-                loopedAudioSource = sfxSource;
-            sfxSource.Play();
-        }
-        else if(!extraSfxSource.isPlaying)
-        {
-            extraSfxSource.clip = clip;
-            extraSfxSource.loop = playWithLoop;
-            if (playWithLoop)
-                loopedAudioSource = sfxSource;
-            extraSfxSource.Play();
+            sfxSource.PlayOneShot(clip);
         }
         else
         {
-            extraSfxSource2.clip = clip;
-            extraSfxSource2.loop = playWithLoop;
-            if (playWithLoop)
-                loopedAudioSource = sfxSource;
-            extraSfxSource.Play();
+            loopedSfxSource.clip = clip;
+            loopedSfxSource.Play();
         }
     }
 
@@ -73,12 +57,13 @@ public class AudioController : MonoBehaviour
     }
     public void PlayRewardWheelSpinningSound()
     {
+        loopedSfxSource.loop = true;
         PlaySFX(rewardWheelSpinningSound, true);
     }
     public void PlayRewardWheelStopSpinningSound()
     {
-        loopedAudioSource.loop = false;
-        loopedAudioSource.Stop();
+        loopedSfxSource.loop = false;
+        loopedSfxSource.Stop();
         PlayBeepSound();
     }
     public void PlayWinningSound()
