@@ -1,9 +1,12 @@
 using EasyMobile;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using UnityEngine;
+using static InventorySettings;
 
 public class SaveGameController : MonoBehaviour
 {
@@ -116,6 +119,9 @@ public class MainSave
         this.savedSelectedItems = selectedItems;
         this.allitems = allitems;
     }
+
+    public Dictionary<CharacterPart, string> GetSelectedItems(StorableItem[] selectedItems)
+        => selectedItems.ToDictionary(s => s.part, s => s.id);
 }
 
 [System.Serializable]
