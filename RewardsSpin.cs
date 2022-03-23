@@ -78,7 +78,7 @@ public class RewardsSpin : MonoBehaviour
                 }
             }
 
-            var item = InventorySettings.Instance.GetRandomInventoryItem(selectedpart, quality);
+            var item = InventorySettings.Instance.GetRandomLockedItem(selectedpart, quality);
            
             if (item != null /*&& selectedpart != CharacterPart.hat && selectedpart != CharacterPart.clothes*/)
             {

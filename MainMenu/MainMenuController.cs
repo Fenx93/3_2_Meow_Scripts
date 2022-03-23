@@ -51,7 +51,46 @@ public class MainMenuController : MonoBehaviour
             SaveGameController.LoadData();
         //}
 
+        SetCharacterItems();
         PlayerStatsTracker.UpdateUI();
+    }
+
+    private void SetCharacterItems()
+    {
+        var itemParts = new CharacterPart[] { CharacterPart.clothes, CharacterPart.hat };
+        var colorParts = new CharacterPart[] { CharacterPart.mainColor, CharacterPart.secondaryColor };
+
+        if (selectedItems.Any())
+        {
+            foreach (var pair in selectedItems)
+            {
+                var part = pair.Key;
+                if (itemParts.Contains(part))
+                {
+                    var item = (SpriteTabItem)InventorySettings.Instance.GetItemByID(pair.Key, pair.Value);
+                    InventorySettings.SelectItem(item.sprite, part, item.GetID());
+                }
+                else if (colorParts.Contains(part))
+                {
+                    var item = (ColorTabItem)InventorySettings.Instance.GetItemByID(pair.Key, pair.Value);
+                    InventorySettings.SelectColor(item.color, part, item.GetID());
+                }
+            }
+        }
+        else
+        {
+            //get random unlocked items
+            foreach (var part in itemParts)
+            {
+                var item = (SpriteTabItem)InventorySettings.Instance.GetRandomUnlockedItem(part);
+                InventorySettings.SelectItem(item.sprite, part, item.GetID());
+            }
+            foreach (var part in colorParts)
+            {
+                var item = (ColorTabItem)InventorySettings.Instance.GetRandomUnlockedItem(part);
+                InventorySettings.SelectColor(item.color, part, item.GetID());
+            }
+        }
     }
 
     public void SelectClass(int classInteger)

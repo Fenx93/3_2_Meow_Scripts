@@ -384,39 +384,41 @@ public class UI_Tabs : MonoBehaviour
     private void ItemSelected(Color color, CharacterPart part, string id)
     {
         PlayItemClickSound();
-        CharacterCustomizer.current.avatars[0].SetColor(color, part);
-        CharacterCustomizer.current.avatars[1].SetColor(color, part);
-        MainMenuController.current.selectedItems[part] = id;
-        switch (part)
-        {
-            case CharacterPart.mainColor:
-                CharacterStore.mainColor = color;
-                break;
-            case CharacterPart.secondaryColor:
-                CharacterStore.secondaryColor = color;
-                break;
-            default:
-                break;
-        }
+        InventorySettings.SelectColor(color, part, id);
+        //CharacterCustomizer.current.avatars[0].SetColor(color, part);
+        //CharacterCustomizer.current.avatars[1].SetColor(color, part);
+        //MainMenuController.current.selectedItems[part] = id;
+        //switch (part)
+        //{
+        //    case CharacterPart.mainColor:
+        //        CharacterStore.mainColor = color;
+        //        break;
+        //    case CharacterPart.secondaryColor:
+        //        CharacterStore.secondaryColor = color;
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
 
     private void ItemSelected(Sprite sprite, CharacterPart part, string id)
     {
         PlayItemClickSound();
-        CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
-        CharacterCustomizer.current.avatars[1].SetSprite(sprite, part);
-        MainMenuController.current.selectedItems[part] = id;
-        switch (part)
-        {
-            case CharacterPart.hat:
-                CharacterStore.hat = sprite;
-                break;
-            case CharacterPart.clothes:
-                CharacterStore.clothes = sprite;
-                break;
-            default:
-                break;
-        }
+        InventorySettings.SelectItem(sprite, part, id);
+        //CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
+        //CharacterCustomizer.current.avatars[1].SetSprite(sprite, part);
+        //MainMenuController.current.selectedItems[part] = id;
+        //switch (part)
+        //{
+        //    case CharacterPart.hat:
+        //        CharacterStore.hat = sprite;
+        //        break;
+        //    case CharacterPart.clothes:
+        //        CharacterStore.clothes = sprite;
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
     private void PlayItemClickSound()
     {
