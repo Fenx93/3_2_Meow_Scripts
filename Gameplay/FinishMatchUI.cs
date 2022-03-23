@@ -192,7 +192,8 @@ public class FinishMatchUI : MonoBehaviour
                 break;
             case 2:
                 // make getDouble button appear after gain animation
-                if (AdManager.current.AdsAvailable())
+                if (AdManager.current!= null 
+                    && AdManager.current.AdsAvailable())
                 {
                     EnableEarnMoreButton(true);
                 }
@@ -251,7 +252,7 @@ public class FinishMatchUI : MonoBehaviour
 
     public void ExitToMainMenu()
     {
-        SaveGameController.Instance.SaveData();
+        SaveGameController.SaveData();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
     #endregion

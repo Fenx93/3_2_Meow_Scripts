@@ -48,7 +48,7 @@ public class MainMenuController : MonoBehaviour
         //if (SaveGameController.Instance.SavedGameExists)
         //{
             //Debug.LogWarning("Loading Game!");
-            SaveGameController.Instance.LoadData();
+            SaveGameController.LoadData();
         //}
 
         PlayerStatsTracker.UpdateUI();
@@ -76,7 +76,7 @@ public class MainMenuController : MonoBehaviour
     {
         PlayerPrefs.SetInt("IsTraining", 1);
         PlayerPrefs.SetString("SelectedClass", selectedClassID);
-        SaveGameController.Instance.SaveData();
+        SaveGameController.SaveData();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
@@ -87,7 +87,7 @@ public class MainMenuController : MonoBehaviour
             //run game
             PlayerPrefs.SetInt("IsTraining", 0);
             PlayerPrefs.SetString("SelectedClass", selectedClassID);
-            SaveGameController.Instance.SaveData();
+            SaveGameController.SaveData();
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
         else

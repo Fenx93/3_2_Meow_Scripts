@@ -9,7 +9,7 @@ public class SaveGameController : MonoBehaviour
 {
     public static SaveGameController Instance;
 
-    public bool SavedGameExists
+    public static bool SavedGameExists
         => SaveGameMediator.mySavedGame != null;
 
     private void Awake()
@@ -39,16 +39,21 @@ public class SaveGameController : MonoBehaviour
         }
     }
 
-    public void DisplayLoginError()
+    private void DisplayLoginError()
     {
         NativeUI.Alert("PlayStore Login failed!", "Can't load saved data.");
     }
 
-    public void LoadData()
+    public static void LoadData()
     {
         try
         {
             Debug.Log("Trying to retrieve data!");
+            if (!SavedGameExists)
+            {
+                Debug.LogWarning($"Saved game does not exist!");
+                return;
+            }
             SaveGameMediator.ReadSavedGame();
         }
         catch (Exception e)
@@ -57,10 +62,15 @@ public class SaveGameController : MonoBehaviour
         }
     }
 
-    public void SaveData()
+    public static void SaveData()
     {
         try
         {
+            if (!SavedGameExists)
+            {
+                Debug.LogWarning($"Saved game does not exist!");
+                return;
+            }
             var playerStats = PlayerStatsTracker.GetPlayerStats();
             var settings = SettingsMenu.Instance.GetSaveSettings();
             var allItems = InventorySettings.Tabs.SelectMany(x => x.GetAllStorableItems()).ToArray();
@@ -72,14 +82,12 @@ public class SaveGameController : MonoBehaviour
             var data = ToByteArray(mainSave);
             SaveGameMediator.WriteSavedGame(data);
         }
-        catch(System.Exception e)
+        catch(Exception e)
         {
             Debug.LogError($"Save Data Error:{e}");
         }
 
     }
-
-
 
     private static byte[] ToByteArray<T>(T obj)
     {

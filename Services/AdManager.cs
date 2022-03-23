@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AdManager : MonoBehaviour
 {
-    private AdType _adType;
+    private RewardedAdType _rewardedAdType;
 
     public static AdManager current;
     // Start is called before the first frame update
@@ -41,20 +41,13 @@ public class AdManager : MonoBehaviour
     public bool AdsAvailable()
     {
         return Advertising.IsRewardedAdReady();
-        //if (Advertising.IsRewardedAdReady())
-        //    return true;
-        //else
-        //{
-        //    StartCoroutine(nameof(RetryToGetAds));
-        //    return false;
-        //}
     }
 
-    public void ShowRewardedAd(AdType adType)
+    public void ShowRewardedAd(RewardedAdType adType)
     {
         if (Advertising.IsRewardedAdReady())
         {
-            _adType = adType;
+            _rewardedAdType = adType;
             Advertising.ShowRewardedAd();
         }
     }
@@ -62,7 +55,7 @@ public class AdManager : MonoBehaviour
     public bool InterstitialAdReady()
     {
         var result = Advertising.IsInterstitialAdReady();
-        Debug.Log($"Interstitial Ad is Ready{result}");
+        Debug.Log($"Interstitial Ad is Ready: {result}");
         return result;
     }
 
@@ -87,13 +80,13 @@ public class AdManager : MonoBehaviour
     void RewardedAdCompletedHandler(RewardedAdNetwork network, AdPlacement placement)
     {
         Debug.Log("Rewarded ad has completed. The user should be rewarded now.");
-        switch (_adType)
+        switch (_rewardedAdType)
         {
-            case AdType.freeSpin:
+            case RewardedAdType.freeSpin:
                 PlayerStatsTracker.RemoveMoney(PlayerStatsTracker.CurrentMoney);
                 RewardsSpinMainMenuUI.current.ShowRewardsSpin(true);
                 break;
-            case AdType.earnMore:
+            case RewardedAdType.earnMore:
                 MatchEndLogicController.current.DoubleEarnings();
                 break;
             default:
@@ -115,4 +108,4 @@ public class AdManager : MonoBehaviour
     }
 }
 
-public enum AdType { freeSpin, earnMore }
+public enum RewardedAdType { freeSpin, earnMore }

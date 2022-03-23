@@ -38,7 +38,7 @@ public class PurchasesController : MonoBehaviour
         InAppPurchasing.IsProductOwned(EM_IAPConstants.Product_Disable_Ads);
 
 
-    private string[] GetAllProductNames()
+    private static string[] GetAllProductNames()
     {
         // Get the array of all products created in the In-App Purchasing module settings
         // IAPProduct is the class representing a product as declared in the module settings
@@ -52,7 +52,7 @@ public class PurchasesController : MonoBehaviour
         return products.Select(p => p.Name).ToArray();
     }
 
-    public void PurchaseAdsDisabler()
+    public static void PurchaseAdsDisabler()
     {
         if (InAppPurchasing.IsInitialized())
         {
@@ -70,7 +70,7 @@ public class PurchasesController : MonoBehaviour
     }
 
     // Successful purchase handler
-    void PurchaseCompletedHandler(IAPProduct product)
+    private static void PurchaseCompletedHandler(IAPProduct product)
     {
         // Compare product name to the generated name constants to determine which product was bought
         switch (product.Name)
@@ -89,7 +89,7 @@ public class PurchasesController : MonoBehaviour
     }
 
     // Failed purchase handler
-    void PurchaseFailedHandler(IAPProduct product, string failureReason)
+    private static void PurchaseFailedHandler(IAPProduct product, string failureReason)
     {
         NativeUI.Alert($"The purchase of product {product.Name} has failed!", $"Reason: {failureReason}");
         Debug.LogError($"The purchase of product {product.Name} has failed with reason: {failureReason}");

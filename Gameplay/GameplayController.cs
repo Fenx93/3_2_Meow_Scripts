@@ -311,7 +311,7 @@ public class GameplayController : MonoBehaviour
 
     public void GoBackToMainMenu()
     {
-        SaveGameController.Instance.SaveData();
+        SaveGameController.SaveData();
         SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
     }
 
@@ -347,7 +347,6 @@ public class GameplayController : MonoBehaviour
             exp = 50;
             money = 25;
             VictoryAnimatorScript.current.SetValues(message, money, exp);
-            AudioController.current.PlayLosingSound();
             VictoryAnimatorScript.current.StartAnimation(CharacterCustomizer.current.characters[1], CharacterCustomizer.current.characters[0], won);
         }
     }

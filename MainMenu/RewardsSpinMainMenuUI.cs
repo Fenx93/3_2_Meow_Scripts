@@ -52,7 +52,7 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
         }
         else
         {
-            AdManager.current.ShowRewardedAd(AdType.freeSpin);
+            AdManager.current.ShowRewardedAd(RewardedAdType.freeSpin);
         }
     }
 

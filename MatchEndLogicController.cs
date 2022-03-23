@@ -35,7 +35,7 @@ public class MatchEndLogicController : MonoBehaviour
     // Should be available only when there are ads
     public void EarnMore()
     {
-        AdManager.current.ShowRewardedAd(AdType.earnMore);
+        AdManager.current.ShowRewardedAd(RewardedAdType.earnMore);
     }
 
     public void DoubleEarnings()
