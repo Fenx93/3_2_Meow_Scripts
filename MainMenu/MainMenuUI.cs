@@ -65,6 +65,8 @@ public class MainMenuUI : MonoBehaviour
 
     public void SetStartGameButton(bool isLocked, string buttonText, int? unlocksAtLevel = null)
     {
+        if (startGameButton == null)
+            return;
         startGameButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
         startGameButton.interactable = !isLocked;
         classUnlocksAtText.enabled = isLocked;
