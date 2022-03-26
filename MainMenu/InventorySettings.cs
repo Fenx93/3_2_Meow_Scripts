@@ -43,18 +43,13 @@ public class InventorySettings : MonoBehaviour
     public int CountItemsInTab(CharacterPart part)
         => GetTabByPart(part).items.Length;
 
-    public void UnlockItem(TabItem item, CharacterPart part)
-        => GetTabByPart(part).items.Where(x => x.quality == item.quality);
+    //public void UnlockItem(TabItem item, CharacterPart part)
+    //    => GetTabByPart(part).items.Where(x => x.quality == item.quality);
 
-    public TabItem GetRandomLockedItem(CharacterPart part, ItemQuality quality)
-    {
-        Tab selectedTab = GetTabByPart(part);
-        var items = selectedTab.items.Where(x => x.quality == quality && x.status == ItemStatus.locked);
-        return GetRandomFromList(items);
-    }
     public TabItem GetInventoryItem(CharacterPart part, string id)
         => GetTabByPart(part).items.Where(x => x.GetID() == id).FirstOrDefault();
 
+    #region Public GetRandomItem Methods
     public TabItem GetRandom(CharacterPart part)
     {
         Tab selectedTab = GetTabByPart(part);
@@ -68,6 +63,13 @@ public class InventorySettings : MonoBehaviour
         return GetRandomFromList(items);
     }
 
+    public TabItem GetRandomLockedItem(CharacterPart part, ItemQuality quality)
+    {
+        Tab selectedTab = GetTabByPart(part);
+        var items = selectedTab.items.Where(x => x.quality == quality && x.status == ItemStatus.locked);
+        return GetRandomFromList(items);
+    }
+
     private TabItem GetRandomFromList(IEnumerable<TabItem> items)
     {
         if (items.Any())
@@ -78,6 +80,7 @@ public class InventorySettings : MonoBehaviour
         }
         return null;
     }
+    #endregion
 
     public TabItem GetItemByID(CharacterPart part, string id)
     {

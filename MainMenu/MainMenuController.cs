@@ -101,13 +101,18 @@ public class MainMenuController : MonoBehaviour
         CharacterCustomizer.current.avatars[0].SetWeapon(selectedClass.WeaponSprite);
 
         bool locked = (PlayerStatsTracker.CurrentLvl < selectedClass.UnlocksAtLevel && !unlockClasses);
-        if (locked)
+        var mainMenuUI = MainMenuUI.current;
+        if (mainMenuUI != null)
         {
-            MainMenuUI.current.SetStartGameButton(locked, LocalisationSystem.GetLocalisedValue("character_class_locked"), selectedClass.UnlocksAtLevel);
-        }
-        else
-        {
-            MainMenuUI.current.SetStartGameButton(locked, LocalisationSystem.GetLocalisedValue("to_battle"));
+            if (locked)
+            {
+                mainMenuUI.SetStartGameButton(locked, 
+                    LocalisationSystem.GetLocalisedValue("character_class_locked"), selectedClass.UnlocksAtLevel);
+            }
+            else
+            {
+                mainMenuUI.SetStartGameButton(locked, LocalisationSystem.GetLocalisedValue("to_battle"));
+            }
         }
     }
 

@@ -100,8 +100,13 @@ public class SettingsMenu : MonoBehaviour
             item.SetLanguageValue();
         }
 
-        // manually update battle preparation screen
-        BattlePreparationScreenController.current.SelectClassWithoutSound(0);
+        var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+
+        if (scene.name == "MainMenuScene")
+        {
+            // manually update battle preparation screen
+            BattlePreparationScreenController.current.SelectClassWithoutSound(0);
+        }
     }
 }
 
