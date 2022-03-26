@@ -141,7 +141,7 @@ public static class PlayerStatsTracker
             //get next experience cap
             CurrentExpCap *= 2;
             CurrentLvl++;
-            FinishMatchUI.current.ShowLevelUP(true);
+            FinishMatchUI.current.ShowLevelUP(true, CurrentLvl);
             AudioController.current.PlayCelebrationSound();
         }
     }

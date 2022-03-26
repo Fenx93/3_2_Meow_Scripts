@@ -20,6 +20,7 @@ public class FinishMatchUI : MonoBehaviour
 
     [Header("Level UP")]
     [SerializeField] private GameObject levelUpPanel;
+    [SerializeField] private TextMeshProUGUI levelReachedText;
 
     [Header("Rewards Spin")]
     [SerializeField] private GameObject rewardsSpinPanel;
@@ -73,9 +74,49 @@ public class FinishMatchUI : MonoBehaviour
     }
 
 
-    public void ShowLevelUP(bool enabled)
+    public void ShowLevelUP(bool enabled, int? level = null)
     {
         levelUpPanel.SetActive(enabled);
+        if (enabled)
+        {
+            levelReachedText.text = 
+                $"{LocalisationSystem.GetLocalisedValue("level_reached")} {level}!";
+
+            var newClassUnlockedPanel = levelUpPanel.transform.Find("NewClassUnlockedPanel").gameObject;
+            newClassUnlockedPanel.SetActive(false);
+            var gamePlayController = GameplayController.current;
+            if (gamePlayController != null)
+            {
+                var unlockedClassObj = gamePlayController.GetNewlyUnlockedClass();
+                if (unlockedClassObj != null)
+                {
+                    UnlockClass(newClassUnlockedPanel, unlockedClassObj.ClassIcon, unlockedClassObj.ClassName, true);
+                }
+                else
+                {
+                    unlockedClassObj = gamePlayController.GetNewlyUnlockedEnemyClass();
+                    if (unlockedClassObj != null)
+                    {
+                        UnlockClass(newClassUnlockedPanel, unlockedClassObj.ClassIcon, unlockedClassObj.ClassName, false);
+                    }
+                }
+            }
+        }
+    }
+
+    private void UnlockClass(GameObject newClassUnlockedPanel, Sprite classIcon, string className, bool isPlayer)
+    {
+        newClassUnlockedPanel.SetActive(true);
+
+        var unlockedClassText = newClassUnlockedPanel.transform.Find("ClassUnlocked text").gameObject;
+        var text = isPlayer ? "new_class_unlocked" : "new_enemy_class_unlocked";
+        unlockedClassText.GetComponent<TextMeshProUGUI>().text = LocalisationSystem.GetLocalisedValue(text);
+
+        var unlockedClass = newClassUnlockedPanel.transform.Find("UnlockedClass").gameObject;
+        var cIcon = unlockedClass.GetComponentsInChildren<Image>()[1];
+        cIcon.sprite = classIcon;
+        var classText = unlockedClass.GetComponentInChildren<TextMeshProUGUI>();
+        classText.text = className;
     }
 
     public void ShowRewardsSpin(bool enabled)

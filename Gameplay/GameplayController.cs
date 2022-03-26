@@ -170,6 +170,16 @@ public class GameplayController : MonoBehaviour
         return availableClasses[UnityEngine.Random.Range(0, availableClasses.Count())];
     }
 
+    public ScriptableCharacterClass GetNewlyUnlockedClass()
+        => _characterClasses
+            .Where(x => x.UnlocksAtLevel == PlayerStatsTracker.CurrentLvl)
+            .FirstOrDefault();
+
+    public ScriptableCharacterClass GetNewlyUnlockedEnemyClass()
+        => _characterClasses
+            .Where(x => x.UnlocksForEnemyAtLevel == PlayerStatsTracker.CurrentLvl)
+            .FirstOrDefault();
+
     private void SetupEnemyLooks()
     {
         var charCustomizer = CharacterCustomizer.current;
