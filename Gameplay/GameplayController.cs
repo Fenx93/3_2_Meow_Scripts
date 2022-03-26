@@ -41,11 +41,12 @@ public class GameplayController : MonoBehaviour
 
     void Start()
     {
-        isTraining = System.Convert.ToBoolean(PlayerPrefs.GetInt("IsTraining"));
+        isTraining = Convert.ToBoolean(PlayerPrefs.GetInt("IsTraining"));
         if (enablePostProcessing)
         {
             postProcessing.SetActive(false);
         }
+        SaveGameController.LoadData();
         SetupGame();
     }
 

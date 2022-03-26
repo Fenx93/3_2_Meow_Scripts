@@ -11,12 +11,14 @@ public static class SaveGameMediator
 
     public static event Action OnLoadDataUpdate;
 
+    private static byte[] tempData;
+
     // Open a saved game with automatic conflict resolution
-    public static void OpenSavedGame()
+    public static void OpenSavedGame(Action<SavedGame, string> action = null)
     {
         // Open a saved game named "My_Saved_Game" and resolve conflicts automatically if any.
             GameServices.SavedGames.OpenWithAutomaticConflictResolution(
-                "My_Saved_Game", OpenSavedGameCallback);
+                "My_Saved_Game", action ?? OpenSavedGameCallback);
     }
 
 
@@ -29,6 +31,36 @@ public static class SaveGameMediator
             // keep a reference for later operations
             mySavedGame = savedGame;        
             OnLoadDataUpdate?.Invoke();
+        }
+        else
+        {
+            Debug.Log("Open saved game failed with error: " + error);
+        }
+    }
+
+    public static void OpenSavedGameAndReloadCallback(SavedGame savedGame, string error)
+    {
+        if (string.IsNullOrEmpty(error))
+        {
+            Debug.Log("Saved game opened successfully!");
+            // keep a reference for later operations
+            mySavedGame = savedGame;
+            ReadSavedGame();
+        }
+        else
+        {
+            Debug.Log("Open saved game failed with error: " + error);
+        }
+    }
+
+    public static void OpenSavedGameAndResaveCallback(SavedGame savedGame, string error)
+    {
+        if (string.IsNullOrEmpty(error))
+        {
+            Debug.Log("Saved game opened successfully!");
+            // keep a reference for later operations
+            mySavedGame = savedGame;
+            WriteSavedGame(tempData);
         }
         else
         {
@@ -61,6 +93,8 @@ public static class SaveGameMediator
         {
             // The saved game is not open. You can optionally open it here and repeat the process.
             Debug.LogWarning("You must open the saved game before writing to it.");
+            tempData = data;
+            OpenSavedGame(OpenSavedGameAndReloadCallback);
         }
     }
 
@@ -103,12 +137,13 @@ public static class SaveGameMediator
         else
         {
             // The saved game is not open. You can optionally open it here and repeat the process.
-            Debug.LogWarning("You must open the saved game before reading its data.");
+            Debug.LogWarning("You must open the saved game before reading its data.\n Retrying data opening");
+            OpenSavedGame(OpenSavedGameAndReloadCallback);
         }
         return null;
     }
 
-    public static T FromByteArray<T>(byte[] data)
+    private static T FromByteArray<T>(byte[] data)
     {
         if (data == null)
             return default;

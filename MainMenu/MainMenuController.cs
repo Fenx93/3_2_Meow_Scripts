@@ -42,7 +42,7 @@ public class MainMenuController : MonoBehaviour
             AudioController.current.PlayMusic(mainMenuTheme);
         BattlePreparationScreenController.current.SetupClassDescriptionItems();
         BattlePreparationScreenController.current.UpdateClassButtons(classes);
-        PlayerStatsTracker.SetData(1, 0, 75, 0);
+        //PlayerStatsTracker.SetData(1, 0, 75, 0);
         //PlayerStatsTracker.SetData(10, 75*16*30, 75*16*32, 250); - trailer data
 
         //if (SaveGameController.Instance.SavedGameExists)

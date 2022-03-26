@@ -2,7 +2,7 @@
 public static class PlayerStatsTracker
 {
     private static int _currentExp = 0, _currentMoney = 0, 
-        _currentExpCap = 100, _currentLvl = 1;
+        _currentExpCap = 75, _currentLvl = 1;
 
     #region Public Properties
     public static int CurrentExp { 
@@ -28,7 +28,6 @@ public static class PlayerStatsTracker
         get => _currentLvl;
         private set
         {
-            bool levelUP = _currentLvl != 0 && value > _currentLvl;
             _currentLvl = value;
             if (MainMenuUI.current != null)
             {
@@ -37,11 +36,6 @@ public static class PlayerStatsTracker
             if (FinishMatchUI.current != null)
             {
                 FinishMatchUI.current.UpdateLevelText(_currentLvl);
-                if (levelUP)
-                {
-                    FinishMatchUI.current.ShowLevelUP(true);
-                    AudioController.current.PlayCelebrationSound();
-                }
             }
         }
     }
@@ -85,7 +79,8 @@ public static class PlayerStatsTracker
         CurrentMoney =  playerStats.currentMoney;
     }
 
-    public static void SetData(int currentLvl, int currentExp, int currentExpCap, int currentMoney)
+    public static void SetData(int currentLvl, 
+        int currentExp, int currentExpCap, int currentMoney)
     {
         CurrentExp = currentExp;
         CurrentExpCap = currentExpCap;
@@ -112,19 +107,19 @@ public static class PlayerStatsTracker
     public static void AddMoney(int moneyAmount)
     {
         CurrentMoney += moneyAmount;
-        SaveGameController.SaveData();
+        //SaveGameController.SaveData();
     }
     public static void RemoveMoney(int moneyAmount)
     {
         CurrentMoney -= moneyAmount;
-        SaveGameController.SaveData();
+        //SaveGameController.SaveData();
     }
 
     public static void AddExperience(int experienceAmount)
     {
         CurrentExp += experienceAmount;
         CheckNextLevel();
-        SaveGameController.SaveData();
+        //SaveGameController.SaveData();
     }
 
     private static void SetExpText()
@@ -143,9 +138,11 @@ public static class PlayerStatsTracker
     {
         while (CurrentExp >= CurrentExpCap)
         {
-            CurrentLvl++;
             //get next experience cap
             CurrentExpCap *= 2;
+            CurrentLvl++;
+            FinishMatchUI.current.ShowLevelUP(true);
+            AudioController.current.PlayCelebrationSound();
         }
     }
 }
