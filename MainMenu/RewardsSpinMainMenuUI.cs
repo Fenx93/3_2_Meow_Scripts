@@ -17,8 +17,10 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
     }
     private void Start()
     {
+        rewardsSpinTitle.SetActive(false);
         buttonWithAds.SetActive(false);
         buttonWithoutAds.SetActive(false);
+        UpdateButtons(PlayerStatsTracker.EnoughForSpin());
         AdManager.current.OnAdsAvailable += UpdateButtons;
     }
 
