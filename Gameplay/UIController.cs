@@ -175,7 +175,7 @@ public class UIController : MonoBehaviour
         }
         else
         {
-            timer.text = LocalisationSystem.GetLocalisedValue("meow").ToUpper() + "!";
+            timer.text = LocalisationSystem.GetLocalisedValue("meow").ToUpper();
             if (timer.text != prevTimerText)
             {
                 AudioController.current.PlayMeowSound();
