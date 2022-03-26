@@ -207,10 +207,12 @@ public class UI_Tabs : MonoBehaviour
     {
         // Sort items by quality 
 
-        int[] map = new[] { (int)ItemQuality.common, (int)ItemQuality.rare, (int)ItemQuality.epic, (int)ItemQuality.legendary };
+        int[] qualityMap = new[] { (int)ItemQuality.common, (int)ItemQuality.rare, (int)ItemQuality.epic, (int)ItemQuality.legendary };
+        int[] locksMap = new[] { (int)ItemStatus.unlocked, (int)ItemStatus.locked };
 
         var sortedArray = tab.items
-          .OrderBy(x => map[(int)(x.quality)])
+          .OrderBy(x => locksMap[(int)(x.status)])
+          .ThenBy(x => qualityMap[(int)(x.quality)])
           .ToArray();
 
         tab.items = sortedArray;
@@ -385,40 +387,12 @@ public class UI_Tabs : MonoBehaviour
     {
         PlayItemClickSound();
         InventorySettings.SelectColor(color, part, id);
-        //CharacterCustomizer.current.avatars[0].SetColor(color, part);
-        //CharacterCustomizer.current.avatars[1].SetColor(color, part);
-        //MainMenuController.current.selectedItems[part] = id;
-        //switch (part)
-        //{
-        //    case CharacterPart.mainColor:
-        //        CharacterStore.mainColor = color;
-        //        break;
-        //    case CharacterPart.secondaryColor:
-        //        CharacterStore.secondaryColor = color;
-        //        break;
-        //    default:
-        //        break;
-        //}
     }
 
     private void ItemSelected(Sprite sprite, CharacterPart part, string id)
     {
         PlayItemClickSound();
         InventorySettings.SelectItem(sprite, part, id);
-        //CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
-        //CharacterCustomizer.current.avatars[1].SetSprite(sprite, part);
-        //MainMenuController.current.selectedItems[part] = id;
-        //switch (part)
-        //{
-        //    case CharacterPart.hat:
-        //        CharacterStore.hat = sprite;
-        //        break;
-        //    case CharacterPart.clothes:
-        //        CharacterStore.clothes = sprite;
-        //        break;
-        //    default:
-        //        break;
-        //}
     }
     private void PlayItemClickSound()
     {
