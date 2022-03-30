@@ -7,7 +7,8 @@ public class AudioController : MonoBehaviour
         countdownBeepSound, meowSound,
         hitSound, actionNeglectedSound,
         rewardWheelSpinningSound, rewardWheelSpinningStopSound,
-        winningSound, losingSound, celebrationSound;
+        winningSound, losingSound, celebrationSound,
+        firstCharacterFocusSound, cameraTransitionSound;
 
     public static AudioController current;
     void Awake()
@@ -19,6 +20,11 @@ public class AudioController : MonoBehaviour
     {
         musicSource.clip = clip;
         musicSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
     }
 
     public void PlaySFX(AudioClip clip, bool playWithLoop = false)
@@ -77,6 +83,14 @@ public class AudioController : MonoBehaviour
     public void PlayCelebrationSound()
     {
         PlaySFX(celebrationSound);
+    }
+    public void PlayCharacterLosingSound()
+    {
+        PlaySFX(firstCharacterFocusSound);
+    }
+    public void PlayCameraTransitionSound()
+    {
+        PlaySFX(cameraTransitionSound);
     }
     #endregion
 }

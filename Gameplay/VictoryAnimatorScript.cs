@@ -42,10 +42,12 @@ public class VictoryAnimatorScript : MonoBehaviour
             case 2:
                 cinematographicBars.SetActive(false);
                 //zoom to loser's face
+                AudioController.current.PlayCameraTransitionSound();
                 StartCoroutine(SmoothlyLookAt(_loser, Camera.main.transform, 0.5f, 1.5f, status));
                 break;
             case 3:
                 cinematographicBars.SetActive(true);
+                AudioController.current.PlayCharacterLosingSound();
                 //wait for some time
                 StartCoroutine(Wait(1f, status));
                 break;
@@ -89,6 +91,7 @@ public class VictoryAnimatorScript : MonoBehaviour
             gameObj.SetActive(false);
         }
 
+        AudioController.current.PlayCameraTransitionSound();
         StartCoroutine(SmoothlyLookAt(winner, Camera.main.transform, 0.75f, 1.5f, 0));
     }
 

@@ -33,6 +33,7 @@ public class GameplayController : MonoBehaviour
 
     public bool startByDefault, isTraining;
     [SerializeField] private GameObject trainingObject;
+    [SerializeField] private AudioClip gameplayMusic;
 
     void Awake()
     {
@@ -47,6 +48,9 @@ public class GameplayController : MonoBehaviour
             postProcessing.SetActive(false);
         }
         SaveGameController.LoadData();
+
+        FindObjectOfType<MapController>().SetupRandomMap();
+        AudioController.current.PlayMusic(gameplayMusic);
         SetupGame();
     }
 
@@ -343,6 +347,7 @@ public class GameplayController : MonoBehaviour
 
         _continueGame = false;
         UIController.current.DisplayTimer(false);
+        AudioController.current.StopMusic();
 
         if (won)
         {
