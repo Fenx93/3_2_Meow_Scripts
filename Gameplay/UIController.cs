@@ -146,7 +146,11 @@ public class UIController : MonoBehaviour
     {
         settingsIcon.SetActive(show);
         if (!show)
+        {
             ShowActionDescriptionPanel(false);
+            if (showingSettings) 
+                ShowSettingsMenu();
+        }
 
         pauseIcon.sprite = show ?
             playSprite : pauseSprite;
