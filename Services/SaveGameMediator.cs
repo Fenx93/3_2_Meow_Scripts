@@ -138,7 +138,7 @@ public static class SaveGameMediator
         {
             // The saved game is not open. You can optionally open it here and repeat the process.
             Debug.LogWarning("You must open the saved game before reading its data.\n Retrying data opening");
-            OpenSavedGame(OpenSavedGameAndReloadCallback);
+            OpenSavedGame(OpenSavedGameAndResaveCallback);
         }
         return null;
     }

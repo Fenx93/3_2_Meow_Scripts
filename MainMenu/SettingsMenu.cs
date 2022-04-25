@@ -23,7 +23,6 @@ public class SettingsMenu : MonoBehaviour
     private void Start()
     {
         ShowDisableAdsButton();
-        SelectDefaultLanguage();
     }
 
     public void ShowDisableAdsButton()
@@ -47,11 +46,6 @@ public class SettingsMenu : MonoBehaviour
             case SystemLanguage.Lithuanian:
                 SetLanguage((int)Language.Lithuanian);
                 break;
-            case SystemLanguage.Italian:
-            case SystemLanguage.Polish:
-            case SystemLanguage.Portuguese:
-            case SystemLanguage.Spanish:
-            case SystemLanguage.Ukrainian:
             default:
                 SetLanguage((int)Language.English);
                 break;
