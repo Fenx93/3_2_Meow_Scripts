@@ -1,15 +1,15 @@
 using EasyMobile;
 using System;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public static class SaveGameMediator
 {
-
     // To store the opened saved game.
     public static SavedGame mySavedGame;
 
-    public static event Action OnLoadDataUpdate;
+    public static event Action OnLoadDataUpdate, OnSucessfullLoadDataUpdate;
 
     private static byte[] tempData;
 
@@ -38,7 +38,7 @@ public static class SaveGameMediator
         }
     }
 
-    public static void OpenSavedGameAndReloadCallback(SavedGame savedGame, string error)
+    public static void OpenSavedGameAndLoadCallback(SavedGame savedGame, string error)
     {
         if (string.IsNullOrEmpty(error))
         {
@@ -53,7 +53,7 @@ public static class SaveGameMediator
         }
     }
 
-    public static void OpenSavedGameAndResaveCallback(SavedGame savedGame, string error)
+    public static void OpenSavedGameAndSaveCallback(SavedGame savedGame, string error)
     {
         if (string.IsNullOrEmpty(error))
         {
@@ -94,7 +94,7 @@ public static class SaveGameMediator
             // The saved game is not open. You can optionally open it here and repeat the process.
             Debug.LogWarning("You must open the saved game before writing to it.");
             tempData = data;
-            OpenSavedGame(OpenSavedGameAndReloadCallback);
+            OpenSavedGame(OpenSavedGameAndSaveCallback);
         }
     }
 
@@ -117,9 +117,14 @@ public static class SaveGameMediator
                             // Data processing
                             MainSave mainSave = FromByteArray<MainSave>(data);
                             PlayerStatsTracker.SetData(mainSave.savedPlayerStats);
-                            SettingsMenu.Instance.LoadSettings(mainSave.saveSettings);
+                            SettingsStorage.Instance.Settings = mainSave.saveSettings;
 
+                            //var testAllUnlocked = mainSave.allitems.Where(x => x.status == ItemStatus.unlocked).ToArray().Length;
+                            //var testUnlocked = InventorySettings.Instance.GetUnlockedItems(mainSave.allitems).Length;
                             InventorySettings.Instance.LoadItemUnlocks(mainSave.allitems);
+
+                            EquipedItemsStorage.Instance.SetSelectedItems(mainSave.savedSelectedItems);
+                            OnSucessfullLoadDataUpdate?.Invoke();
                         }
                         else
                         {
@@ -138,7 +143,7 @@ public static class SaveGameMediator
         {
             // The saved game is not open. You can optionally open it here and repeat the process.
             Debug.LogWarning("You must open the saved game before reading its data.\n Retrying data opening");
-            OpenSavedGame(OpenSavedGameAndResaveCallback);
+            OpenSavedGame(OpenSavedGameAndLoadCallback);
         }
         return null;
     }

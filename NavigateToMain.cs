@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class NavigateToMain : MonoBehaviour
 {
-    [SerializeField] private GameObject goToMainButton;
+    [SerializeField] private GameObject goToMainButton, goToTestButton;
     [SerializeField] private TextMeshProUGUI title;
     private readonly string[] titleName = new string[] { "", "3", "2", "Meow!" };
     private readonly string[] colors = new string[] { "", "00FF16", "E7552C", "5CC5EF" };
@@ -14,6 +14,7 @@ public class NavigateToMain : MonoBehaviour
     public void Start()
     {
         CountdownEnded();
+        goToTestButton.SetActive(false);
         ShowTransitionButton(false);
 #if UNITY_EDITOR
             ShowTransitionButton(true);
@@ -28,6 +29,18 @@ public class NavigateToMain : MonoBehaviour
 
     private void ShowTransitionButton()
     {
+        goToTestButton.SetActive(true); 
+    }
+
+    public void CallLoadData()
+    {
+        SaveGameMediator.OnLoadDataUpdate -= ShowTransitionButton;
+        SaveGameMediator.OnSucessfullLoadDataUpdate += ShowTransitionButton2;
+        SaveGameController.LoadData();
+    }
+    private void ShowTransitionButton2()
+    {
+        SaveGameMediator.OnSucessfullLoadDataUpdate -= ShowTransitionButton2;
         ShowTransitionButton(true);
     }
 
@@ -52,8 +65,11 @@ public class NavigateToMain : MonoBehaviour
         if (currentIterator < titleName.Length - 1)
         {
             currentIterator++;
+
             var output = currentIterator != titleName.Length - 1 ?
-                $"{titleName[currentIterator]}..." : titleName[currentIterator];
+                $"{titleName[currentIterator]}..." 
+                : titleName[currentIterator];
+
             currentTitle = $"<color=#{colors[currentIterator]}>{output}</color>";
         }
         else

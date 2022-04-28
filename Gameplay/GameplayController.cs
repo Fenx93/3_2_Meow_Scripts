@@ -47,7 +47,7 @@ public class GameplayController : MonoBehaviour
         {
             postProcessing.SetActive(false);
         }
-        SaveGameController.LoadData();
+        //SaveGameController.LoadData();
 
         FindObjectOfType<MapController>().SetupRandomMap();
         AudioController.current.PlayMusic(gameplayMusic);

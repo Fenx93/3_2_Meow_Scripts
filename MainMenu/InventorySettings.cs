@@ -35,9 +35,18 @@ public class InventorySettings : MonoBehaviour
             Tabs = tabs;
     }
 
-    public void LoadItemUnlocks(StorableItem[] storableTabs)
+    public void LoadItemUnlocks(StorableItem[] storableItems)
     {
-        storableTabs.Select(x => GetInventoryItem(x.part, x.id).status = x.status);
+        //storableItems.Select(x => GetInventoryItem(x.part, x.id).status = x.status);
+        foreach (var item in storableItems)
+        {
+            var inventoryItem = GetInventoryItem(item.part, item.id);
+            inventoryItem.status = item.status;
+        }
+    }
+    public StorableItem[] GetUnlockedItems(StorableItem[] storableItems)
+    {
+        return storableItems.Where(x => GetInventoryItem(x.part, x.id).status == ItemStatus.unlocked).ToArray();
     }
 
     public int CountItemsInTab(CharacterPart part)
@@ -48,6 +57,9 @@ public class InventorySettings : MonoBehaviour
 
     public TabItem GetInventoryItem(CharacterPart part, string id)
         => GetTabByPart(part).items.Where(x => x.GetID() == id).FirstOrDefault();
+    
+    //public TabItem[] GetUnlockedItems(CharacterPart part)
+    //    => GetTabByPart(part).items.Where(x => x.status == ItemStatus.unlocked).ToArray();
 
     #region Public GetRandomItem Methods
     public TabItem GetRandom(CharacterPart part)
@@ -93,7 +105,7 @@ public class InventorySettings : MonoBehaviour
     {
         CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
         CharacterCustomizer.current.avatars[1].SetSprite(sprite, part);
-        MainMenuController.current.selectedItems[part] = id;
+        EquipedItemsStorage.Instance.selectedItems[part] = id;
         switch (part)
         {
             case CharacterPart.hat:

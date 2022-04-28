@@ -76,9 +76,11 @@ public class SaveGameController : MonoBehaviour
             }
             var playerStats = PlayerStatsTracker.GetPlayerStats();
             var settings = SettingsMenu.Instance.GetSaveSettings();
+            SettingsStorage.Instance.Settings = settings;
             var allItems = InventorySettings.Tabs.SelectMany(x => x.GetAllStorableItems()).ToArray();
-            StorableItem[] storableItems = 
-                MainMenuController.current.selectedItems.
+            //var testAllUnlockedItems = allItems.Where(x=> x.status == ItemStatus.unlocked).ToArray();
+            StorableItem[] storableItems =
+                EquipedItemsStorage.Instance.selectedItems.
                     Select(x => new StorableItem(x.Key, x.Value, ItemStatus.unlocked)).ToArray();
 
             MainSave mainSave = new MainSave(playerStats, settings, storableItems, allItems);
@@ -102,6 +104,7 @@ public class SaveGameController : MonoBehaviour
         return ms.ToArray();
     }
 }
+
 #region Serializable Save Objects
 
 [System.Serializable]
