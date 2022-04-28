@@ -79,9 +79,7 @@ public class SaveGameController : MonoBehaviour
             SettingsStorage.Instance.Settings = settings;
             var allItems = InventorySettings.Tabs.SelectMany(x => x.GetAllStorableItems()).ToArray();
             //var testAllUnlockedItems = allItems.Where(x=> x.status == ItemStatus.unlocked).ToArray();
-            StorableItem[] storableItems =
-                EquipedItemsStorage.Instance.selectedItems.
-                    Select(x => new StorableItem(x.Key, x.Value, ItemStatus.unlocked)).ToArray();
+            StorableItem[] storableItems = EquipedItemsStorage.Instance.GetStorableItems();
 
             MainSave mainSave = new MainSave(playerStats, settings, storableItems, allItems);
             var data = ToByteArray(mainSave);

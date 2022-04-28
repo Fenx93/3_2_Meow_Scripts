@@ -25,7 +25,6 @@ public class MainMenuController : MonoBehaviour
 
     public static MainMenuController current;
 
-    [HideInInspector] public Dictionary<CharacterPart, string> selectedItems = new Dictionary<CharacterPart, string>();
     [HideInInspector] public GameModes selectedGameMode;
     [HideInInspector] public Dictionary<string, GameObject> idsToItems = new Dictionary<string, GameObject>();
     [SerializeField] private bool playMusicByDefault = true;
@@ -43,56 +42,11 @@ public class MainMenuController : MonoBehaviour
         BattlePreparationScreenController.current.SetupClassDescriptionItems();
         BattlePreparationScreenController.current.UpdateClassButtons(classes);
 
-        SettingsMenu.Instance.SelectDefaultLanguage();
-        //PlayerStatsTracker.SetData(1, 0, 75, 0);
+        //SettingsMenu.Instance.SelectDefaultLanguage();
         //PlayerStatsTracker.SetData(10, 75*16*30, 75*16*32, 250); - trailer data
 
-        //if (SaveGameController.Instance.SavedGameExists)
-        //{
-        //Debug.LogWarning("Loading Game!");
-        SaveGameController.LoadData();
-        //}
-
-        SetCharacterItems();
+        EquipedItemsStorage.Instance.SetEquipedCharacterItems();
         PlayerStatsTracker.UpdateUI();
-    }
-
-    private void SetCharacterItems()
-    {
-        var itemParts = new CharacterPart[] { CharacterPart.clothes, CharacterPart.hat };
-        var colorParts = new CharacterPart[] { CharacterPart.mainColor, CharacterPart.secondaryColor };
-
-        if (selectedItems.Any())
-        {
-            foreach (var pair in selectedItems)
-            {
-                var part = pair.Key;
-                if (itemParts.Contains(part))
-                {
-                    var item = (SpriteTabItem)InventorySettings.Instance.GetItemByID(pair.Key, pair.Value);
-                    InventorySettings.SelectItem(item.sprite, part, item.GetID());
-                }
-                else if (colorParts.Contains(part))
-                {
-                    var item = (ColorTabItem)InventorySettings.Instance.GetItemByID(pair.Key, pair.Value);
-                    InventorySettings.SelectColor(item.color, part, item.GetID());
-                }
-            }
-        }
-        else
-        {
-            //get random unlocked items
-            foreach (var part in itemParts)
-            {
-                var item = (SpriteTabItem)InventorySettings.Instance.GetRandomUnlockedItem(part);
-                InventorySettings.SelectItem(item.sprite, part, item.GetID());
-            }
-            foreach (var part in colorParts)
-            {
-                var item = (ColorTabItem)InventorySettings.Instance.GetRandomUnlockedItem(part);
-                InventorySettings.SelectColor(item.color, part, item.GetID());
-            }
-        }
     }
 
     public void SelectClass(int classInteger)

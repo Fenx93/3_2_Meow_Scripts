@@ -58,15 +58,24 @@ public class SettingsMenu : MonoBehaviour
 
     public void LoadSettings(SaveSettings saveSettings)
     {
-        //set volume from the file
-        SetMusicVolume(saveSettings.musicLevel);
-        musicSlider.value = saveSettings.musicLevel;
-        SetSFXVolume(saveSettings.sfxLevel);
-        sfxSlider.value = saveSettings.sfxLevel;
+        if (saveSettings != null)
+        {
+            //set volume from the file
+            SetMusicVolume(saveSettings.musicLevel);
+            musicSlider.value = saveSettings.musicLevel;
+            SetSFXVolume(saveSettings.sfxLevel);
+            sfxSlider.value = saveSettings.sfxLevel;
 
-        SetLanguage(saveSettings.selectedLanguage);
+            SetLanguage(saveSettings.selectedLanguage);
 
-        Debug.Log("Game settings Loaded");
+            Debug.Log("Game settings Loaded");
+        }
+        else
+        {
+            #if !UNITY_EDITOR
+            Debug.LogError("No Save Settings loaded!");
+            #endif
+        }
     }
 
     public void SetMusicVolume(float volumeSet)

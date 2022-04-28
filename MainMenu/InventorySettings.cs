@@ -101,11 +101,14 @@ public class InventorySettings : MonoBehaviour
     }
 
 
-    public static void SelectItem(Sprite sprite, CharacterPart part, string id)
+    public static void SelectItem(Sprite sprite, CharacterPart part, string id, bool loadingFromStorage = false)
     {
         CharacterCustomizer.current.avatars[0].SetSprite(sprite, part);
         CharacterCustomizer.current.avatars[1].SetSprite(sprite, part);
-        EquipedItemsStorage.Instance.selectedItems[part] = id;
+        if (!loadingFromStorage)
+        {
+            EquipedItemsStorage.Instance.SetItem(part, id);
+        }
         switch (part)
         {
             case CharacterPart.hat:
@@ -119,11 +122,14 @@ public class InventorySettings : MonoBehaviour
         }
     }
 
-    public static void SelectColor(Color color, CharacterPart part, string id)
+    public static void SelectColor(Color color, CharacterPart part, string id, bool loading = false)
     {
         CharacterCustomizer.current.avatars[0].SetColor(color, part);
         CharacterCustomizer.current.avatars[1].SetColor(color, part);
-        MainMenuController.current.selectedItems[part] = id;
+        if (!loading)
+        {
+            EquipedItemsStorage.Instance.SetItem(part, id);
+        }
         switch (part)
         {
             case CharacterPart.mainColor:

@@ -29,14 +29,17 @@ public class AudioController : MonoBehaviour
 
     public void PlaySFX(AudioClip clip, bool playWithLoop = false)
     {
-        if (!playWithLoop)
+        if (clip != null)
         {
-            sfxSource.PlayOneShot(clip);
-        }
-        else
-        {
-            loopedSfxSource.clip = clip;
-            loopedSfxSource.Play();
+            if (!playWithLoop)
+            {
+                sfxSource.PlayOneShot(clip);
+            }
+            else
+            {
+                loopedSfxSource.clip = clip;
+                loopedSfxSource.Play();
+            }
         }
     }
 

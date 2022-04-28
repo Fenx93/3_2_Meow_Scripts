@@ -116,14 +116,13 @@ public static class SaveGameMediator
                         {
                             // Data processing
                             MainSave mainSave = FromByteArray<MainSave>(data);
-                            PlayerStatsTracker.SetData(mainSave.savedPlayerStats);
+                            //Commented out to easier unlock items
+                            //PlayerStatsTracker.SetData(mainSave.savedPlayerStats); 
                             SettingsStorage.Instance.Settings = mainSave.saveSettings;
 
-                            //var testAllUnlocked = mainSave.allitems.Where(x => x.status == ItemStatus.unlocked).ToArray().Length;
-                            //var testUnlocked = InventorySettings.Instance.GetUnlockedItems(mainSave.allitems).Length;
                             InventorySettings.Instance.LoadItemUnlocks(mainSave.allitems);
 
-                            EquipedItemsStorage.Instance.SetSelectedItems(mainSave.savedSelectedItems);
+                            EquipedItemsStorage.Instance.LoadSelectedItems(mainSave.savedSelectedItems);
                             OnSucessfullLoadDataUpdate?.Invoke();
                         }
                         else
