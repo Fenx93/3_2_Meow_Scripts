@@ -19,14 +19,12 @@ public class CharacterCustomizer : MonoBehaviour
     void Awake()
     {
         current = this;
-
         avatars = new CharacterAvatar[characters.Length];
         for (int i = 0; i < characters.Length; i++)
         {
             avatars[i] = new CharacterAvatar(characters[i], !_flipXs[i], useImages);
         }
     }
-
 }
 
 #region SpriteImageAdapter

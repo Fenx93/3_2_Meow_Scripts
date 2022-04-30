@@ -38,10 +38,7 @@ public class AdManager : MonoBehaviour
     }
     #endregion
 
-    public bool AdsAvailable()
-    {
-        return Advertising.IsRewardedAdReady();
-    }
+    public bool RewardedAdsAvailable() => Advertising.IsRewardedAdReady();
 
     public void ShowRewardedAd(RewardedAdType adType)
     {
@@ -65,16 +62,16 @@ public class AdManager : MonoBehaviour
             Advertising.ShowInterstitialAd();
     }
     
-    private IEnumerator RetryToGetAds()
-    {
-        while (!Advertising.IsRewardedAdReady())
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        print("Ad found!");
-        OnAdsAvailable?.Invoke(PlayerStatsTracker.EnoughForSpin());
-        yield return null;
-    }
+    //private IEnumerator RetryToGetAds()
+    //{
+    //    while (!Advertising.IsRewardedAdReady())
+    //    {
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //    print("Ad found!");
+    //    OnAdsAvailable?.Invoke(PlayerStatsTracker.EnoughForSpin());
+    //    yield return null;
+    //}
 
     // Event handler called when a rewarded ad has completed
     void RewardedAdCompletedHandler(RewardedAdNetwork network, AdPlacement placement)

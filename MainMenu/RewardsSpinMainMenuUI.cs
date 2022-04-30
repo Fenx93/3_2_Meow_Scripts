@@ -15,7 +15,17 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
     {
         current = this;
     }
-    private void Start()
+
+    public RewardsSpinMainMenuUI GetCurrent()
+    {
+        if (current == null)
+        {
+            current = this;
+        }
+        return current;
+    }
+
+    public void Initiate()
     {
         rewardsSpinTitle.SetActive(false);
         buttonWithAds.SetActive(false);
@@ -33,7 +43,7 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
             if (enoughMoney)
                 return;
             buttonWithAds.SetActive(false);
-            if (AdManager.current.AdsAvailable() && !enoughMoney)
+            if (AdManager.current.RewardedAdsAvailable() && !enoughMoney)
                 buttonWithAds.SetActive(true);
             else
                 rewardsSpinTitle.SetActive(false);
@@ -45,12 +55,12 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
         rewardsSpinPanel.SetActive(enabled);
     }
 
-    public void CheckForMoneyAndStartRewardsSpin(bool enabled)
+    public void CheckForMoneyAndStartRewardsSpin()
     {
         if (PlayerStatsTracker.EnoughForSpin())
         {
             PlayerStatsTracker.RemoveMoney(100);
-            ShowRewardsSpin(enabled);
+            ShowRewardsSpin(true);
         }
         else
         {

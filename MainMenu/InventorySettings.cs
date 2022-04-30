@@ -44,6 +44,7 @@ public class InventorySettings : MonoBehaviour
             inventoryItem.status = item.status;
         }
     }
+
     public StorableItem[] GetUnlockedItems(StorableItem[] storableItems)
     {
         return storableItems.Where(x => GetInventoryItem(x.part, x.id).status == ItemStatus.unlocked).ToArray();
@@ -58,9 +59,6 @@ public class InventorySettings : MonoBehaviour
     public TabItem GetInventoryItem(CharacterPart part, string id)
         => GetTabByPart(part).items.Where(x => x.GetID() == id).FirstOrDefault();
     
-    //public TabItem[] GetUnlockedItems(CharacterPart part)
-    //    => GetTabByPart(part).items.Where(x => x.status == ItemStatus.unlocked).ToArray();
-
     #region Public GetRandomItem Methods
     public TabItem GetRandom(CharacterPart part)
     {

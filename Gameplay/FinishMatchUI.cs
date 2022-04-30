@@ -234,7 +234,7 @@ public class FinishMatchUI : MonoBehaviour
             case 2:
                 // make getDouble button appear after gain animation
                 if (AdManager.current!= null 
-                    && AdManager.current.AdsAvailable())
+                    && AdManager.current.RewardedAdsAvailable())
                 {
                     EnableEarnMoreButton(true);
                 }

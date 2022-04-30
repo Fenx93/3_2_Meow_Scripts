@@ -20,7 +20,7 @@ public class SettingsMenu : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void Initiate()
     {
         LoadSettings(SettingsStorage.Instance.Settings);
         ShowDisableAdsButton();

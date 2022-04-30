@@ -2,51 +2,41 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NavigateToMain : MonoBehaviour
 {
-    [SerializeField] private GameObject goToMainButton, goToTestButton;
+    //[SerializeField] private GameObject nextSceneButton;
     [SerializeField] private TextMeshProUGUI title;
     private readonly string[] titleName = new string[] { "", "3", "2", "Meow!" };
     private readonly string[] colors = new string[] { "", "00FF16", "E7552C", "5CC5EF" };
     private string currentTitle = "";
     private int currentIterator = 0;
-    public void Start()
+    AsyncOperation loadingOperation;
+    [SerializeField] private Slider progressBar;
+
+    void Start()
     {
-        CountdownEnded();
-        goToTestButton.SetActive(false);
-        ShowTransitionButton(false);
 #if UNITY_EDITOR
-            ShowTransitionButton(true);
+        GoToMainMenu();
 #endif
-        SaveGameMediator.OnLoadDataUpdate += ShowTransitionButton;
+        //CountdownEnded();
+        SaveGameMediator.OnLoadDataUpdate += GoToMainMenu;
     }
+    void Update()
+    {
+        if (loadingOperation != null)
+        {
+            float progressValue = Mathf.Clamp01(loadingOperation.progress / 0.9f) * 0.85f;
+            progressBar.value = progressValue;
+        }
+    }
+
     public void GoToMainMenu()
     {
-        Debug.LogWarning("Transtition to Main Menu invoked!");
-        SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
-    }
-
-    private void ShowTransitionButton()
-    {
-        goToTestButton.SetActive(true); 
-    }
-
-    public void CallLoadData()
-    {
-        SaveGameMediator.OnLoadDataUpdate -= ShowTransitionButton;
-        SaveGameMediator.OnSucessfullLoadDataUpdate += ShowTransitionButton2;
-        SaveGameController.LoadData();
-    }
-    private void ShowTransitionButton2()
-    {
-        SaveGameMediator.OnSucessfullLoadDataUpdate -= ShowTransitionButton2;
-        ShowTransitionButton(true);
-    }
-
-    private void ShowTransitionButton(bool enable)
-    {
-        goToMainButton.SetActive(enable);
+        Debug.LogWarning("Transition to Main Menu invoked!");
+        PlayerPrefs.SetInt("FirstLaunch", 1);
+        loadingOperation = SceneManager.LoadSceneAsync("MainMenuScene", LoadSceneMode.Single);
     }
 
     private IEnumerator Countdown()
@@ -80,6 +70,4 @@ public class NavigateToMain : MonoBehaviour
         title.text = currentTitle;
         StartCoroutine(nameof(Countdown));
     }
-
-
 }

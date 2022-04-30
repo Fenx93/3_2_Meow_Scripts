@@ -123,12 +123,12 @@ public static class SaveGameMediator
                             InventorySettings.Instance.LoadItemUnlocks(mainSave.allitems);
 
                             EquipedItemsStorage.Instance.LoadSelectedItems(mainSave.savedSelectedItems);
-                            OnSucessfullLoadDataUpdate?.Invoke();
                         }
                         else
                         {
                             Debug.LogWarning("The saved game has no data!");
                         }
+                        OnSucessfullLoadDataUpdate?.Invoke();
                     }
                     else
                     {

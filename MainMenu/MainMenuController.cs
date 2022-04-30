@@ -34,7 +34,7 @@ public class MainMenuController : MonoBehaviour
         current = this;
     }
 
-    void Start()
+    public void Initiate()
     {
         print("Main Menu Controller Start called!");
         if(playMusicByDefault)

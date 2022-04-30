@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
     [Header("Panels that are turned on/off when going from screen to screen")]
+    [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject gameModeSelectionScreen;
     [SerializeField] private GameObject battlePreparationScreen, inventoryScreen, settingsScreen;
     [SerializeField] private GameObject topBarPanel;
@@ -32,7 +33,7 @@ public class MainMenuUI : MonoBehaviour
         current = this;
     }
 
-    private void Start()
+    public void Initiate()
     {
         OpenGameModeSelectionScreen();
         DisplayClassDescriptionPanel(false);
@@ -41,6 +42,7 @@ public class MainMenuUI : MonoBehaviour
     #region Switch Between Screens
     public void OpenInventoryScreen()
     {
+        print("OpenInventoryScreen called!");
         inventoryScreen.SetActive(true);
         gameModeSelectionScreen.SetActive(false);
         //topBarPanel.SetActive(false);
@@ -50,6 +52,7 @@ public class MainMenuUI : MonoBehaviour
     }
     public void OpenGameModeSelectionScreen()
     {
+        loadingScreen.SetActive(false);
         gameModeSelectionScreen.SetActive(true);
         topBarPanel.SetActive(true);
         battlePreparationScreen.SetActive(false);
