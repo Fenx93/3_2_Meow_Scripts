@@ -1,5 +1,4 @@
 using EasyMobile;
-using System.Collections;
 using UnityEngine;
 
 public class AdManager : MonoBehaviour
@@ -20,7 +19,7 @@ public class AdManager : MonoBehaviour
     }
 
     #region Events
-    public event System.Action<bool> OnAdsAvailable;
+    //public event System.Action<bool> OnAdsAvailable;
 
     // Subscribe events
     void OnEnable()

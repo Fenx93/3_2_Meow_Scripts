@@ -65,6 +65,8 @@ public static class PlayerStatsTracker
         => !PurchasesController.AdsDisabled();
 
     public static bool EnoughForSpin() => (CurrentMoney >= 100);
+    
+    public static bool EnoughForAdSpin() => (CurrentMoney >= 50);
 
     #endregion
 

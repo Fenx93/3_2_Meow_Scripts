@@ -31,7 +31,6 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
         buttonWithAds.SetActive(false);
         buttonWithoutAds.SetActive(false);
         UpdateButtons(PlayerStatsTracker.EnoughForSpin());
-        //AdManager.current.OnAdsAvailable += UpdateButtons;
     }
     void Update()
     {

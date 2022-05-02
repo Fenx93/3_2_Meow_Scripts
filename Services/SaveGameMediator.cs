@@ -116,8 +116,7 @@ public static class SaveGameMediator
                         {
                             // Data processing
                             MainSave mainSave = FromByteArray<MainSave>(data);
-                            //Commented out to easier unlock items
-                            //PlayerStatsTracker.SetData(mainSave.savedPlayerStats); 
+                            PlayerStatsTracker.SetData(mainSave.savedPlayerStats); 
                             SettingsStorage.Instance.Settings = mainSave.saveSettings;
 
                             InventorySettings.Instance.LoadItemUnlocks(mainSave.allitems);
