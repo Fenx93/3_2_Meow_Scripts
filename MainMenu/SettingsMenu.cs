@@ -8,10 +8,13 @@ public class SettingsMenu : MonoBehaviour
 {
     [SerializeField] private AudioMixer musicMixer, sfxMixer;
     [SerializeField] private Slider musicSlider, sfxSlider;
+    [SerializeField] private Toggle threeSecToggle, fiveSecToggle;
     [SerializeField] private TMP_Dropdown languagesDropdown;
     [SerializeField] private GameObject disableAdsButton;
+    [SerializeField] private bool isMainMenu = false;
 
     private float musicVolume, sfxVolume;
+    private int selectedSeconds = 3; 
 
     public static SettingsMenu Instance;
 
@@ -54,7 +57,7 @@ public class SettingsMenu : MonoBehaviour
     }
 
     public SaveSettings GetSaveSettings()
-        =>  new SaveSettings(musicVolume, sfxVolume, (int)language); 
+        =>  new SaveSettings(musicVolume, sfxVolume, (int)language, selectedSeconds); 
 
     public void LoadSettings(SaveSettings saveSettings)
     {
@@ -65,7 +68,14 @@ public class SettingsMenu : MonoBehaviour
             musicSlider.value = saveSettings.musicLevel;
             SetSFXVolume(saveSettings.sfxLevel);
             sfxSlider.value = saveSettings.sfxLevel;
-
+            if (isMainMenu)
+            {
+                SetSecondFromCode(saveSettings.selectedSeconds);
+            }
+            else
+            {
+                LoadSeconds(saveSettings.selectedSeconds);
+            }
             SetLanguage(saveSettings.selectedLanguage);
 
             Debug.Log("Game settings Loaded");
@@ -77,7 +87,8 @@ public class SettingsMenu : MonoBehaviour
             #endif
         }
     }
-
+    
+    #region Audio
     public void SetMusicVolume(float volumeSet)
     {
         musicVolume = volumeSet;
@@ -87,9 +98,83 @@ public class SettingsMenu : MonoBehaviour
     public void SetSFXVolume(float volumeSet)
     {
         sfxVolume = volumeSet;
-        sfxMixer.SetFloat("sfxVolume", Mathf.Log10(volumeSet)*20);
+        sfxMixer.SetFloat("sfxVolume", Mathf.Log10(volumeSet) * 20);
+    }
+    #endregion
+
+    #region TurnSeconds
+    public void LoadSeconds(int seconds)
+    {
+        selectedSeconds = seconds;
+    }
+    public void SetSecondFromCode(int seconds)
+    {
+        if (seconds == 3 && threeSecToggle != null)
+        {
+            if (fiveSecToggle != null)
+            {
+                fiveSecToggle.isOn = false;
+            }
+            threeSecToggle.isOn = true;
+            selectedSeconds = seconds;
+        }
+        else if(seconds == 5 && fiveSecToggle != null)
+        {
+            if (threeSecToggle != null)
+            {
+                threeSecToggle.isOn = false;
+            }
+            fiveSecToggle.isOn = true;
+            selectedSeconds = seconds;
+        }
+    }
+    public void SetSeconds(int seconds)
+    {
+        if (seconds == 3 && threeSecToggle != null)
+        {
+            if (threeSecToggle.isOn)
+            {
+                if (fiveSecToggle != null)
+                {
+                    fiveSecToggle.isOn = false;
+                }
+                selectedSeconds = 3;
+            }
+            else
+            {
+                if (fiveSecToggle != null)
+                {
+                    fiveSecToggle.isOn = true;
+                }
+                selectedSeconds = 5;
+            }
+        }
+        else if(seconds == 5 && fiveSecToggle != null)
+        {
+            if (fiveSecToggle.isOn)
+            {
+                if (threeSecToggle != null)
+                {
+                    threeSecToggle.isOn = false;
+                }
+                selectedSeconds = seconds;
+            }
+            else
+            {
+                if (fiveSecToggle != null)
+                {
+                    threeSecToggle.isOn = true;
+                }
+                selectedSeconds = 3;
+            }
+        }
     }
 
+    public float GetSeconds() => (float)selectedSeconds;
+
+    #endregion
+
+    #region Language
     public void SetLanguage(Language language)
     {
         SetLanguage((int)language);
@@ -112,5 +197,6 @@ public class SettingsMenu : MonoBehaviour
             BattlePreparationScreenController.current.SelectClassWithoutSound(0);
         }
     }
+    #endregion
 }
 

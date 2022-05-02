@@ -31,7 +31,14 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
         buttonWithAds.SetActive(false);
         buttonWithoutAds.SetActive(false);
         UpdateButtons(PlayerStatsTracker.EnoughForSpin());
-        AdManager.current.OnAdsAvailable += UpdateButtons;
+        //AdManager.current.OnAdsAvailable += UpdateButtons;
+    }
+    void Update()
+    {
+        if (AdManager.current != null /*&& !AdManager.current.RewardedAdsAvailable()*/)
+        {
+            UpdateButtons(PlayerStatsTracker.EnoughForSpin());
+        }
     }
 
     public void UpdateButtons(bool enoughMoney)
@@ -43,7 +50,8 @@ public class RewardsSpinMainMenuUI : MonoBehaviour
             if (enoughMoney)
                 return;
             buttonWithAds.SetActive(false);
-            if (AdManager.current.RewardedAdsAvailable() && !enoughMoney)
+            if (PlayerStatsTracker.EnoughForAdSpin() 
+                && AdManager.current != null && AdManager.current.RewardedAdsAvailable())
                 buttonWithAds.SetActive(true);
             else
                 rewardsSpinTitle.SetActive(false);

@@ -143,12 +143,13 @@ public class PlayerStats
 public class SaveSettings
 {
     public float musicLevel, sfxLevel;
-    public int selectedLanguage;
-    public SaveSettings(float musicLevel, float sfxLevel, int selectedLanguage)
+    public int selectedLanguage, selectedSeconds;
+    public SaveSettings(float musicLevel, float sfxLevel, int selectedLanguage, int selectedSeconds)
     {
         this.musicLevel = musicLevel;
         this.sfxLevel = sfxLevel;
         this.selectedLanguage = selectedLanguage;
+        this.selectedSeconds = selectedSeconds;
     }
 }
 

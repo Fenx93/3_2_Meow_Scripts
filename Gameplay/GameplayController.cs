@@ -48,6 +48,7 @@ public class GameplayController : MonoBehaviour
             postProcessing.SetActive(false);
         }
         SettingsMenu.Instance.Initiate();
+        countdownDuration = SettingsMenu.Instance.GetSeconds() + 1f;
 
         FindObjectOfType<MapController>().SetupRandomMap();
         AudioController.current.PlayMusic(gameplayMusic);
