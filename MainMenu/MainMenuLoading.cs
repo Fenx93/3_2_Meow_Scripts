@@ -52,9 +52,10 @@ public class MainMenuLoading : MonoBehaviour
     public void GoToMainMenu()
     {
         MainMenuController.current.Initiate();
-        RewardsSpinMainMenuUI.current?.Initiate();
+        RewardsSpinMainMenuUI.current.Initiate();
         SettingsMenu.Instance.Initiate();
         MainMenuUI.current.Initiate();
+        UI_Tabs.current.Initiate();
     }
 
     public void CallLoadData()

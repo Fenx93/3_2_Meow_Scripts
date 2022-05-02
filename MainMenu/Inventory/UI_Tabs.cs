@@ -32,6 +32,8 @@ public class UI_Tabs : MonoBehaviour
     private int currentIndex, currentPageIndex = 0;
     private Transform tabsTransform, panelsTransform;
 
+    public static UI_Tabs current;
+
     private void Awake()
     {
         tabsTransform = transform.Find("Tabs");
@@ -46,10 +48,10 @@ public class UI_Tabs : MonoBehaviour
             Debug.LogError("No Panels gameobject found!");
             // Create new tabs holder
         }
-
+        current = this;
     }
 
-    private void Start()
+    public void Initiate()
     {
         for (int i = 0; i < Tabs.Length; i++)
         {

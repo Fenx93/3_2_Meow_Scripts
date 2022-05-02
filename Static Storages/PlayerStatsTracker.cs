@@ -141,16 +141,9 @@ public static class PlayerStatsTracker
         while (CurrentExp >= CurrentExpCap)
         {
             CurrentLvl++;
-            //get next experience cap
-            CurrentExpCap = CurrentLvl * 85 + (20 * (CurrentLvl - 1));
-            //CurrentExpCap += 80;
+            CurrentExpCap = CurrentLvl * 85 + (20 * (CurrentLvl - 1)); //get next experience cap
             FinishMatchUI.current.ShowLevelUP(true, CurrentLvl);
             AudioController.current.PlayCelebrationSound();
         }
     }
-
-    //private static int RoundToTen(float value)
-    //{
-    //    return ((int)System.Math.Round(value / 5.0)) * 5;
-    //}
 }

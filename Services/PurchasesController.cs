@@ -35,7 +35,7 @@ public class PurchasesController : MonoBehaviour
 
     public static bool AdsDisabled()
         => InAppPurchasing.IsInitialized() &&
-        InAppPurchasing.IsProductOwned(EM_IAPConstants.Product_Disable_Ads);
+        InAppPurchasing.IsProductOwned(EM_IAPConstants.Product_disable_aftermatch_ads);
 
 
     private static string[] GetAllProductNames()
@@ -56,15 +56,15 @@ public class PurchasesController : MonoBehaviour
     {
         if (InAppPurchasing.IsInitialized())
         {
-            if (GetAllProductNames().Contains(EM_IAPConstants.Product_Disable_Ads))
+            if (GetAllProductNames().Contains(EM_IAPConstants.Product_disable_aftermatch_ads))
             {
                 // Purchase a product using its name
                 // EM_IAPConstants.Sample_Product is the generated name constant of a product named "Sample Product"
-                InAppPurchasing.Purchase(EM_IAPConstants.Product_Disable_Ads);
+                InAppPurchasing.Purchase(EM_IAPConstants.Product_disable_aftermatch_ads);
             }
             else
             {
-                Debug.LogError($"{EM_IAPConstants.Product_Disable_Ads} not found!");
+                Debug.LogError($"{EM_IAPConstants.Product_disable_aftermatch_ads} not found!");
             }
         }
     }
@@ -75,13 +75,13 @@ public class PurchasesController : MonoBehaviour
         // Compare product name to the generated name constants to determine which product was bought
         switch (product.Name)
         {
-            case EM_IAPConstants.Product_Disable_Ads:
+            case EM_IAPConstants.Product_disable_aftermatch_ads:
                 if (SettingsMenu.Instance != null)
                 {
                     SettingsMenu.Instance.ShowDisableAdsButton();
                 }
-                NativeUI.Alert("Purchase successful!", $"{EM_IAPConstants.Product_Disable_Ads} was purchased successfully!");
-                Debug.Log($"{EM_IAPConstants.Product_Disable_Ads} was purchased. The user should be granted it now.");
+                NativeUI.Alert("Purchase successful!", $"{EM_IAPConstants.Product_disable_aftermatch_ads} was purchased successfully!");
+                Debug.Log($"{EM_IAPConstants.Product_disable_aftermatch_ads} was purchased. The user should be granted it now.");
 
                 break;
                 // More products here...
