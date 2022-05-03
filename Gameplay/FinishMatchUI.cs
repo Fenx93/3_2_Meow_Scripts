@@ -32,6 +32,7 @@ public class FinishMatchUI : MonoBehaviour
 
     public static FinishMatchUI current;
     private MatchEndLogicController matchEndLogic;
+
     private void Awake()
     {
         current = this;
@@ -62,8 +63,7 @@ public class FinishMatchUI : MonoBehaviour
         EnableEarnMoreButton(false);
         returnToMenuButton.SetActive(false);
 
-        gainedMoneyText.text = "+" + money;
-        gainedEXPText.text = "+" + exp + "EXP";
+        SetRewardMoneyAndExpText(money, exp);
 
         matchEndLogic.AddMoney(money);
         matchEndLogic.AddExperience(exp);
@@ -71,6 +71,12 @@ public class FinishMatchUI : MonoBehaviour
         // Gained stats appear one after the other
         StartCoroutine(nameof(Countdown), 0);
 
+    }
+
+    public void SetRewardMoneyAndExpText(int money, int exp)
+    {
+        gainedMoneyText.text = $"+{money}";
+        gainedEXPText.text = $"+{exp}EXP";
     }
 
 
@@ -129,6 +135,7 @@ public class FinishMatchUI : MonoBehaviour
     {
         itemUnlockedPanel.SetActive(enabled);
     }
+
     public void SetUnlockedItemPanel(TabItem item, CharacterPart part)
     {
         var tmpro = itemUnlockedPanel.GetComponentInChildren<TextMeshProUGUI>();
@@ -260,28 +267,43 @@ public class FinishMatchUI : MonoBehaviour
     public void UpdateMoneyText(int money)
     {
         moneyText.text = money.ToString();
-        StartCoroutine(CoroutineHelper.SmoothlyChangeColorAndFade(moneyText, moneyText.color, Color.cyan, moneyText.color, 1f, 3f));
+        StartCoroutine(
+            CoroutineHelper.SmoothlyChangeColorAndFade(moneyText, moneyText.color, Color.cyan, moneyText.color, 1f, 3f)
+            );
     }
 
     public void UpdateExpText(int currentExp, int expCap)
     {
         expText.text = currentExp + "/" + expCap;
         UpdateExpSlider(currentExp, expCap);
-        StartCoroutine(CoroutineHelper.SmoothlyChangeColorAndFade(expText, expText.color, Color.cyan, expText.color, 1f, 3f));
+        StartCoroutine(
+            CoroutineHelper.SmoothlyChangeColorAndFade(expText, expText.color, Color.cyan, expText.color, 1f, 3f)
+            );
     }
 
     public void UpdateExpSlider(int currentExp, int expCap)
     {
         expSlider.value = (float)currentExp / (float)expCap;
         var fill = expSlider.GetComponentInChildren<Image>();
-        StartCoroutine(CoroutineHelper.SmoothlyChangeColorAndFade(new ImageAdapter(fill), fill.color, Color.cyan, fill.color, 1f, 3f));
+        StartCoroutine(
+            CoroutineHelper.SmoothlyChangeColorAndFade(
+                new ImageAdapter(fill), fill.color, Color.cyan, fill.color, 1f, 3f));
     }
 
     public void ExitAndShowAds()
     {
         var adManager = AdManager.current;
+        bool playAds = false;
 
-        if (PlayerStatsTracker.AdsEnabled() && adManager.InterstitialAdReady())
+        if (PlayerStatsTracker.AdsPlayed == 0 
+            || (PlayerStatsTracker.AdsPlayed == 2))
+        {
+            playAds = true;
+        }
+        PlayerStatsTracker.AdsPlayed++;
+
+        if (playAds && PlayerStatsTracker.AdsEnabled() 
+            && adManager.InterstitialAdReady())
         {
             adManager.ShowInterstitialAd();
         }

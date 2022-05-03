@@ -42,6 +42,7 @@ public class MatchEndLogicController : MonoBehaviour
     {
         StartCoroutine(matchEndUI.ShowAddedAnimation(2f, true, gainedMoney));
         StartCoroutine(matchEndUI.ShowAddedAnimation(2f, false, gainedExperience));
+        FinishMatchUI.current.SetRewardMoneyAndExpText(gainedMoney*2, gainedExperience*2);
         matchEndUI.EnableEarnMoreButton(false);
     }
 }

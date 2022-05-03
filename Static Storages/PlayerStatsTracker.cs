@@ -4,6 +4,8 @@ public static class PlayerStatsTracker
     private static int _currentExp = 0, _currentMoney = 0, 
         _currentExpCap = 75, _currentLvl = 1;
 
+    private static int adsCount = 0;
+
     #region Public Properties
     public static int CurrentExp { 
         get => _currentExp;
@@ -58,6 +60,16 @@ public static class PlayerStatsTracker
             {
                 RewardsSpinMainMenuUI.current.UpdateButtons(EnoughForSpin());
             }
+        }
+    }
+
+    public static int AdsPlayed
+    {
+        get => adsCount;
+        set
+        {
+            adsCount = value == 3 ?
+                0 : value;
         }
     }
 
@@ -146,4 +158,5 @@ public static class PlayerStatsTracker
             AudioController.current.PlayCelebrationSound();
         }
     }
+
 }

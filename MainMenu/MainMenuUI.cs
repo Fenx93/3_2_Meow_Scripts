@@ -50,6 +50,7 @@ public class MainMenuUI : MonoBehaviour
         settingsScreen.SetActive(false);
         goBackButton.SetActive(true);
     }
+
     public void OpenGameModeSelectionScreen()
     {
         loadingScreen.SetActive(false);

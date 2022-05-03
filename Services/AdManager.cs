@@ -19,7 +19,6 @@ public class AdManager : MonoBehaviour
     }
 
     #region Events
-    //public event System.Action<bool> OnAdsAvailable;
 
     // Subscribe events
     void OnEnable()
@@ -35,6 +34,7 @@ public class AdManager : MonoBehaviour
         Advertising.RewardedAdSkipped -= RewardedAdSkippedHandler;
         Advertising.InterstitialAdCompleted -= InterstitialAdCompletedHandler;
     }
+    
     #endregion
 
     public bool RewardedAdsAvailable() => Advertising.IsRewardedAdReady();
@@ -61,17 +61,6 @@ public class AdManager : MonoBehaviour
             Advertising.ShowInterstitialAd();
     }
     
-    //private IEnumerator RetryToGetAds()
-    //{
-    //    while (!Advertising.IsRewardedAdReady())
-    //    {
-    //        yield return new WaitForSeconds(0.1f);
-    //    }
-    //    print("Ad found!");
-    //    OnAdsAvailable?.Invoke(PlayerStatsTracker.EnoughForSpin());
-    //    yield return null;
-    //}
-
     // Event handler called when a rewarded ad has completed
     void RewardedAdCompletedHandler(RewardedAdNetwork network, AdPlacement placement)
     {

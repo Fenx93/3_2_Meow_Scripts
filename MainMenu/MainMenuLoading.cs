@@ -24,6 +24,7 @@ public class MainMenuLoading : MonoBehaviour
         {
             isFirstLaunch = true;
             PlayerPrefs.SetInt("FirstLaunch", -1);
+            PlayerStatsTracker.AdsPlayed = 0;
             //CountdownEnded();
             goToMainButton.SetActive(false);
             loadDataButton.SetActive(false);
