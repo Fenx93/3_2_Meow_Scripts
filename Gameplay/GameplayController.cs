@@ -59,11 +59,17 @@ public class GameplayController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            GameEnded(true);
+            GameEnded(true, false);
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
-            GameEnded(false);
+            GameEnded(false, false);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            player.GetDamaged(5);
+            enemy.GetDamaged(5);
+            //GameEnded(false, true);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -253,29 +259,37 @@ public class GameplayController : MonoBehaviour
 
     private void CountdownEnded()
     {
-        UIController.current.EnableActionButtons();
-        enemy.SelectAction();
-        // decrease action cooldowns
-        player.DecreaseActionCooldowns();
-        enemy.DecreaseActionCooldowns();
-
-        while (_continueGame)
+        try
         {
-            //TO-DO: attach initiative based on class
-            var playerResult = ResolveAction(player, enemy);
-            var enemyResult = ResolveAction(enemy, player);
-            //animate selected actions
-            ActionAnimator.current.UpdateSelectedAction(player.SelectedAction, playerResult);
-            ActionAnimator.current.UpdateSelectedAction(enemy.SelectedAction, enemyResult, false);
+            UIController.current.EnableActionButtons();
+            enemy.SelectAction();
+            // decrease action cooldowns
+            player.DecreaseActionCooldowns();
+            enemy.DecreaseActionCooldowns();
 
-            player.CheckForAdditionalVictoryCondition();
-            enemy.CheckForAdditionalVictoryCondition();
+            while (_continueGame)
+            {
+                //TO-DO: attach initiative based on class
+                var playerResult = ResolveAction(player, enemy);
+                var enemyResult = ResolveAction(enemy, player);
+                //animate selected actions
+                ActionAnimator.current.UpdateSelectedAction(player.SelectedAction, playerResult);
+                ActionAnimator.current.UpdateSelectedAction(enemy.SelectedAction, enemyResult, false);
 
-            if (!_continueGame)
+                player.CheckForAdditionalVictoryCondition();
+                enemy.CheckForAdditionalVictoryCondition();
+
+                if (!_continueGame)
+                    break;
+
+                StartCoroutine(nameof(Waiting), 2f);
                 break;
-
-            StartCoroutine(nameof(Waiting), 2f);
-            break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            EasyMobile.NativeUI.Alert("Error encountered!", ex.Message);
         }
     }
 
@@ -341,32 +355,81 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    public void GameEnded(bool won)
+    #region Match Results
+    public void GameEnded(bool won, bool canBeDraw = true)
     {
-        string message;
-        int exp, money;
-
         _continueGame = false;
         UIController.current.DisplayTimer(false);
         AudioController.current.StopMusic();
 
-        if (won)
+        if (canBeDraw)
         {
-            message = LocalisationSystem.GetLocalisedValue("match_result_victory");
-            exp = 100;
-            money = 50;
-            VictoryAnimatorScript.current.SetValues(message, money, exp);
-            VictoryAnimatorScript.current.StartAnimation(CharacterCustomizer.current.characters[0], CharacterCustomizer.current.characters[1], won);
+            StartCoroutine(nameof(WaitForMatchResults));
         }
         else
         {
-            message = LocalisationSystem.GetLocalisedValue("match_result_defeat");
-            exp = 50;
-            money = 25;
-            VictoryAnimatorScript.current.SetValues(message, money, exp);
-            VictoryAnimatorScript.current.StartAnimation(CharacterCustomizer.current.characters[1], CharacterCustomizer.current.characters[0], won);
+            if (won)
+            {
+                MatchWon();
+            }
+            else 
+            { 
+                MatchLost();
+            }
+        }
+
+    }
+
+    private IEnumerator WaitForMatchResults()
+    {
+        float duration = 0.1f;
+        float normalizedTime = 0;
+        while (normalizedTime <= duration)
+        {
+            normalizedTime += Time.deltaTime;
+            yield return null;
+        }
+        CheckForMatchResults();
+    }
+    
+    private void CheckForMatchResults()
+    {
+        bool playerHealthDepleated = player.HP <= 0;
+        bool enemyHealthDepleated = enemy.HP <= 0;
+
+        if (playerHealthDepleated && enemyHealthDepleated)
+        {
+            var message = LocalisationSystem.GetLocalisedValue("match_result_draw");
+            VictoryAnimatorScript.current.SetValues(message, 35, 75);
+            VictoryAnimatorScript.current.StartAnimation(CharacterCustomizer.current.characters[0], CharacterCustomizer.current.characters[1], false, true);
+        }
+        else if (playerHealthDepleated)
+        {
+            MatchLost();
+        }
+        else if (enemyHealthDepleated)
+        {
+            MatchWon();
         }
     }
+
+    private void MatchWon()
+    {
+        var message = LocalisationSystem.GetLocalisedValue("match_result_victory");
+        VictoryAnimatorScript.current.SetValues(message, 50, 100);
+        VictoryAnimatorScript.current.StartAnimation(
+            CharacterCustomizer.current.characters[0], CharacterCustomizer.current.characters[1], true);
+    }
+
+    private void MatchLost()
+    {
+        var message = LocalisationSystem.GetLocalisedValue("match_result_defeat");
+        VictoryAnimatorScript.current.SetValues(message, 25, 50);
+        VictoryAnimatorScript.current.StartAnimation(
+            CharacterCustomizer.current.characters[1], CharacterCustomizer.current.characters[0], false);
+    }
+
+    #endregion
 
 
     #region Events

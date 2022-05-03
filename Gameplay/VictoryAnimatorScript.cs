@@ -11,7 +11,7 @@ public class VictoryAnimatorScript : MonoBehaviour
     [SerializeField] private GameObject[] hideableUIObjects;
 
     private Transform initialCameraPos, _loser;
-    private bool _playerWon;
+    private bool _playerWon, _isDraw;
     private string _message;
     private int _money, _exp;
 
@@ -54,6 +54,10 @@ public class VictoryAnimatorScript : MonoBehaviour
             case 4:
                 //change loser's eyes to xx
                 CharacterCustomizer.current.avatars[_playerWon ? 1 : 0].SetSprite(defeatedEyes, CharacterPart.eyes);
+                if (_isDraw)
+                {
+                    CharacterCustomizer.current.avatars[_playerWon ? 0 : 1].SetSprite(defeatedEyes, CharacterPart.eyes);
+                }
                 cinematographicBars.SetActive(false);
                 //wait for some time
                 StartCoroutine(Wait(0.5f, status));
@@ -80,10 +84,11 @@ public class VictoryAnimatorScript : MonoBehaviour
         }
     }
 
-    public void StartAnimation(Transform winner, Transform loser, bool playerWon)
+    public void StartAnimation(Transform winner, Transform loser, bool playerWon, bool isDraw = false)
     {
         _loser = loser;
         _playerWon = playerWon;
+        _isDraw = isDraw;
         //Start anime lines
         particles.Play();
         foreach (var gameObj in hideableUIObjects)
