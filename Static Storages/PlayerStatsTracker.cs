@@ -68,7 +68,7 @@ public static class PlayerStatsTracker
         get => adsCount;
         set
         {
-            adsCount = value == 3 ?
+            adsCount = value == 4 ?
                 0 : value;
         }
     }

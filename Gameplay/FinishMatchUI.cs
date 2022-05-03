@@ -79,7 +79,6 @@ public class FinishMatchUI : MonoBehaviour
         gainedEXPText.text = $"+{exp}EXP";
     }
 
-
     public void ShowLevelUP(bool enabled, int? level = null)
     {
         levelUpPanel.SetActive(enabled);
@@ -295,7 +294,7 @@ public class FinishMatchUI : MonoBehaviour
     {
         var adManager = AdManager.current;
 
-        var playAds = PlayerStatsTracker.AdsPlayed == 0;
+        var playAds = PlayerStatsTracker.AdsPlayed == 1;
         PlayerStatsTracker.AdsPlayed++;
 
         if (playAds && PlayerStatsTracker.AdsEnabled() 
