@@ -289,17 +289,13 @@ public class FinishMatchUI : MonoBehaviour
             CoroutineHelper.SmoothlyChangeColorAndFade(
                 new ImageAdapter(fill), fill.color, Color.cyan, fill.color, 1f, 3f));
     }
+    #endregion
 
     public void ExitAndShowAds()
     {
         var adManager = AdManager.current;
-        bool playAds = false;
 
-        if (PlayerStatsTracker.AdsPlayed == 0 
-            || (PlayerStatsTracker.AdsPlayed == 2))
-        {
-            playAds = true;
-        }
+        var playAds = PlayerStatsTracker.AdsPlayed == 0;
         PlayerStatsTracker.AdsPlayed++;
 
         if (playAds && PlayerStatsTracker.AdsEnabled() 
@@ -318,5 +314,4 @@ public class FinishMatchUI : MonoBehaviour
         SaveGameController.SaveData();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
-    #endregion
 }
