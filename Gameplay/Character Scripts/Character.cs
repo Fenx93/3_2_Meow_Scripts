@@ -55,6 +55,10 @@ public abstract class Character
     {
         var prevHP = HP;
         HP -= damage;
+        if (HP >= 5)
+        {
+            HP = 5;
+        }
         // Play is damaged sound
         AudioController.current.PlayHitSound();
         //Play is damaged animation
