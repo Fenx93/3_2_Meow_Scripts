@@ -31,9 +31,10 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private GameObject postProcessing;
     [SerializeField] private bool allEnemiesAvailable = false;
 
-    public bool startByDefault, isTraining;
+    public bool startByDefault = true, isTraining;
     [SerializeField] private GameObject trainingObject;
     [SerializeField] private AudioClip gameplayMusic;
+    [SerializeField] private float startupDuration = 5f;
 
     void Awake()
     {
@@ -136,8 +137,15 @@ public class GameplayController : MonoBehaviour
         ResetActions();
         if (startByDefault)
         {
-            StartCoroutine(nameof(Countdown));
+            SetupSlowerStart();
+            //StartCoroutine(nameof(Countdown));
         }
+    }
+
+    private void SetupSlowerStart()
+    {
+        VictoryAnimatorScript.current.cinematographicBars.SetActive(true);
+        StartCoroutine(nameof(StartupCountdown));
     }
 
     private Enemy GetRandomEnemyClass(CharClass? passedClass = null, AIType? aIType = null)
@@ -241,6 +249,24 @@ public class GameplayController : MonoBehaviour
             yield return null;
         }
         CountdownEnded();
+    }
+    
+    private IEnumerator StartupCountdown()
+    {
+        yield return 1f;
+        float duration = startupDuration;
+
+        while (duration > 1f)
+        {
+            if (!isPaused)
+            {
+                duration -= (Time.deltaTime * countdownMultiplier);
+                UIController.current.UpdateStartupTimer((int)duration);
+            }
+            yield return null;
+        }
+        VictoryAnimatorScript.current.cinematographicBars.SetActive(false);
+        StartGame();
     }
 
     private IEnumerator Waiting(float duration = 2f)

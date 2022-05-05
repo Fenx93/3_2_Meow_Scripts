@@ -166,6 +166,35 @@ public class UIController : MonoBehaviour
         timer.gameObject.SetActive(enable);
     }
 
+    public void UpdateStartupTimer(int time)
+    {
+        string prevTimerText = timer.text;
+        switch (time)
+        {
+            case 1:
+                timer.text = "";
+                break;
+            case 2:
+                timer.text = LocalisationSystem.GetLocalisedValue("startup_go").ToUpper();
+                if (timer.text != prevTimerText)
+                {
+                    AudioController.current.PlayBeepSound();
+                }
+                break;
+            case 3:
+                timer.text = LocalisationSystem.GetLocalisedValue("startup_getReady").ToUpper();
+                VictoryAnimatorScript.current.TransitBarsToEmpty();
+                if (timer.text != prevTimerText)
+                {
+                    AudioController.current.PlayBeepSound();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
     public void UpdateTimer(int time)
     {
         string prevTimerText = timer.text;

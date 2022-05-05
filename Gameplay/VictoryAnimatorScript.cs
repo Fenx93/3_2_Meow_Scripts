@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using static InventorySettings;
 
 public class VictoryAnimatorScript : MonoBehaviour
 {
-    [SerializeField] private GameObject cinematographicBars;
+    public GameObject cinematographicBars;
     public static VictoryAnimatorScript current;
     [SerializeField] private Sprite defeatedEyes;
     [SerializeField] private ParticleSystem particles;
@@ -23,6 +24,22 @@ public class VictoryAnimatorScript : MonoBehaviour
         cinematographicBars.SetActive(false);
     }
 
+    public void TransitBarsToDisplayed()
+    {
+        cinematographicBars.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.black;
+        cinematographicBars.transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.black;
+        cinematographicBars.SetActive(true);
+    }
+
+    public void TransitBarsToEmpty()
+    {
+        var image0 = cinematographicBars.transform.GetChild(0).gameObject.GetComponent<Image>();
+        var image1 = cinematographicBars.transform.GetChild(1).gameObject.GetComponent<Image>();
+
+        StartCoroutine(CoroutineHelper.SmoothlyChangeColor(image0, Color.black, new Color(0, 0, 0, 0), 0.5f));
+        StartCoroutine(CoroutineHelper.SmoothlyChangeColor(image1, Color.black, new Color(0, 0, 0, 0), 0.5f));
+    }
+
     public void SetValues(string message, int money, int exp)
     {
         _message = message;
@@ -35,7 +52,7 @@ public class VictoryAnimatorScript : MonoBehaviour
         switch (status)
         {
             case 1:
-                cinematographicBars.SetActive(true);
+                TransitBarsToDisplayed();
                 //wait for some time
                 StartCoroutine(Wait(2f, status));
                 break;
