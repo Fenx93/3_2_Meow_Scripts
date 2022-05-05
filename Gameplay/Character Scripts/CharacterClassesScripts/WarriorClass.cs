@@ -25,7 +25,7 @@
             case ActionType.parry:
                 if (receiver.SelectedAction.Classification == ActionClassification.aggressive)
                 {
-                    GameplayController.current.delayedActions.Add(receiver.GetDamaged, receiver.Damage);
+                    GameplayController.current.delayedActions.Add(new DelayedAction(receiver.GetDamaged, receiver.Damage));
                     return CombatResolution.attack;
                 }
                 return CombatResolution.passive;
@@ -33,7 +33,7 @@
             case ActionType.slash:
                 if (!receiver.SelectedAction.CanNeglectActions(ActionClassification.defensive))
                 {
-                    GameplayController.current.delayedActions.Add(receiver.GetDamaged, actor.Damage);
+                    GameplayController.current.delayedActions.Add(new DelayedAction(receiver.GetDamaged, actor.Damage));
                     return CombatResolution.attack;
                 }
                 return CombatResolution.neglected;

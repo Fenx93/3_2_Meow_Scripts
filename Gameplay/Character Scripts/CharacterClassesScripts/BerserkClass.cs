@@ -50,12 +50,12 @@ public class BerserkClass : CharacterClass
                     var hitOpponent = HitChance >= chance;
                     if (hitOpponent)
                     {
-                        GameplayController.current.delayedActions.Add(receiver.GetDamaged, actor.Damage);
+                        GameplayController.current.delayedActions.Add(new DelayedAction(receiver.GetDamaged, actor.Damage));
                         return CombatResolution.attack;
                     }
                     else
                     {
-                        GameplayController.current.delayedActions.Add(actor.GetDamaged, actor.Damage);
+                        GameplayController.current.delayedActions.Add(new DelayedAction(actor.GetDamaged, actor.Damage));
                         return CombatResolution.passive;
                     }
                 }

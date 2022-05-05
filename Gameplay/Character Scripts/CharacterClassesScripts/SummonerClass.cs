@@ -52,7 +52,7 @@ public class SummonerClass : CharacterClass
             case ActionType.attack:
                 if (!receiver.SelectedAction.CanNeglectActions(ActionClassification.defensive))
                 {
-                    GameplayController.current.delayedActions.Add(receiver.GetDamaged, actor.Damage);
+                    GameplayController.current.delayedActions.Add(new DelayedAction(receiver.GetDamaged, actor.Damage));
                     return CombatResolution.attack;
                 }
                 return CombatResolution.neglected;

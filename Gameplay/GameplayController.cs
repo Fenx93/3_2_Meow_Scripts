@@ -21,7 +21,7 @@ public class GameplayController : MonoBehaviour
     public static GameplayController current;
 
     public delegate void DelayedDelegate(int damage);
-    public Dictionary<DelayedDelegate, int> delayedActions;
+    public List<DelayedAction> delayedActions;
 
     private bool alreadyExecuting = false;
 
@@ -57,15 +57,16 @@ public class GameplayController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        // testing keys
+        if (Input.GetKeyDown(KeyCode.W))    //win
         {
             GameEnded(true, false);
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))    //lose
         {
             GameEnded(false, false);
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D))    //draw
         {
             player.GetDamaged(5);
             enemy.GetDamaged(5);
@@ -78,9 +79,10 @@ public class GameplayController : MonoBehaviour
         }
     }
 
+    #region Game Setup
     public void SetupGame()
     {
-        delayedActions = new Dictionary<DelayedDelegate, int>();
+        delayedActions = new List<DelayedAction>();
 
         var selectedClass = (CharClass)System.Enum.Parse(typeof(CharClass), PlayerPrefs.GetString("SelectedClass"));
         if (isTraining)
@@ -207,6 +209,8 @@ public class GameplayController : MonoBehaviour
 
     }
 
+    #endregion
+
     public void StartGame()
     {
         StartCoroutine(nameof(Countdown));
@@ -326,15 +330,23 @@ public class GameplayController : MonoBehaviour
 
     public void ExecuteDelayedActions()
     {
-        if (!alreadyExecuting)
+        try
         {
-            alreadyExecuting = true;
-            foreach (var action in delayedActions)
+            if (!alreadyExecuting)
             {
-                action.Key.Invoke(action.Value);
+                alreadyExecuting = true;
+                foreach (var action in delayedActions)
+                {
+                    action.Delegate.Invoke(action.Value);
+                }
+                delayedActions.Clear();
+                alreadyExecuting = false;
             }
-            delayedActions.Clear();
-            alreadyExecuting = false;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            EasyMobile.NativeUI.Alert("Error encountered!", ex.Message);
         }
     }
 
