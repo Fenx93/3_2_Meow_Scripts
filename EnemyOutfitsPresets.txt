@@ -138,10 +138,6 @@
          "clothesId":"ww2_american_clothes"
       },
       {
-         "hatId":"ww2_soviet_hat",
-         "clothesId":"ww2_soviet_clothes"
-      },
-      {
          "hatId":"viking_helmet",
          "clothesId":"viking_armor"
       }

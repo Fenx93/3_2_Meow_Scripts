@@ -36,6 +36,8 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private AudioClip gameplayMusic;
     [SerializeField] private float startupDuration = 5f;
 
+    private bool executingVictory = false;
+
     void Awake()
     {
         current = this;
@@ -428,10 +430,14 @@ public class GameplayController : MonoBehaviour
             yield return null;
         }
         CheckForMatchResults();
+        yield return null;
     }
     
     private void CheckForMatchResults()
     {
+        if (executingVictory)
+            return;
+        executingVictory = true;
         bool playerHealthDepleated = player.HP <= 0;
         bool enemyHealthDepleated = enemy.HP <= 0;
 
